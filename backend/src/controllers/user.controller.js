@@ -21,8 +21,8 @@ async function getUsers(req, res) {
   }
 }
 
-/**
- * @name createUser
+/** 
+* @name createUser
  * @description Crea un nuevo usuario
  * @param req {Request}
  * @param res {Response}

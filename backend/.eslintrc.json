@@ -53,6 +53,11 @@
         }
       }
     ],
-    "no-trailing-spaces": "off"
-  }
+    "no-trailing-spaces": "off",
+    "linebreak-style": "off"
+  },
+
+  "camelcase": ["error", {"properties": "never"}]
 }
+
+

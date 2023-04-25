@@ -1,3 +1,5 @@
+// EN ESTE MOMENTO ESTAS EN api/user/
+
 "use strict";
 // Importa el modulo 'express' para crear las rutas
 const express = require("express");
