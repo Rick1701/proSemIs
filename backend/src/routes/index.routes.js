@@ -14,6 +14,9 @@ const authMiddleware = require("../middlewares/authe.middleware.js");
 const siniestroRoutes = require("./siniestro.routes.js");
 // Importa el enrutador de ubicacion
 const ubicacionRoutes = require("./ubicacion.routes.js");
+// Importa el enrutador de region
+const regionRoutes = require("./region.routes.js");
+
 // Crea una instancia del enrutador
 const router = express.Router();
 
@@ -25,6 +28,8 @@ router.use("/auth", authRoutes);
 router.use("/siniestro", siniestroRoutes);
 // Define las rutas para las ubicaciones /api/ubicacion
 router.use("/ubicacion", ubicacionRoutes);
+// Define las rutas para las region /api/region
+router.use("/region", regionRoutes);
 
 // Exporta el enrutador
 module.exports = router;
