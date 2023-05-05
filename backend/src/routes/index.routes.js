@@ -14,6 +14,8 @@ const authMiddleware = require("../middlewares/authe.middleware.js");
 const siniestroRoutes = require("./siniestro.routes.js");
 // Importa el enrutador de incidente
 const incidenteRoutes = require("./incidente.routes.js");
+// Importa el enrutador de la categoria
+const categoriaRoutes = require("./categoria.routes.js");
 
 // Crea una instancia del enrutador
 const router = express.Router();
@@ -26,6 +28,9 @@ router.use("/auth", authRoutes);
 router.use("/siniestro", siniestroRoutes);
 // Define las rutas para los siniestros /api/incidente
 router.use("/incidente", incidenteRoutes);
+// Define las rutas para las categorias /api/categoria
+router.use("/categoria", categoriaRoutes);
+
 
 // Exporta el enrutador
 module.exports = router;
