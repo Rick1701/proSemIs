@@ -7,13 +7,9 @@ const { handleError } = require("../utils/errorHandler");
 /**
  * @typedef Base
  * @property {string} _id
- * @property {String} sin_velocidadViento
- * @property {String} sin_direccionViento
- * @property {String} sin_temperatura
- * @property {String} sin_humedad
- * @property {String} sin_presion
- * @property {Date} sin_fechaInicio
- * @property {Date} sin_fechaTermino
+ * @property {String} base_descripcion,
+ * @property {Number} base_latitud,
+ * @property {Number} base_incendios_asistidos
  */
 
 /**
@@ -47,10 +43,11 @@ async function createBase(base) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { base_descripcion,base_latitud} = base;
+    const { base_descripcion,base_latitud,base_incendios_asistidos} = base;
     const newBase = new Base({
       base_descripcion,
-      base_latitud
+      base_latitud,
+      base_incendios_asistidos
     });
     return await newBase.save();
   } catch (error) {
