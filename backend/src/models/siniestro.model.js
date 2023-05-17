@@ -8,19 +8,11 @@ const siniestroSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  sin_direccionViento: {
-    type: String,
-    required: true,
-  },
   sin_temperatura: {
     type: String,
     required: true,
   },
   sin_humedad: {
-    type: String,
-    required: true,
-  },
-  sin_presion: {
     type: String,
     required: true,
   },
@@ -30,6 +22,18 @@ const siniestroSchema = new mongoose.Schema({
   },
   sin_fechaTermino: {
     type: Date,
+    required: true,
+  },
+  sin_latitud: {
+    type: Number,
+    required: true,
+  },
+  sin_superficie: {
+    type: String,
+    required: true,
+  },
+  sin_distribucion_fuego: {
+    type: String,
     required: true,
   }
  ,

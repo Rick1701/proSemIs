@@ -8,12 +8,13 @@ const { handleError } = require("../utils/errorHandler");
  * @typedef Siniestro
  * @property {string} _id
  * @property {String} sin_velocidadViento
- * @property {String} sin_direccionViento
  * @property {String} sin_temperatura
  * @property {String} sin_humedad
- * @property {String} sin_presion
  * @property {Date} sin_fechaInicio
  * @property {Date} sin_fechaTermino
+ * @property {Number} sin_latitud
+ * @property {String} sin_superficie
+ * @property {String} sin_distribucion_fuego
  */
 
 /**
@@ -47,15 +48,16 @@ async function createSiniestro(siniestro) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { sin_velocidadViento, sin_direccionViento, sin_temperatura, sin_humedad, sin_presion, sin_fechaInicio, sin_fechaTermino} = siniestro;
+    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_superficie, sin_distribucion_fuego} = siniestro;
     const newSiniestro = new Siniestro({
       sin_velocidadViento,
-      sin_direccionViento,
       sin_temperatura,
       sin_humedad,
-      sin_presion,
       sin_fechaInicio,
       sin_fechaTermino,
+      sin_latitud,
+      sin_superficie,
+      sin_distribucion_fuego,
     });
     return await newSiniestro.save();
   } catch (error) {
