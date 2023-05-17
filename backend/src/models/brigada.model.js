@@ -1,4 +1,5 @@
 "use strict";
+const { number } = require("joi");
 // Importa el modulo 'mongoose' para crear la conexion a la base de datos
 const mongoose = require("mongoose");
 
@@ -9,10 +10,10 @@ const brigadaSchema = new mongoose.Schema({
     required: true,
   },
   bri_cantidad: {
-    type: String,
+    type: Number,
     required: true,
   },
-  bri_experiencia: {
+  bri_especialidad: {
     type: String,
     required: true,
   }

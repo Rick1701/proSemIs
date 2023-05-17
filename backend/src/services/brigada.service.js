@@ -8,8 +8,8 @@ const { handleError } = require("../utils/errorHandler");
  * @typedef Brigada
  * @property {string} _id
  * @property {String} bri_nombre
- * @property {String} bri_cantidad
- * @property {String} bri_experiencia
+ * @property {Number} bri_cantidad
+ * @property {String} bri_especialidad
  */
 
 /**
@@ -43,11 +43,11 @@ async function createBrigada(brigada) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { bri_nombre, bri_cantidad, bri_experiencia} = brigada;
+    const { bri_nombre, bri_cantidad, bri_especialidad} = brigada;
     const newBrigada = new Brigada({
       bri_nombre,
       bri_cantidad,
-      bri_experiencia,
+      bri_especialidad,
     });
     return await newBrigada.save();
   } catch (error) {

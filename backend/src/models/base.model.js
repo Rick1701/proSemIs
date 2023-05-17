@@ -9,10 +9,13 @@ const baseSchema = new mongoose.Schema({
     required: true,
   },
   base_latitud: {
-    type: String,
+    type: Number,
     required: true,
-  }
- ,
+  },
+  base_incendios_asistidos: {
+    type: Number,
+    required: true,
+  },
 });
 
 // Crea el modelo de datos 'Base' a partir del esquema 'siniestroSchema'

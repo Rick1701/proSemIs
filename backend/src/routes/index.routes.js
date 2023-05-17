@@ -16,8 +16,6 @@ const siniestroRoutes = require("./siniestro.routes.js");
 const brigadaRoutes = require("./brigada.routes.js");
 // Importa el enrutador de brigadista
 const brigadistaRoutes = require("./brigadista.routes.js");
-// Importa el enrutador de capacitacion
-const capacitacionRoutes = require("./capacitacion.routes.js");
 // Importa el enrutador de incidente
 const incidenteRoutes = require("./incidente.routes.js");
 // Importa el enrutador de la categoria
@@ -36,8 +34,8 @@ const estado_unidadRoutes = require("./estado_unidad.routes.js");
 const uaereaRoutes = require("./uaerea.routes.js");
 
 const uterrestreRoutes = require("./uterrestre.routes.js");
-
-
+// Importa el enrutador de estado_brigadista
+const estado_baseRoutes = require("./estado_base.routes.js");
 
 
 // Crea una instancia del enrutador
@@ -53,8 +51,6 @@ router.use("/siniestro", siniestroRoutes);
 router.use("/brigada", brigadaRoutes);
 // Define las rutas para los brigadistas /api/brigadista
 router.use("/brigadista", brigadistaRoutes);
-// Define las rutas para las capacitaciones /api/capacitacion
-router.use("/capacitacion", capacitacionRoutes);
 // Define las rutas para los siniestros /api/incidente
 router.use("/incidente", incidenteRoutes);
 // Define las rutas para las categorias /api/categoria
@@ -70,7 +66,8 @@ router.use("/base",baseRoutes);
 router.use("/estado_unidad", estado_unidadRoutes);
 router.use("/uaerea",uaereaRoutes);
 router.use("/uterrestre",uterrestreRoutes);
-
+// Define las rutas para los estado_brigadista /api/estado_brigadista
+router.use("/estado_base", estado_baseRoutes);
 
 
 // Exporta el enrutador

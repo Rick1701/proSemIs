@@ -10,6 +10,8 @@ const { handleError } = require("../utils/errorHandler");
  * @property {String} brig_rut
  * @property {String} brig_nombres
  * @property {String} brig_apellidos
+ * @property {String} brig_sexo
+ * @property {Number} brig_edad
  */
 
 /**
@@ -43,11 +45,13 @@ async function createBrigadista(brigadista) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { brig_rut, brig_nombres, brig_apellidos} = brigadista;
+    const { brig_rut, brig_nombres, brig_apellidos, brig_sexo, brig_edad} = brigadista;
     const newBrigadista = new Brigadista({
       brig_rut,
       brig_nombres,
       brig_apellidos,
+      brig_sexo,
+      brig_edad,
     });
     return await newBrigadista.save();
   } catch (error) {
