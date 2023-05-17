@@ -7,7 +7,7 @@ const { handleError } = require("../utils/errorHandler");
 /**
  * @typedef Estado_Base
  * @property {string} _id
- * @property {String} estabs_descripcion
+ * @property {String} est_bas_descripcion
  */
 
 /**
@@ -41,9 +41,9 @@ async function createEstado_Base(estado_base) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const {estabs_descripcion} = estado_base;
+    const {est_bas_descripcion} = estado_base;
     const newEstado_Base = new Estado_Base({
-      estabs_descripcion,
+      est_bas_descripcion,
     });
     return await newEstado_Base.save();
   } catch (error) {
