@@ -7,7 +7,7 @@ const { handleError } = require("../utils/errorHandler");
 /**
  * @typedef Categoria
  * @property {string} _id
- * @property {String} cat_descripcion
+ * @property {String} cat_nivel
  */
 
 /**
@@ -15,14 +15,14 @@ const { handleError } = require("../utils/errorHandler");
  * @description Obtiene todos las categorias
  * @returns {Promise<Categoria[]|[]>}
  */
-async function getCategorias() {
-  try {
-    return await Categoria.find();
-  } catch (error) {
-    handleError(error, "Categoria.service -> getCategoria");
+  async function getCategorias() {
+    try {
+      return await Categoria.find().populate('cat_incendio').exec();
+    } catch (error) {
+      handleError(error, "Categoria.service -> getCategoria");
+    }
   }
-}
-
+ 
 /**
  * @name createCategoria
  * @description Crea una nueva categoria
@@ -41,9 +41,10 @@ async function createCategoria(categoria) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { cat_descripcion } = categoria;
+    const { cat_nivel, cat_incendio } = categoria;
     const newCategoria = new Categoria({
-      cat_descripcion
+      cat_nivel,
+      cat_incendio
     });
     return await newCategoria.save();
   } catch (error) {

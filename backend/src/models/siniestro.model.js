@@ -35,8 +35,7 @@ const siniestroSchema = new mongoose.Schema({
   sin_distribucion_fuego: {
     type: String,
     required: true,
-  }
- ,
+  },
 });
 
 // Crea el modelo de datos 'Siniestro' a partir del esquema 'siniestroSchema'
