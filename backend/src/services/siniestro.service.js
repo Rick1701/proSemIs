@@ -1,6 +1,7 @@
 "use strict";
 // Importa el modelo de datos 'User'
 const Siniestro = require("../models/siniestro.model.js");
+const Categoria = require("../models/categoria.model.js");
 const { handleError } = require("../utils/errorHandler");
 // const { userBodySchema } = require("../schema/user.schema");
 
@@ -24,11 +25,13 @@ const { handleError } = require("../utils/errorHandler");
  */
 async function getSiniestros() {
   try {
-    return await Siniestro.find();
+    //const siniestros = await Siniestro.find().populate('sin_categoria').exec();
+    return await Siniestro.find().populate('sin_categoria').exec();
   } catch (error) {
     handleError(error, "Siniestro.service -> getSiniestros");
   }
 }
+
 
 /**
  * @name createSiniestro
@@ -48,7 +51,14 @@ async function createSiniestro(siniestro) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_superficie, sin_distribucion_fuego} = siniestro;
+    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_superficie, sin_distribucion_fuego, sin_categoria} = siniestro;
+
+    //Buscar la instancia de Categoría existente en base al ID proporcionado en body:
+    const categoria = await Categoria.findById(sin_categoria);
+    if(!categoria){
+      handleError(error, "siniestro.service -> createSiniestro");
+    }
+
     const newSiniestro = new Siniestro({
       sin_velocidadViento,
       sin_temperatura,
@@ -58,7 +68,11 @@ async function createSiniestro(siniestro) {
       sin_latitud,
       sin_superficie,
       sin_distribucion_fuego,
+      sin_categoria: categoria._id,
     });
+
+    categoria.cat_incendio.push(newSiniestro._id);
+    await categoria.save();
     return await newSiniestro.save();
   } catch (error) {
     handleError(error, "siniestro.service -> createSiniestro");
