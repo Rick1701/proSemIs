@@ -7,9 +7,18 @@ const estado_unidadSchema = new mongoose.Schema({
   est_uni_descripcion: {
     type: String,
     required: true,
-  }
-  
- ,
+    enum: ["Operativa", "No Operativa"],
+  },
+  est_uni_aerea: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Uaerea",
+    required: true,
+  }],
+  est_uni_terrestre: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Uterrestre",
+    required: true,
+  }],
 });
 
 // Crea el modelo de datos 'Estado_unidad' a partir del esquema 'estado_unidadSchema'

@@ -1,7 +1,6 @@
 "use strict";
 // Importa el modelo de datos 'brigadista'
 const Brigadista = require("../models/brigadista.model.js");
-const Categoria = require("../models/categoria.model.js");
 const Estado_Brigadista = require("../models/estado_brigadista.model.js");
 const { handleError } = require("../utils/errorHandler");
 // const { userBodySchema } = require("../schema/user.schema");
