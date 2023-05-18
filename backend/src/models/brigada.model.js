@@ -1,5 +1,4 @@
 "use strict";
-const { number } = require("joi");
 // Importa el modulo 'mongoose' para crear la conexion a la base de datos
 const mongoose = require("mongoose");
 

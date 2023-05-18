@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 // Crea el esquema de la coleccion 'estado_base'
 const estado_baseSchema = new mongoose.Schema({
-  estabs_descripcion: {
+  est_bas_descripcion: {
     type: String,
     required: true,
   },
