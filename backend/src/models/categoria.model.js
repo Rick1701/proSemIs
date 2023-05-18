@@ -7,11 +7,11 @@ const categoriaSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  cat_incendio: {
+  cat_incendio: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Siniestro",
     required: true,
-  },
+  }],
 });
 
 // Crea el modelo de datos 'Categoria' a partir del esquema 'categoriaSchema'

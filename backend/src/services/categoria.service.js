@@ -15,14 +15,24 @@ const { handleError } = require("../utils/errorHandler");
  * @description Obtiene todos las categorias
  * @returns {Promise<Categoria[]|[]>}
  */
-  async function getCategorias() {
-    try {
-      return await Categoria.find().populate('cat_incendio').exec();
-    } catch (error) {
-      handleError(error, "Categoria.service -> getCategoria");
-    }
+
+async function getCategorias() {
+  try {
+    return await Categoria.find().populate('cat_incendio').exec();
+
+    /*categorias.forEach((categoria) => {
+      console.log("Categoría:", categoria);
+      console.log("Siniestros asociados:");
+      categoria.cat_incendio.forEach((siniestro) => {
+        console.log(siniestro);
+      });
+    });*/
+
+  } catch (error) {
+    handleError(error, "Categoria.service -> getCategoria");
   }
- 
+}
+  
 /**
  * @name createCategoria
  * @description Crea una nueva categoria
