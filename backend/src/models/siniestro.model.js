@@ -64,12 +64,7 @@ const siniestroSchema = new mongoose.Schema({
   sin_distribucion_fuego: {
     type: String,
     required: true,
-    /*validate: {
-      validator: function(value) {
-        const  = parseInt(value);
-        return 
-      }
-    }*/
+    enum: ["copas","superficie","subsuelo"],
   },
   sin_categoria: {
     type: mongoose.Schema.Types.ObjectId,
