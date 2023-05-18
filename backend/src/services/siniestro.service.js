@@ -70,9 +70,11 @@ async function createSiniestro(siniestro) {
       sin_distribucion_fuego,
       sin_categoria: categoria._id,
     });
-
+    //INSERTO LA ID DEL INCENDIO EN LA CATEGORIA:
     categoria.cat_incendio.push(newSiniestro._id);
+    //UNA VEZ INSERTADA LA ID DEL INCENDIO EN LA CATEGORIA, GUARDO LA CATEGORIA:
     await categoria.save();
+    //UNA VEZ GUARDADA LA CATEGORIA, GUARDO EL INCENDIO Y RETORNO:
     return await newSiniestro.save();
   } catch (error) {
     handleError(error, "siniestro.service -> createSiniestro");
