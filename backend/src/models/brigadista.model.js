@@ -19,9 +19,15 @@ const brigadistaSchema = new mongoose.Schema({
   brig_sexo: {
     type: String,
     required: true,
+    enum: ["Masculino","Femenino"]
   },
   brig_edad: {
     type: Number,
+    required: true,
+  },
+  brig_estado_brigadista: {
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"Estado_Brigadista",
     required: true,
   }
  ,

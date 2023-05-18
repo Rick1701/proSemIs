@@ -41,9 +41,10 @@ async function createEstado_Brigadista(estado_brigadista) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const {estab_descripcion} = estado_brigadista;
+    const {estab_descripcion, estab_brigadista} = estado_brigadista;
     const newEstado_Brigadista = new Estado_Brigadista({
       estab_descripcion,
+      estab_brigadista
     });
     return await newEstado_Brigadista.save();
   } catch (error) {

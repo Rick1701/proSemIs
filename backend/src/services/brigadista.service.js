@@ -1,6 +1,8 @@
 "use strict";
 // Importa el modelo de datos 'brigadista'
 const Brigadista = require("../models/brigadista.model.js");
+const Categoria = require("../models/categoria.model.js");
+const Estado_Brigadista = require("../models/estado_brigadista.model.js");
 const { handleError } = require("../utils/errorHandler");
 // const { userBodySchema } = require("../schema/user.schema");
 
@@ -45,14 +47,21 @@ async function createBrigadista(brigadista) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { brig_rut, brig_nombres, brig_apellidos, brig_sexo, brig_edad} = brigadista;
+    const { brig_rut, brig_nombres, brig_apellidos, brig_sexo, brig_edad, brig_estado_brigadista} = brigadista;
+    const estado_brigadista = await Estado_Brigadista.findById(brig_estado_brigadista);
+    if(!estado_brigadista){
+      handleError(error, "brigadista.service -> createBrigadista");
+    }
     const newBrigadista = new Brigadista({
       brig_rut,
       brig_nombres,
       brig_apellidos,
       brig_sexo,
       brig_edad,
+      brig_estado_brigadista: estado_brigadista._id,
     });
+    estado_brigadista.estab_brigadista.push(newBrigadista._id);
+    await estado_brigadista.save();
     return await newBrigadista.save();
   } catch (error) {
     handleError(error, "brigadista.service -> createBrigadista");
