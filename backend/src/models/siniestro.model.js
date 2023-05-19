@@ -69,7 +69,7 @@ const siniestroSchema = new mongoose.Schema({
   sin_categoria: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Categoria",
-    required: true,
+    required: false,
   },
 });
 
