@@ -74,6 +74,25 @@ async function getSiniestroById(req, res) {
 }
 
 /**
+ * @name getEstrategiaSiniestroById
+ * @description Controlador para obtener la estrategia de un siniestro por su id
+ * @param req {Request} - Objeto de solicitud HTTP
+ * @param res {Response} - Objeto de respuesta HTTP
+ * @returns {Promise<void>}
+ */
+async function getEstrategiaSiniestroById(req, res) {
+  try {
+    const { id } = req.params;
+    const estrategia = await SiniestroService.getEstrategiaSiniestroById(id);
+    res.json(estrategia);
+  } catch (error) {
+    // Manejar el error de alguna manera apropiada
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener la estrategia del siniestro' });
+  }
+}
+
+/**
  * @name updateSiniestro
  * @description Actualiza un siniestro por su id
  * @param req {Request}
@@ -131,4 +150,5 @@ module.exports = {
   getSiniestroById,
   updateSiniestro,
   deleteSiniestro,
+  getEstrategiaSiniestroById
 };
