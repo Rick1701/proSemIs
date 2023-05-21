@@ -17,7 +17,7 @@ const { handleError } = require("../utils/errorHandler");
  */
 async function getEstados_Incidentes() {
   try {
-    return await Estado_Incidente.find();
+    return await Estado_Incidente.find().populate("est_inc_incidente","inc_descripcion");
   } catch (error) {
     handleError(error, "Estado_Incidente.service -> getEstados_Incidentes");
   }
@@ -41,9 +41,10 @@ async function createEstado_Incidente(estado_incidente) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const {est_inc_descripcion} = estado_incidente;
+    const {est_inc_descripcion, inc_estado} = estado_incidente;
     const newEstado_Incidente = new Estado_Incidente({
       est_inc_descripcion,
+      est_inc_incidente: inc_estado._id
     });
     return await newEstado_Incidente.save();
   } catch (error) {

@@ -19,7 +19,16 @@ const { handleError } = require("../utils/errorHandler");
  */
 async function getBrigadas() {
   try {
-    return await Brigada.find().populate('bri_brigadista', 'brig_rut brig_nombres brig_apellidos brig_estado_brigadista').exec();
+    //return await Brigada.find().populate('bri_brigadista', 'brig_rut brig_nombres brig_apellidos brig_estado_brigadista.estab_descripcion').exec();
+    return await Brigada.find()
+        .populate({
+        path: 'bri_brigadista',
+        populate: {
+          path: 'brig_estado_brigadista',
+          select: 'estab_descripcion'
+        }
+      })
+      .exec();
   } catch (error) {
     handleError(error, "Brigada.service -> getBrigadas");
   }
