@@ -7,7 +7,13 @@ const estado_baseSchema = new mongoose.Schema({
   est_bas_descripcion: {
     type: String,
     required: true,
+    enum :["Disponibilidad Total","Disponibilidad Parcial"],
   },
+  est_bas_base: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Base",
+    required: true,
+  }],
 
 });
 

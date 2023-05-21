@@ -1,6 +1,7 @@
 "use strict";
 // Importa el modelo de datos 'User'
 const Uterrestre = require("../models/uterrestre.model.js");
+const Estado_Unidad = require("../models/estado_unidad.model.js");
 const { handleError } = require("../utils/errorHandler");
 // const { userBodySchema } = require("../schema/user.schema");
 
@@ -47,11 +48,17 @@ async function createUterrestre(uterrestre) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { uterrestre_nombre} = uterrestre;
+    const { uterrestre_nombre, uterrestre_estado_unidad} = uterrestre;
+    const estado_unidad = await Estado_Unidad.findById(uterrestre_estado_unidad);
+    if(!estado_unidad){
+      handleError(error, "uterrestre.service -> createUterrestre");
+    }
     const newUterrestre = new Uterrestre({
       uterrestre_nombre,
-      
+      uterrestre_estado_unidad: estado_unidad._id,
     });
+    estado_unidad.est_uni_terrestre.push(newUterrestre._id);
+    await estado_unidad.save();
     return await newUterrestre.save();
   } catch (error) {
     handleError(error, "uterrestre.service -> createUterrestre");

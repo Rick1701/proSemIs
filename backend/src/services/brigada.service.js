@@ -8,7 +8,7 @@ const { handleError } = require("../utils/errorHandler");
  * @typedef Brigada
  * @property {string} _id
  * @property {String} bri_nombre
- * @property {Number} bri_cantidad
+ * //@property {Number} bri_cantidad
  * @property {String} bri_especialidad
  */
 
@@ -19,7 +19,7 @@ const { handleError } = require("../utils/errorHandler");
  */
 async function getBrigadas() {
   try {
-    return await Brigada.find();
+    return await Brigada.find().populate('bri_brigadista', 'brig_rut brig_nombres brig_apellidos brig_estado_brigadista').exec();
   } catch (error) {
     handleError(error, "Brigada.service -> getBrigadas");
   }
@@ -43,11 +43,12 @@ async function createBrigada(brigada) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { bri_nombre, bri_cantidad, bri_especialidad} = brigada;
+    const { bri_nombre, /*bri_cantidad*/ bri_especialidad, bri_brigadista} = brigada;
     const newBrigada = new Brigada({
       bri_nombre,
-      bri_cantidad,
+      //bri_cantidad,
       bri_especialidad,
+      bri_brigadista
     });
     return await newBrigada.save();
   } catch (error) {
