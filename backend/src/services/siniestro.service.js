@@ -37,7 +37,7 @@ async function getSiniestros() {
  */
 async function createSiniestro(siniestro) {
   // Esta funcion es similar al singup
-   try {
+  try {
     // const { error } = userBodySchema.validate(user);
     // if (error) return null;
     // const { name, email, roles } = user;
@@ -109,10 +109,68 @@ async function deleteSiniestro(id) {
   }
 }
 
+
+
+
+
+
+
+
+//--------------------------------------------------------------- ESTADISTICAS METODOS ----------------------------------------------------------------]
+
+
+/**
+ * @name getEstadisticasSiniestros
+ * @description
+ * @returns {Promise<Siniestro[]|[]>}
+ */
+//async function getSiniestros() {
+//  try {
+//    return await Siniestro.find();
+//  } catch (error) {
+//    handleError(error, "Siniestro.service -> getSiniestros");
+//  }
+//}
+
+
+/**
+ * @name getEstadisticaSiniestroById
+ * @description Obtiene la estadística de los siniestros
+ * @param id {string} - Id del siniestro
+ * @returns {Promise<Siniestro|null>}
+ */
+async function getEstadisticaSiniestroById(id) {
+  try {
+    //Agregar Suma Gasto Recursos
+    //const siniestro = await Siniestro.findById({ _id: id });
+    // Obtener los valores de los atributos
+    //const uaerea_nombre = parseInt(siniestro.uaerea_nombre);
+    //const uterrestre_nombre = parseFloat(siniestro.uterrestre_nombre);
+    // Realizar la suma
+    //const sumaGastoRecursos = uaerea_nombre + uterrestre_nombre;
+    // Resto de la lógica para obtener la estadística de los siniestros
+    //return sumaGastoRecursos;}
+    // Aquí va la lógica para obtener la estadística de los siniestros
+    // Puedes realizar consultas a la base de datos u operaciones necesarias
+    // Retorna el resultado de la estadística
+    return await Siniestro.findById({ _id: id });
+  } catch (error) {
+    handleError(error, "siniestro.service -> getEstadisticaSiniestroById");
+  }
+}
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------]
+
+
+
 module.exports = {
   getSiniestros,
   createSiniestro,
   getSiniestroById,
   updateSiniestro,
   deleteSiniestro,
+
+  getEstadisticaSiniestroById,
+  //getEstadisticaSiniestros,
 };
