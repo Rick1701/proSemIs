@@ -2,6 +2,7 @@
 // Importa el modelo de datos 'brigadista'
 const Brigadista = require("../models/brigadista.model.js");
 const Estado_Brigadista = require("../models/estado_brigadista.model.js");
+const Brigada = require("../models/brigada.model.js");
 const { handleError } = require("../utils/errorHandler");
 // const { userBodySchema } = require("../schema/user.schema");
 
@@ -22,7 +23,7 @@ const { handleError } = require("../utils/errorHandler");
  */
 async function getBrigadistas() {
   try {
-    return await Brigadista.find();
+    return await Brigadista.find().populate('brig_estado_brigadista', 'estab_descripcion').populate('brig_brigada', 'bri_nombre').exec();
   } catch (error) {
     handleError(error, "Brigadista.service -> getBrigadistas");
   }
@@ -48,7 +49,8 @@ async function createBrigadista(brigadista) {
     // const myRole = rolesFound.map((role) => role._id);
     const { brig_rut, brig_nombres, brig_apellidos, brig_sexo, brig_edad, brig_estado_brigadista} = brigadista;
     const estado_brigadista = await Estado_Brigadista.findById(brig_estado_brigadista);
-    if(!estado_brigadista){
+    const brigada = await Brigada.findById(brigadista.brig_brigada);
+    if(!estado_brigadista &&!brigada){
       handleError(error, "brigadista.service -> createBrigadista");
     }
     const newBrigadista = new Brigadista({
@@ -58,9 +60,12 @@ async function createBrigadista(brigadista) {
       brig_sexo,
       brig_edad,
       brig_estado_brigadista: estado_brigadista._id,
+      brig_brigada: brigada._id
     });
     estado_brigadista.estab_brigadista.push(newBrigadista._id);
     await estado_brigadista.save();
+    brigada.bri_brigadista.push(newBrigadista._id);
+    await brigada.save();
     return await newBrigadista.save();
   } catch (error) {
     handleError(error, "brigadista.service -> createBrigadista");

@@ -29,6 +29,11 @@ const brigadistaSchema = new mongoose.Schema({
     type:mongoose.Schema.Types.ObjectId,
     ref:"Estado_Brigadista",
     required: true,
+  },
+  brig_brigada: {
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"Brigada",
+    required: true,
   }
  ,
 });

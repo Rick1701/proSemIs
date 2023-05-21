@@ -8,15 +8,20 @@ const brigadaSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  bri_cantidad: {
+  /*bri_cantidad: {
     type: Number,
     required: true,
-  },
+  },*/
   bri_especialidad: {
     type: String,
     required: true,
-  }
- ,
+    enum: ["Combate de incendios forestales","Primeros auxilios y atención médica de emergencia","Rescate y evacuación","Uso de herramientas y equipos","Evaluación y control de riesgos","Navegación y orientación en terreno"],
+  },
+  bri_brigadista: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Brigadista",
+    required: true,
+  }]
 });
 
 // Crea el modelo de datos 'Brigada' a partir del esquema 'brigadaSchema'
