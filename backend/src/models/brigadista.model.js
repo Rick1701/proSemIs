@@ -15,6 +15,14 @@ const brigadistaSchema = new mongoose.Schema({
   brig_apellidos: {
     type: String,
     required: true,
+  },
+  brig_sexo: {
+    type: String,
+    required: true,
+  },
+  brig_edad: {
+    type: Number,
+    required: true,
   }
  ,
 });

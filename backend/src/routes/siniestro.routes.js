@@ -24,5 +24,7 @@ router.get("/estadisticasiniestro/:id", siniestroController.getEstadisticaSinies
 
 
 
+// Define ruta para la estrategia
+router.get("/estrategia/:id", siniestroController.getEstrategiaSiniestroById);
 // Exporta el enrutador
 module.exports = router;

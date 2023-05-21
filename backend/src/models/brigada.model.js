@@ -9,10 +9,10 @@ const brigadaSchema = new mongoose.Schema({
     required: true,
   },
   bri_cantidad: {
-    type: String,
+    type: Number,
     required: true,
   },
-  bri_experiencia: {
+  bri_especialidad: {
     type: String,
     required: true,
   }
