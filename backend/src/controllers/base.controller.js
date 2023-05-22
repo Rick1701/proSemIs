@@ -73,6 +73,19 @@ async function getBaseById(req, res) {
   }
 }
 
+async function asignarBaseAIncendioController(req, res) {
+  const baseId = req.params.baseId; // Obtener el ID de la base de los parámetros de la solicitud
+  const incendioId = req.params.incendioId; // Obtener el ID del incendio de los parámetros de la solicitud
+
+  const resultado = await baseService.asignarBaseAIncendio(baseId, incendioId);
+
+  if (resultado) {
+    res.status(200).json({ message: "La base se ha asociado correctamente al incendio." });
+  } else {
+    res.status(404).json({ message: "No se pudo realizar la asociación de la base al incendio." });
+  }
+}
+
 /**
  * @name updateBase
  * @description Actualiza una base por su id
@@ -131,4 +144,5 @@ module.exports = {
   getBaseById,
   updateBase,
   deleteBase,
+  asignarBaseAIncendioController
 };

@@ -15,7 +15,11 @@ const brigadaSchema = new mongoose.Schema({
   bri_especialidad: {
     type: String,
     required: true,
-    enum: ["Combate de incendios forestales","Primeros auxilios y atención médica de emergencia","Rescate y evacuación","Uso de herramientas y equipos","Evaluación y control de riesgos","Navegación y orientación en terreno"],
+  },
+  bri_base: {
+    type: mongoose.Schema.Types.ObjectId,
+      ref: "Base",
+      required: true,
   },
   bri_brigadista: [{
     type: mongoose.Schema.Types.ObjectId,

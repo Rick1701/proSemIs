@@ -1,6 +1,7 @@
 "use strict";
 // Importa el modelo de datos 'User'
 const Base = require("../models/base.model.js");
+const Siniestro = require("../models/siniestro.model.js");
 const Estado_Base = require("../models/estado_base.model.js");
 const { handleError } = require("../utils/errorHandler");
 // const { userBodySchema } = require("../schema/user.schema");
@@ -78,6 +79,24 @@ async function getBaseById(id) {
   }
 }
 
+
+async function asignarBaseAIncendio(baseId, incendioId) {
+  try {
+    const base = await Base.findById(baseId);
+    const incendio = await Siniestro.findById(incendioId);
+
+    if (base && incendio) {
+      incendio.base_incendio_actual = base._id;
+      await incendio.save();
+      return true; // Indica que la asociación se realizó con éxito
+    } else {
+      return false; // Indica que la base o el incendio no existen
+    }
+  } catch (error) {
+    handleError(error, "base.service -> asignarBaseAIncendio");
+    return false; // Indica que ocurrió un error al realizar la asociación
+  }
+}
 /**
  * @name updateBase
  * @description Actualiza una base
@@ -116,4 +135,5 @@ module.exports = {
   getBaseById,
   updateBase,
   deleteBase,
+  asignarBaseAIncendio
 };
