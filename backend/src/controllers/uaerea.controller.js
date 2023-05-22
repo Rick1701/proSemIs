@@ -6,7 +6,7 @@ const { handleError } = require("../utils/errorHandler");
 
 /**
  * @name getUaereas
- * @description Obtiene todas las Uaereas
+ * @description Obtiene todos los uaereas
  * @param req {Request}
  * @param res {Response}
  */
@@ -23,12 +23,13 @@ async function getUaereas(req, res) {
 
 /**
  * @name createUaerea
- * @description Crea un nueva uaerea
+ * @description Crea un nuevo uaerea
  * @param req {Request}
  * @param res {Response}
  */
 async function createUaerea(req, res) {
   try {
+    console.log(req.body);
     const nuevoUaerea = await UaereaService.createUaerea(req.body);
     nuevoUaerea === null
       ? respondError(
@@ -42,13 +43,13 @@ async function createUaerea(req, res) {
       : respondSuccess(req, res, 201, nuevoUaerea);
   } catch (error) {
     handleError(error, "uaerea.controller -> createUaerea");
-    respondError(req, res, 500, "No se pudo crear el uaerea");
+    respondError(req, res, 500, "No se pudo crear al uaerea");
   }
 }
 
 /**
  * @name getUaereaById
- * @description Obtiene una uaerea por su id
+ * @description Obtiene un uaerea por su id
  * @param req {Request}
  * @param res {Response}
  */
@@ -62,20 +63,20 @@ async function getUaereaById(req, res) {
           req,
           res,
           404,
-          "No se encontro la Uaerea solicitada",
+          "No se encontro al uaerea solicitada",
           "Not Found",
           { message: "Verifique el id ingresado" },
         )
       : respondSuccess(req, res, 200, uaerea);
   } catch (error) {
     handleError(error, "uaerea.controller -> getUaereaById");
-    respondError(req, res, 500, "No se pudo obtener la uaerea");
+  respondError(req, res, 500, "No se pudo obtener el uaerea");
   }
 }
 
 /**
  * @name updateUaerea
- * @description Actualiza una Uaerea por su id
+ * @description Actualiza un uaerea por su id
  * @param req {Request}
  * @param res {Response}
  */
@@ -88,20 +89,20 @@ async function updateUaerea(req, res) {
           req,
           res,
           404,
-          "No se encontro la Uaerea solicitada",
+          "No se encontro al uaerea solicitado",
           "Not Found",
           { message: "Verifique el id ingresado" },
         )
-      : respondSuccess(req, res, 200, base);
+      : respondSuccess(req, res, 200, uaerea);
   } catch (error) {
     handleError(error, "uaerea.controller -> updateUaerea");
-    respondError(req, res, 500, "No se pudo actualizar la uaerea");
+    respondError(req, res, 500, "No se pudo actualizar el uaerea");
   }
 }
 
 /**
  * @name deleteUaerea
- * @description Elimina una uaerea por su id
+ * @description Elimina un uaerea por su id
  * @param req {Request}
  * @param res {Response}
  */
@@ -114,14 +115,14 @@ async function deleteUaerea(req, res) {
           req,
           res,
           404,
-          "No se encontro la uaerea solicitada",
+          "No se encontro al uaerea solicitada",
           "Not Found",
           { message: "Verifique el id ingresado" },
         )
       : respondSuccess(req, res, 200, uaerea);
   } catch (error) {
     handleError(error, "uaerea.controller -> deleteUaerea");
-    respondError(req, res, 500, "No se pudo eliminar la uaerea");
+    respondError(req, res, 500, "No se pudo eliminar al uaerea");
   }
 }
 

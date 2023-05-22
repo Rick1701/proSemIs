@@ -12,8 +12,17 @@ const uaereaSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Estado_Unidad",
     required: true,
-  }
- ,
+  },
+  uarea_incidente: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Incidente",
+    default: null,
+  },
+  uarea_base: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Base",
+    required: false,
+  },
 });
 
 // Crea el modelo de datos 'Uaerea' a partir del esquema 'uaereaSchema'

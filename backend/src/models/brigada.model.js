@@ -21,7 +21,13 @@ const brigadaSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Brigadista",
     required: true,
+  }],
+  bri_base: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Base",
+    required: true,
   }]
+
 });
 
 // Crea el modelo de datos 'Brigada' a partir del esquema 'brigadaSchema'

@@ -8,11 +8,26 @@ const incidenteSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  inc_estado:{
+  inc_estado: {
     type: mongoose.Schema.Types.ObjectId,
-    ref:"Estado_Incidente",
+    ref: "Estado_Incidente",
     required: true,
-  }
+  },
+  inc_brigadista: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Brigadista",
+    required: true,
+  }],
+  inc_uaerea: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Uaerea",
+    required: true,
+  }],
+  inc_uterrestre: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Uterrestre",
+    required: true,
+  }],
 });
 
 // Crea el modelo de datos 'Incidente' a partir del esquema 'incidenteSchema'

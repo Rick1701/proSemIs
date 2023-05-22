@@ -43,11 +43,13 @@ async function createBase(base) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { base_descripcion,base_latitud,base_incendios_asistidos} = base;
+    const { base_descripcion,base_latitud,base_incendios_asistidos, base_brigada, base_uaerea} = base;
     const newBase = new Base({
       base_descripcion,
       base_latitud,
-      base_incendios_asistidos
+      base_incendios_asistidos,
+      base_brigada,
+      base_uaerea
     });
     return await newBase.save();
   } catch (error) {

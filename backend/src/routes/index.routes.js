@@ -38,6 +38,8 @@ const uterrestreRoutes = require("./uterrestre.routes.js");
 const estado_baseRoutes = require("./estado_base.routes.js");
 // Importa el enrutador de estado_incidente
 const estado_incidenteRoutes = require("./estado_incidente.routes.js");
+// Importa el enrutador de estado_incidente
+const estado_brigadaRoutes = require("./estado_brigada.routes.js");
 
 
 // Crea una instancia del enrutador
@@ -63,6 +65,8 @@ router.use("/ubicacion", ubicacionRoutes);
 router.use("/region", regionRoutes);
 // Define las rutas para los estado_brigadista /api/estado_brigadista
 router.use("/estado_brigadista", estado_brigadistaRoutes);
+// Define las rutas para los estado_brigadista /api/estado_brigadista
+router.use("/estado_brigada", estado_brigadaRoutes);
 
 router.use("/base",baseRoutes);
 router.use("/estado_unidad", estado_unidadRoutes);

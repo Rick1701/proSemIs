@@ -2,6 +2,7 @@
 // Importa el modelo de datos 'User'
 const Uaerea = require("../models/uaerea.model.js");
 const Estado_Unidad = require("../models/estado_unidad.model.js");
+const Base = require("../models/base.model.js");
 const { handleError } = require("../utils/errorHandler");
 // const { userBodySchema } = require("../schema/user.schema");
 
@@ -37,28 +38,25 @@ async function getUaereas() {
  * @returns {Promise<Uaerea|null>}
  */
 async function createUaerea(uaerea) {
-  // Esta funcion es similar al singup
-   try {
-    // const { error } = userBodySchema.validate(user);
-    // if (error) return null;
-    // const { name, email, roles } = user;
-
-    // const userFound = await User.findOne({ email: user.email });
-    // if (userFound) return null;
-
-    // const rolesFound = await Role.find({ name: { $in: roles } });
-    // const myRole = rolesFound.map((role) => role._id);
-    const { uaerea_nombre, uaerea_estado_unidad} = uaerea;
+  try {
+    const { uaerea_nombre, uaerea_estado_unidad, uaerea_incidente, uaerea_base } = uaerea;
     const estado_unidad = await Estado_Unidad.findById(uaerea_estado_unidad);
-    if(!estado_unidad){
+    const base = await Base.findById(uaerea_base);
+
+    if(!estado_unidad && !base){
       handleError(error, "uaerea.service -> createUaerea");
     }
     const newUaerea = new Uaerea({
       uaerea_nombre,
       uaerea_estado_unidad: estado_unidad._id,
+      uaerea_incidente: null,
+      uaerea_base: base._id
     });
+
     estado_unidad.est_uni_aerea.push(newUaerea._id);
     await estado_unidad.save();
+    base.base_uaerea.push(newUaerea._id);
+    await base.save();
     return await newUaerea.save();
   } catch (error) {
     handleError(error, "uaerea.service -> createUaerea");

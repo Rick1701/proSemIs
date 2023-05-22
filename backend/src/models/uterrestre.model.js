@@ -13,6 +13,11 @@ const uterrestreSchema = new mongoose.Schema({
     ref: "Estado_Unidad",
     required: true,
   },
+  uterrestre_incidente: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Incidente",
+    default: null,
+  },
 });
 
 // Crea el modelo de datos 'Uterrestre' a partir del esquema 'uterrestreSchema'

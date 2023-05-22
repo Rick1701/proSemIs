@@ -56,6 +56,7 @@ async function createUterrestre(uterrestre) {
     const newUterrestre = new Uterrestre({
       uterrestre_nombre,
       uterrestre_estado_unidad: estado_unidad._id,
+      uterrestre_incidente: null,
     });
     estado_unidad.est_uni_terrestre.push(newUterrestre._id);
     await estado_unidad.save();
