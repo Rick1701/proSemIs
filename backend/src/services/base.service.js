@@ -2,6 +2,7 @@
 // Importa el modelo de datos 'User'
 const Base = require("../models/base.model.js");
 const Siniestro = require("../models/siniestro.model.js");
+const Estado_Base = require("../models/estado_base.model.js");
 const { handleError } = require("../utils/errorHandler");
 // const { userBodySchema } = require("../schema/user.schema");
 
@@ -11,6 +12,7 @@ const { handleError } = require("../utils/errorHandler");
  * @property {String} base_descripcion,
  * @property {Number} base_latitud,
  * @property {Number} base_incendios_asistidos
+ * @property {mongoose.Schema.Types.ObjectId} base_estado 
  */
 
 /**
@@ -44,12 +46,19 @@ async function createBase(base) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { base_descripcion,base_latitud,base_incendios_asistidos} = base;
+    const { base_descripcion,base_latitud,base_incendios_asistidos, base_estado} = base;
+    const estado_base = await Estado_Base.findById(base_estado);
+    if(!estado_base){
+      handleError(error, "base.service -> createBase");
+    }
     const newBase = new Base({
       base_descripcion,
       base_latitud,
-      base_incendios_asistidos
+      base_incendios_asistidos,
+      base_estado: estado_base._id
     });
+    estado_base.est_bas_base.push(newBase._id);
+    await estado_base.save();
     return await newBase.save();
   } catch (error) {
     handleError(error, "base.service -> createBase");

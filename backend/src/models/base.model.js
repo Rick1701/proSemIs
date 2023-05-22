@@ -26,6 +26,11 @@ const baseSchema = new mongoose.Schema({
     ref: "Brigada",
     required: false,
   }]
+  base_estado: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Estado_Base",
+    required: true,
+  }
 });
 
 // Crea el modelo de datos 'Base' a partir del esquema 'siniestroSchema'
