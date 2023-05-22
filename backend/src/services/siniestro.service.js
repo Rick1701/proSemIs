@@ -173,7 +173,7 @@ async function getEstrategiaSiniestroById(id) {
         complejidadSiniestro = 4;
       }
 
-      
+
       //Asignación del incendio a una categoría
       /*categorias.forEach((categoria)=>{
         if(categoria.cat_nivel == complejidadSiniestro){
@@ -249,6 +249,24 @@ async function deleteSiniestro(id) {
 
 
 //--------------------------------------------------------------- ESTADISTICAS METODOS ----------------------------------------------------------------]
+/*
+async function getEstadisticaCopaById(id) {
+  try {
+
+// Retorna el resultado de la estadística solo con los atributos deseados:(separar con espacio de las comas para que funcione)
+  return await Siniestro.findById({ _id: id }).select(' sin_distribucion_fuego , sin_categoria ');
+
+    //return await Siniestro.findById({ _id: id });
+  } catch (error) {
+    handleError(error, "siniestro.service -> getEstadisticaCopaById");
+  }
+}
+*/
+
+
+
+
+
 
 
 /**
@@ -273,27 +291,19 @@ async function deleteSiniestro(id) {
  */
 async function getEstadisticaSiniestroById(id) {
   try {
-    //Agregar Suma Gasto Recursos
-    //const siniestro = await Siniestro.findById({ _id: id });
-    // Obtener los valores de los atributos
-    //const uaerea_nombre = parseInt(siniestro.uaerea_nombre);
-    //const uterrestre_nombre = parseFloat(siniestro.uterrestre_nombre);
-    // Realizar la suma
-    //const sumaGastoRecursos = uaerea_nombre + uterrestre_nombre;
-    // Resto de la lógica para obtener la estadística de los siniestros
-    //return sumaGastoRecursos;}
-    // Aquí va la lógica para obtener la estadística de los siniestros
-    // Puedes realizar consultas a la base de datos u operaciones necesarias
-    // Retorna el resultado de la estadística
-    return await Siniestro.findById({ _id: id });
+
+// Retorna el resultado de la estadística solo con los atributos deseados:(separar con espacio de las comas para que funcione)
+  return await Siniestro.findById({ _id: id }).select('sin_velocidadViento , sin_temperatura , sin_humedad , sin_latitud , sin_superficie');
+
+    //return await Siniestro.findById({ _id: id });
   } catch (error) {
     handleError(error, "siniestro.service -> getEstadisticaSiniestroById");
   }
 }
 
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------]
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------]
 
 
 module.exports = {
@@ -302,11 +312,8 @@ module.exports = {
   getSiniestroById,
   updateSiniestro,
   deleteSiniestro,
-<<<<<<< HEAD
-
+  getEstrategiaSiniestroById,
   getEstadisticaSiniestroById,
   //getEstadisticaSiniestros,
-=======
-  getEstrategiaSiniestroById
->>>>>>> develop
+  //getEstadisticaCopaById
 };

@@ -148,6 +148,34 @@ async function deleteSiniestro(req, res) {
 //--------------------------------------------------------EStadisticas---------------------------------------------------------------------||
 
 /**
+ * @name getEstadisticaCopaById
+ * @description Obtiene una  Estadisticacopa por su id
+ * @param req {Request}
+ * @param res {Response}
+ */
+async function getEstadisticaCopaById(req, res) {
+  try {
+    const { id } = req.params;
+
+    const siniestro = await SiniestroService.getEstadisticaCopaById(id);
+    siniestro === null
+      ? respondError(
+          req,
+          res,
+          404,
+          "No se encontro el siniestro solicitado",
+          "Not Found",
+          { message: "Verifique el id ingresado" },
+        )
+      : respondSuccess(req, res, 200, siniestro);
+  } catch (error) {
+    handleError(error, "siniestro.controller -> getEstadisticaCopaById");
+    respondError(req, res, 500, "No se pudo obtener el siniestro");
+  }
+}
+
+
+/**
  * @name getEstadisticaSiniestroById
  * @description Obtiene una  Estadisticasiniestro por su id
  * @param req {Request}
@@ -180,6 +208,7 @@ async function getEstadisticaSiniestroById(req, res) {
  * @param req {Request}
  * @param res {Response}
  */
+/*
 async function getEstadisticaSiniestros(req, res) {
   try {
     const estadisticasiniestros = await SiniestroService.getEstadisticaSiniestros();
@@ -190,6 +219,13 @@ async function getEstadisticaSiniestros(req, res) {
     respondError(req, res, 400, error.message);
   }
 }
+*/
+
+
+
+
+
+
 
 
 //-------------------------------------------------------------------------------------------------------------------------------||
@@ -200,12 +236,8 @@ module.exports = {
   getSiniestroById,
   updateSiniestro,
   deleteSiniestro,
-<<<<<<< HEAD
-
+  getEstrategiaSiniestroById,
   getEstadisticaSiniestroById,
-  getEstadisticaSiniestros,
-
-=======
-  getEstrategiaSiniestroById
->>>>>>> develop
+//  getEstadisticaSiniestros,
+//getEstadisticaCopaById
 };

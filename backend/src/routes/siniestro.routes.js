@@ -21,8 +21,7 @@ router.delete("/:id"/*, authoMiddleware.isAdmin,*/, siniestroController.deleteSi
 // Define la ruta para el método estadistica
 router.get("/estadisticasiniestro/:id", siniestroController.getEstadisticaSiniestroById);
 //router.get("/estadisticasiniestro", siniestroController.getEstadisticaSiniestros);
-
-
+//router.get("/estadisticacopa/:id", siniestroController.getEstadisticaCopaById);
 
 // Define ruta para la estrategia
 router.get("/estrategia/:id", siniestroController.getEstrategiaSiniestroById);
