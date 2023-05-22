@@ -1,4 +1,4 @@
-"use strict";
+ "use strict";
 // Importa el modelo de datos 'Incidente'
 const Categoria = require("../models/categoria.model.js");
 const { handleError } = require("../utils/errorHandler");

@@ -40,42 +40,16 @@ async function getSiniestros() {
  * @param siniestro {Siniestro} - Objeto con los datos del siniestro
  * @returns {Promise<Siniestro|null>}
  */
+
 async function createSiniestro(siniestro) {
-  // Esta funcion es similar al singup
-   try {
-    // const { error } = userBodySchema.validate(user);
-    // if (error) return null;
-    // const { name, email, roles } = user;
+  try {
+    const { sin_categoria } = siniestro;
+    const categoria = await Categoria.findById(sin_categoria);
+    if (!categoria) {
+      handleError(error, "siniestro.service -> createSiniestro");
+    }
 
-    // const userFound = await User.findOne({ email: user.email });
-    // if (userFound) return null;
-
-    // const rolesFound = await Role.find({ name: { $in: roles } });
-    // const myRole = rolesFound.map((role) => role._id);
-    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_superficie, sin_distribucion_fuego /*sin_categoria*/} = siniestro;
-
-    //Buscar la instancia de Categoría existente en base al ID proporcionado en body:
-    //const categoria = await Categoria.findById(sin_categoria);
-    //if(!categoria){
-    //  handleError(error, "siniestro.service -> createSiniestro");
-    //}
-
-    const newSiniestro = new Siniestro({
-      sin_velocidadViento,
-      sin_temperatura,
-      sin_humedad,
-      sin_fechaInicio,
-      sin_fechaTermino,
-      sin_latitud,
-      sin_superficie,
-      sin_distribucion_fuego
-      //sin_categoria: categoria._id,
-    });
-    //INSERTO LA ID DEL INCENDIO EN LA CATEGORIA:
-    //categoria.cat_incendio.push(newSiniestro._id);
-    //UNA VEZ INSERTADA LA ID DEL INCENDIO EN LA CATEGORIA, GUARDO LA CATEGORIA:
-    //await categoria.save();
-    //UNA VEZ GUARDADA LA CATEGORIA, GUARDO EL INCENDIO Y RETORNO:
+    const newSiniestro = new Siniestro(siniestro);
     return await newSiniestro.save();
   } catch (error) {
     handleError(error, "siniestro.service -> createSiniestro");
@@ -90,7 +64,7 @@ async function createSiniestro(siniestro) {
  */
 async function getSiniestroById(id) {
   try {
-    return await Siniestro.findById({ _id: id });
+    return await Siniestro.findById({ _id: id }).populate('sin_categoria', 'cat_nivel');
   } catch (error) {
     handleError(error, "siniestro.service -> getSiniestroById");
   }
@@ -216,7 +190,7 @@ async function getEstrategiaSiniestroById(id) {
  * @param siniestro
  * @returns {Promise<Siniestro|null>}
  */
-async function updateSiniestro(id, siniestro) {
+/*async function updateSiniestro(id, siniestro) {
   try {
   //  const { error } = userBodySchema.validate(user);
   //  if (error) return null;
@@ -225,7 +199,108 @@ async function updateSiniestro(id, siniestro) {
   } catch (error) {
     handleError(error, "siniestro.service -> updateSiniestro");
   }
+}*/
+/*async function updateSiniestro(id, updates, action) {
+  try {
+    const siniestro = await Siniestro.findByIdAndUpdate(id, updates, { new: true }).populate('sin_categoria');
+    
+    if (!siniestro.hitos) {
+      siniestro.hitos = []; // Inicializar como un array vacío si no existe
+    }
+    
+    const nuevoHito = {
+      fecha: new Date(),
+      descripcion: getHitoDescripcion(action),
+    };
+    
+    siniestro.hitos.push(nuevoHito);
+    
+    const siniestroGuardado = await siniestro.save();
+    console.log('Hito registrado:', nuevoHito.descripcion);
+    
+    return siniestroGuardado;
+  } catch (error) {
+    handleError(error, "siniestro.service -> updateSiniestro");
+  }
+}*/
+/*
+async function updateSiniestro(id, updates) {
+  const siniestro = await Siniestro.findByIdAndUpdate(id, updates, { new: true }).populate('sin_categoria');
+  if (!siniestro.hitos) {
+    siniestro.hitos = [];
+  }
+  console.log(Object.keys(updates))
+  const nuevoHito = {
+    fecha: new Date(),
+    descripcion: getHitoDescripcion(Object.keys(updates)[0]),
+  };
+  siniestro.hitos.push(nuevoHito);
+  const siniestroGuardado = await siniestro.save();
+  console.log('Hito registrado:', nuevoHito);
+  return siniestroGuardado;
 }
+*/
+async function updateSiniestro(id, updates) {
+  const siniestro = await Siniestro.findByIdAndUpdate(id, updates, { new: true }).populate('sin_categoria');
+  if (!siniestro.hitos) {
+    siniestro.hitos = [];
+  }
+  const actualizaciones = Object.keys(updates);
+  console.log(actualizaciones);
+  
+  const nuevosHitos = actualizaciones.map((clave) => {
+    return {
+      fecha: new Date(),
+      descripcion: getHitoDescripcion(clave),
+    };
+  });
+
+  siniestro.hitos.push(...nuevosHitos);
+  const siniestroGuardado = await siniestro.save();
+  console.log('Hitos registrados:', nuevosHitos);
+  return siniestroGuardado;
+}
+
+function getHitoDescripcion(action) {
+  let descripcion = '';
+
+  switch (action) {
+    case 'sin_velocidadViento':
+      descripcion = 'Actualización de velocidad del viento';
+      break;
+    case 'sin_temperatura':
+      descripcion = 'Actualización de temperatura';
+      break;
+    case 'sin_humedad':
+      descripcion = 'Actualización de humedad';
+      break;
+    case 'sin_fechaInicio':
+      descripcion = 'Actualización de fecha de inicio';
+      break;
+    case 'sin_fechaTermino':
+      descripcion = 'Actualización de fecha de término';
+      break;
+    case 'sin_latitud':
+      descripcion = 'Actualización de latitud';
+      break;
+    case 'sin_superficie':
+      descripcion = 'Actualización de superficie';
+      break;
+    case 'sin_distribucion_fuego':
+      descripcion = 'Actualización de distribución de fuego';
+      break;
+    case 'sin_categoria':
+      descripcion = 'Actualización de categoría';
+      break;
+    default:
+      descripcion = 'Actualización de siniestro';
+      break;
+  }
+
+  return descripcion;
+}
+
+
 
 /**
  * @name deleteSiniestro
