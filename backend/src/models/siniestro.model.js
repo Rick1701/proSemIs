@@ -98,7 +98,12 @@ const siniestroSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Base",
     required: false,
-  }]
+  }],
+  sin_estado : {
+    type: String,
+    required: false,
+    enum: ["iniciacion","propagacion","extincion"]
+  }
 });
 
 // Crea el modelo de datos 'Siniestro' a partir del esquema 'siniestroSchema'
