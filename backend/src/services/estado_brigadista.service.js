@@ -15,11 +15,27 @@ const { handleError } = require("../utils/errorHandler");
  * @description Obtiene todos los psoibles estados de los brigadistas
  * @returns {Promise<Estado_Brigadista[]|[]>}
  */
-async function getEstados_Brigadistas() {
+/*async function getEstados_Brigadistas() {
   try {
-    return await Estado_Brigadista.find();
+    return await Estado_Brigadista.find(); //populate
   } catch (error) {
     handleError(error, "Estado_Brigadista.service -> getEstados_Brigadistas");
+  }
+}*/
+async function getEstados_Brigadistas() {
+  try {
+    return await Estado_Brigadista.find().populate('estab_brigadista').exec();
+    
+    /*categorias.forEach((categoria) => {
+      console.log("Categoría:", categoria);
+      console.log("Siniestros asociados:");
+      categoria.cat_incendio.forEach((siniestro) => {
+        console.log(siniestro);
+      });
+    });*/
+
+  } catch (error) {
+    handleError(error, "Estado_brigadista.service -> getEstado_Brigadista");
   }
 }
 
@@ -41,9 +57,10 @@ async function createEstado_Brigadista(estado_brigadista) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const {estab_descripcion} = estado_brigadista;
+    const {estab_descripcion, estab_brigadista} = estado_brigadista;
     const newEstado_Brigadista = new Estado_Brigadista({
       estab_descripcion,
+      estab_brigadista
     });
     return await newEstado_Brigadista.save();
   } catch (error) {

@@ -7,7 +7,13 @@ const estado_brigadistaSchema = new mongoose.Schema({
   estab_descripcion: {
     type: String,
     required: true,
+    enum :["Disponible","Accidentado"],
   },
+  estab_brigadista: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Brigadista",
+    required: true,
+  }],
 
 });
 

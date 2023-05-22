@@ -7,8 +7,12 @@ const uaereaSchema = new mongoose.Schema({
   uaerea_nombre: {
     type: String,
     required: true,
+  },
+  uaerea_estado_unidad: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Estado_Unidad",
+    required: true,
   }
-
  ,
 });
 
