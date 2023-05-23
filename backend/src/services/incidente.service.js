@@ -13,12 +13,11 @@ const { updateUterrestreEstado } = require("./uterrestre.service.js");
 
 async function getIncidentes() {
   try {
-    return await Incidente.find();
+    return await Incidente.find().populate('inc_siniestro').populate('inc_brigadista','brig_nombres brig_apellidos brig_rut').exec();
   } catch (error) {
     handleError(error, "Incidente.service -> getIncidentes");
   }
 }
-
 async function createIncidente(inc_descripcion, inc_brigadista, inc_uaerea, inc_uterrestre, inc_siniestro) {
   try {
     const estado_incidente = await Estado_Incidente.findOne({ est_inc_descripcion: 'En proceso' });
@@ -88,7 +87,7 @@ async function createIncidente(inc_descripcion, inc_brigadista, inc_uaerea, inc_
 }
 async function getIncidenteById(id) {
   try {
-    return await Incidente.findById(id);
+    return await Incidente.findById(id).populate('inc_siniestro').populate('inc_brigadista','brig_nombres brig_apellidos brig_rut').exec();
   } catch (error) {
     handleError(error, "Incidente.service -> getIncidenteById");
   }

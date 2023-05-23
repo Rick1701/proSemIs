@@ -77,7 +77,7 @@ async function createBrigadista(brigadista) {
  */
 async function getBrigadistaById(id) {
   try {
-    return await Brigadista.findById({ _id: id });
+    return await Brigadista.findById({ _id: id }).populate('brig_estado_brigadista', 'estab_descripcion').populate('brig_brigada', 'bri_nombre').populate('brig_incidente', 'inc_descripcion').exec();
   } catch (error) {
     handleError(error, "brigadista.service -> getBrigadistaById");
   }
