@@ -249,6 +249,26 @@ async function deleteSiniestro(id) {
 
 
 //--------------------------------------------------------------- ESTADISTICAS METODOS ----------------------------------------------------------------]
+
+
+/*
+
+@name sumarCantidadIDs
+@description Realiza la sumatoria de los ID de las entidades
+@returns {Promise<number|null>}
+
+async function sumarCantidadIDs() {
+  try {
+    const count = await Siniestro.countDocuments();
+    return count;
+  } catch (error) {
+    handleError(error, "siniestro.service -> sumarCantidadIDs");
+  }
+}
+*/
+
+
+
 /*
 async function getEstadisticaCopaById(id) {
   try {
@@ -316,4 +336,5 @@ module.exports = {
   getEstadisticaSiniestroById,
   //getEstadisticaSiniestros,
   //getEstadisticaCopaById
+  //sumarCantidadIDs
 };
