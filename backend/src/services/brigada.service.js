@@ -1,6 +1,7 @@
 "use strict";
 // Importa el modelo de datos 'brigada'
 const Brigada = require("../models/brigada.model.js");
+const Base = require("../models/base.model.js");
 const { handleError } = require("../utils/errorHandler");
 // const { userBodySchema } = require("../schema/user.schema");
 
@@ -43,11 +44,13 @@ async function createBrigada(brigada) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { bri_nombre, /*bri_cantidad*/ bri_especialidad, bri_brigadista} = brigada;
+
+    const { bri_nombre, bri_cantidad, bri_especialidad, bri_base, bri_brigadista} = brigada;
     const newBrigada = new Brigada({
       bri_nombre,
-      //bri_cantidad,
+      bri_cantidad,
       bri_especialidad,
+      bri_base,
       bri_brigadista
     });
     return await newBrigada.save();

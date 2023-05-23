@@ -42,14 +42,42 @@ async function getSiniestros() {
  */
 
 async function createSiniestro(siniestro) {
+  // Esta funcion es similar al singup
   try {
-    const { sin_categoria } = siniestro;
-    const categoria = await Categoria.findById(sin_categoria);
-    if (!categoria) {
-      handleError(error, "siniestro.service -> createSiniestro");
-    }
+    // const { error } = userBodySchema.validate(user);
+    // if (error) return null;
+    // const { name, email, roles } = user;
 
-    const newSiniestro = new Siniestro(siniestro);
+    // const userFound = await User.findOne({ email: user.email });
+    // if (userFound) return null;
+
+    // const rolesFound = await Role.find({ name: { $in: roles } });
+    // const myRole = rolesFound.map((role) => role._id);
+    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_superficie, sin_distribucion_fuego, sin_tipo_bosque} = siniestro;
+
+    //Buscar la instancia de Categoría existente en base al ID proporcionado en body:
+    //const categoria = await Categoria.findById(sin_categoria);
+    //if(!categoria){
+    //  handleError(error, "siniestro.service -> createSiniestro");
+    //}
+
+    const newSiniestro = new Siniestro({
+      sin_velocidadViento,
+      sin_temperatura,
+      sin_humedad,
+      sin_fechaInicio,
+      sin_fechaTermino,
+      sin_latitud,
+      sin_superficie,
+      sin_distribucion_fuego,
+      sin_tipo_bosque
+      //sin_categoria: categoria._id,
+    });
+    //INSERTO LA ID DEL INCENDIO EN LA CATEGORIA:
+    //categoria.cat_incendio.push(newSiniestro._id);
+    //UNA VEZ INSERTADA LA ID DEL INCENDIO EN LA CATEGORIA, GUARDO LA CATEGORIA:
+    //await categoria.save();
+    //UNA VEZ GUARDADA LA CATEGORIA, GUARDO EL INCENDIO Y RETORNO:
     return await newSiniestro.save();
   } catch (error) {
     handleError(error, "siniestro.service -> createSiniestro");
@@ -147,7 +175,6 @@ async function getEstrategiaSiniestroById(id) {
         complejidadSiniestro = 4;
       }
 
-      
       //Asignación del incendio a una categoría
       /*categorias.forEach((categoria)=>{
         if(categoria.cat_nivel == complejidadSiniestro){
@@ -156,6 +183,7 @@ async function getEstrategiaSiniestroById(id) {
           return categorias.save();
         }
       });*/
+    
 
       for (let i = 0; i < categorias.length; i++) {
         const categoria = categorias[i];
@@ -166,13 +194,39 @@ async function getEstrategiaSiniestroById(id) {
           break; // Sale del bucle después de guardar la categoría
         }
       }
-      /*if (siniestro.sin_distribucion_fuego == 'copas') {
+      
 
-      } else if (siniestro.sin_distribucion_fuego == 'superficie') {
+      //CONSIDERAR CANTIDAD DE BRIGADAS, UNIDADES Y TIPO DE UNIDADES PARA DETERMINAR ESTRATEGIA
 
-      } else if (siniestro.sin_distribucion_fuego == 'subsuelo') {
+      if (siniestro.sin_distribucion_fuego === 'copas' && comlpejidadSiniestro == 1) {
+        estrategia = 'Aplicar técnicas de combate aéreo y enfocarse en controlar el fuego en la parte superior de los árboles.';
+      } else if ((siniestro.sin_distribucion_fuego === 'copas' && comlpejidadSiniestro == 2)) {
+        estrategia = 'Aplicar técnicas de combate aéreo y enfocarse en controlar el fuego en la parte superior de los árboles.';
+      } else if (siniestro.sin_distribucion_fuego === 'copas' && comlpejidadSiniestro == 3) {
+        estrategia = 'Aplicar técnicas de combate aéreo y enfocarse en controlar el fuego en la parte superior de los árboles.';
+      } else if (siniestro.sin_distribucion_fuego === 'copas' && comlpejidadSiniestro == 4) {
 
-      }*/
+      }
+
+      if (siniestro.sin_distribucion_fuego === 'superficie' && comlpejidadSiniestro == 1) {
+        estrategia = 'Utilizar técnicas de combate terrestre y enfocarse en controlar el fuego en la superficie del suelo.';
+      } else if ((siniestro.sin_distribucion_fuego === 'superficie' && comlpejidadSiniestro == 2)) {
+        estrategia = 'Utilizar técnicas de combate terrestre y enfocarse en controlar el fuego en la superficie del suelo.';
+      } else if (siniestro.sin_distribucion_fuego === 'superficie' && comlpejidadSiniestro == 3) {
+        estrategia = 'Utilizar técnicas de combate terrestre y enfocarse en controlar el fuego en la superficie del suelo.';
+      } else if (siniestro.sin_distribucion_fuego === 'superficie' && comlpejidadSiniestro == 4) {
+
+      }
+
+      if (siniestro.sin_distribucion_fuego === 'subsuelo' && comlpejidadSiniestro == 1) {
+        estrategia = 'Emplear técnicas de combate subterráneo y enfocarse en controlar el fuego que se encuentra bajo la superficie del suelo.';
+      } else if ((siniestro.sin_distribucion_fuego === 'subsuelo' && comlpejidadSiniestro == 2)) {
+        estrategia = 'Emplear técnicas de combate subterráneo y enfocarse en controlar el fuego que se encuentra bajo la superficie del suelo.';
+      } else if (siniestro.sin_distribucion_fuego === 'subsuelo' && comlpejidadSiniestro == 3) {
+        estrategia = 'Emplear técnicas de combate subterráneo y enfocarse en controlar el fuego que se encuentra bajo la superficie del suelo.';
+      } else if (siniestro.sin_distribucion_fuego === 'subsuelo' && comlpejidadSiniestro == 4) {
+
+      }
 
     //}
     //else {
@@ -274,11 +328,104 @@ async function deleteSiniestro(id) {
   }
 }
 
+
+
+
+
+
+
+
+//--------------------------------------------------------------- ESTADISTICAS METODOS ----------------------------------------------------------------]
+/*
+async function getSumaTotal() {
+  try {
+    const suma = await Siniestro.aggregate([{ $group: { _id: null, total: { $sum: "$sin_numeroIncendio" } } }]);
+    return suma[0].total;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+*/
+
+
+
+/*
+
+  @name sumarCantidadIDs
+  @description Realiza la sumatoria de los ID de las entidades
+  @returns {Promise<number|null>}
+
+async function getSumarIncendio() {
+  try {
+    const sum = siniestros.reduce((total, siniestro) => total + siniestro._id, 0);
+    return sum;
+  } catch (error) {
+    handleError(error, "siniestro.service -> getSumarIncendio");
+  }
+}
+
+
+async function getEstadisticaCopaById(id) {
+  try {
+
+// Retorna el resultado de la estadística solo con los atributos deseados:(separar con espacio de las comas para que funcione)
+  return await Siniestro.findById({ _id: id }).select(' sin_distribucion_fuego , sin_categoria ');
+
+    //return await Siniestro.findById({ _id: id });
+  } catch (error) {
+    handleError(error, "siniestro.service -> getEstadisticaCopaById");
+  }
+}
+*/
+
+
+/**
+ * @name getEstadisticasSiniestros
+ * @description
+ * @returns {Promise<Siniestro[]|[]>}
+ */
+//async function getSiniestros() {
+//  try {
+//    return await Siniestro.find();
+//  } catch (error) {
+//    handleError(error, "Siniestro.service -> getSiniestros");
+//  }
+//}
+
+
+/**
+ * @name getEstadisticaSiniestroById
+ * @description Obtiene la estadística de los siniestros
+ * @param id {string} - Id del siniestro
+ * @returns {Promise<Siniestro|null>}
+ */
+async function getEstadisticaSiniestroById(id) {
+  try {
+
+// Retorna el resultado de la estadística solo con los atributos deseados:(separar con espacio de las comas para que funcione)
+  return await Siniestro.findById({ _id: id }).select('sin_velocidadViento , sin_temperatura , sin_humedad , sin_latitud , sin_superficie');
+
+    //return await Siniestro.findById({ _id: id });
+  } catch (error) {
+    handleError(error, "siniestro.service -> getEstadisticaSiniestroById");
+  }
+}
+
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------]
+
+
 module.exports = {
   getSiniestros,
   createSiniestro,
   getSiniestroById,
   updateSiniestro,
   deleteSiniestro,
-  getEstrategiaSiniestroById
+  getEstrategiaSiniestroById,
+  getEstadisticaSiniestroById,
+  //getEstadisticaSiniestros,
+  //getEstadisticaCopaById,
+  //getSumarIncendio
+  //getSumaTotal
 };

@@ -73,6 +73,19 @@ async function getBaseById(req, res) {
   }
 }
 
+async function asignarBaseAIncendioController(req, res) {
+  const baseId = req.params.baseId; // Obtener el ID de la base de los parámetros de la solicitud
+  const incendioId = req.params.incendioId; // Obtener el ID del incendio de los parámetros de la solicitud
+
+  const resultado = await baseService.asignarBaseAIncendio(baseId, incendioId);
+
+  if (resultado) {
+    res.status(200).json({ message: "La base se ha asociado correctamente al incendio." });
+  } else {
+    res.status(404).json({ message: "No se pudo realizar la asociación de la base al incendio." });
+  }
+}
+
 /**
  * @name updateBase
  * @description Actualiza una base por su id
@@ -125,10 +138,45 @@ async function deleteBase(req, res) {
   }
 }
 
+
+
+
+//-------------------------------------------------------------Estadisticas-------------------------------------------------------------------------------||
+
+/**
+ * @name getEstadisticaBaseById
+ * @description Obtiene una  Estadisticabase por su id
+ * @param req {Request}
+ * @param res {Response}
+ */
+async function getEstadisticaBaseById(req, res) {
+  try {
+    const { id } = req.params;
+
+    const base = await BaseService.getEstadisticaBaseById(id);
+    base === null
+      ? respondError(
+          req,
+          res,
+          404,
+          "No se encontro la base solicitada",
+          "Not Found",
+          { message: "Verifique el id ingresado" },
+        )
+      : respondSuccess(req, res, 200, base);
+  } catch (error) {
+    handleError(error, "base.controller -> getEstadisticaBaseById");
+    respondError(req, res, 500, "No se pudo obtener la base");
+  }
+}
+//---------------------------------------------------------------------------------------------------------------------------------------------------------||
+
 module.exports = {
   getBases,
   createBase,
   getBaseById,
   updateBase,
   deleteBase,
+  getEstadisticaBaseById,
+  asignarBaseAIncendioController
 };
