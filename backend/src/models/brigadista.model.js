@@ -19,23 +19,28 @@ const brigadistaSchema = new mongoose.Schema({
   brig_sexo: {
     type: String,
     required: true,
-    enum: ["Masculino","Femenino"]
+    enum: ["Masculino", "Femenino"],
   },
   brig_edad: {
     type: Number,
     required: true,
   },
   brig_estado_brigadista: {
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"Estado_Brigadista",
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Estado_Brigadista",
     required: true,
+    default: null,
   },
   brig_brigada: {
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"Brigada",
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Brigada",
     required: true,
-  }
- ,
+  },
+  brig_incidente: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Incidente",
+    default: null,
+  },
 });
 
 // Crea el modelo de datos 'Brigadista' a partir del esquema 'brigadistaSchema'

@@ -7,8 +7,13 @@ const estado_incidenteSchema = new mongoose.Schema({
   est_inc_descripcion: {
     type: String,
     required: true,
+    enum: ["En proceso", "Solucionado"]
   },
-
+  est_inc_incidente: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:"Incidente",
+    required: true,
+  }]
 });
 
 // Crea el modelo de datos 'Estado_Incidente' a partir del esquema 'estado_incidenteSchema'

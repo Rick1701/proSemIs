@@ -3,6 +3,7 @@
 const Brigadista = require("../models/brigadista.model.js");
 const Estado_Brigadista = require("../models/estado_brigadista.model.js");
 const Brigada = require("../models/brigada.model.js");
+const Incidente = require("../models/incidente.model.js");
 const { handleError } = require("../utils/errorHandler");
 // const { userBodySchema } = require("../schema/user.schema");
 
@@ -23,7 +24,7 @@ const { handleError } = require("../utils/errorHandler");
  */
 async function getBrigadistas() {
   try {
-    return await Brigadista.find().populate('brig_estado_brigadista', 'estab_descripcion').populate('brig_brigada', 'bri_nombre').exec();
+    return await Brigadista.find().populate('brig_estado_brigadista', 'estab_descripcion').populate('brig_brigada', 'bri_nombre').populate('brig_incidente', 'inc_descripcion').exec();
   } catch (error) {
     handleError(error, "Brigadista.service -> getBrigadistas");
   }
@@ -36,23 +37,18 @@ async function getBrigadistas() {
  * @returns {Promise<Brigadista|null>}
  */
 async function createBrigadista(brigadista) {
-  // Esta funcion es similar al singup
-   try {
-    // const { error } = userBodySchema.validate(user);
-    // if (error) return null;
-    // const { name, email, roles } = user;
-
-    // const userFound = await User.findOne({ email: user.email });
-    // if (userFound) return null;
-
-    // const rolesFound = await Role.find({ name: { $in: roles } });
-    // const myRole = rolesFound.map((role) => role._id);
-    const { brig_rut, brig_nombres, brig_apellidos, brig_sexo, brig_edad, brig_estado_brigadista} = brigadista;
-    const estado_brigadista = await Estado_Brigadista.findById(brig_estado_brigadista);
-    const brigada = await Brigada.findById(brigadista.brig_brigada);
-    if(!estado_brigadista &&!brigada){
-      handleError(error, "brigadista.service -> createBrigadista");
+  try {
+    const { brig_rut, brig_nombres, brig_apellidos, brig_sexo, brig_edad, brig_brigada } = brigadista;
+    const estado_brigadista = await Estado_Brigadista.findOne({ estab_descripcion: 'Disponible' });
+      if (!estado_brigadista) {
+      throw new Error("No se encontró el estado de brigadista 'Disponible'.");
     }
+
+    const brigada = await Brigada.findById(brig_brigada);
+    if (!brigada) {
+      throw new Error("No se encontró la brigada.");
+    }
+
     const newBrigadista = new Brigadista({
       brig_rut,
       brig_nombres,
@@ -60,7 +56,8 @@ async function createBrigadista(brigadista) {
       brig_sexo,
       brig_edad,
       brig_estado_brigadista: estado_brigadista._id,
-      brig_brigada: brigada._id
+      brig_brigada: brigada._id,
+      brig_incidente: null,
     });
     estado_brigadista.estab_brigadista.push(newBrigadista._id);
     await estado_brigadista.save();
@@ -80,7 +77,7 @@ async function createBrigadista(brigadista) {
  */
 async function getBrigadistaById(id) {
   try {
-    return await Brigadista.findById({ _id: id });
+    return await Brigadista.findById({ _id: id }).populate('brig_estado_brigadista', 'estab_descripcion').populate('brig_brigada', 'bri_nombre').populate('brig_incidente', 'inc_descripcion').exec();
   } catch (error) {
     handleError(error, "brigadista.service -> getBrigadistaById");
   }
@@ -117,6 +114,78 @@ async function deleteBrigadista(id) {
     handleError(error, "brigadista.service -> deleteBrigadista");
   }
 }
+async function updateBrigadistaEstado(brigadistaId, estado) {
+  try {
+    const brigadista = await Brigadista.findById(brigadistaId);
+    if (!brigadista) {
+      throw new Error("No se encontró el brigadista.");
+    }
+    await _updateEstadoBrigadista(brigadista, estado);
+    return brigadista;
+  } catch (error) {
+    handleError(error, "brigadista.service -> updateBrigadistaEstado");
+  }
+}
+
+async function _updateEstadoBrigadista(brigadista, estado) {
+  try {
+    const estadoBrigadista = await Estado_Brigadista.findOne({ estab_descripcion: estado });
+    if (!estadoBrigadista) {
+      throw new Error("No se encontró el estado del brigadista.");
+    }
+
+    brigadista.brig_estado_brigadista = estadoBrigadista._id;
+    await brigadista.save();
+
+    // Si el estado es 'No Disponible', se desasocia el brigadista del incidente actual
+    if (estado === "No Disponible" && brigadista.brig_incidente) {
+      const incidente = await Incidente.findById(brigadista.brig_incidente);
+      if (incidente) {
+        incidente.removeBrigadista(brigadista._id);
+      }
+    }
+  } catch (error) {
+    handleError(error, "brigadista.service -> _updateEstadoBrigadista");
+  }
+}
+async function updateBrigadaEstado(brigadistaId, estado) {
+  try {
+    const brigadista = await Brigadista.findById(brigadistaId);
+    if (!brigadista) {
+      throw new Error("No se encontró el brigadista.");
+    }
+
+    brigadista.brig_estado_brigadista = estado;
+    await brigadista.save();
+
+    // Actualizar el estado de la brigada
+    const brigada = await Brigada.findById(brigadista.brig_brigada);
+    if (!brigada) {
+      throw new Error("No se encontró la brigada del brigadista.");
+    }
+
+    const brigadistas = brigada.bri_brigadista;
+
+    // Verificar si todos los brigadistas tienen el estado "No Disponible"
+    const todosNoDisponibles = brigadistas.every(
+      (brigadista) =>
+        brigadista.brig_estado_brigadista.estab_descripcion === "No Disponible"
+    );
+
+    // Actualizar el estado de la brigada según la condición
+    if (todosNoDisponibles) {
+      brigada.bri_estado.estab_descripcion = "Parcialmente Disponible";
+    } else {
+      brigada.bri_estado.estab_descripcion = "Totalmente Disponible";
+    }
+
+    await brigada.save();
+
+    return brigadista;
+  } catch (error) {
+    handleError(error, "brigadista.service -> updateBrigadaEstado");
+  }
+}
 
 module.exports = {
   getBrigadistas,
@@ -124,4 +193,6 @@ module.exports = {
   getBrigadistaById,
   updateBrigadista,
   deleteBrigadista,
+  updateBrigadistaEstado,
+  updateBrigadaEstado
 };
