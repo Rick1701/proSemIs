@@ -11,6 +11,13 @@ const categoriaSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Siniestro",
     required: true,
+    /*validate: {
+      validator: function(value) {
+        // Verificar que el array no tenga valores repetidos
+        return new Set(value).size === value.length;
+      },
+      message: "Valores repetidos no permitidos en {PATH}",
+    },*/
   }],
 });
 

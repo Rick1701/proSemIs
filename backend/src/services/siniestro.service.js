@@ -52,7 +52,7 @@ async function createSiniestro(siniestro) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_superficie, sin_distribucion_fuego, sin_tipo_bosque} = siniestro;
+    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_superficie, sin_distribucion_fuego /*sin_tipo_bosque, sin_estrategia*/} = siniestro;
 
     //Buscar la instancia de Categoría existente en base al ID proporcionado en body:
     //const categoria = await Categoria.findById(sin_categoria);
@@ -69,7 +69,8 @@ async function createSiniestro(siniestro) {
       sin_latitud,
       sin_superficie,
       sin_distribucion_fuego,
-      sin_tipo_bosque
+      //sin_estrategia
+      //sin_tipo_bosque
       //sin_categoria: categoria._id,
     });
     //INSERTO LA ID DEL INCENDIO EN LA CATEGORIA:
@@ -110,7 +111,7 @@ async function getEstrategiaSiniestroById(id) {
     var nivelHumedad = 0;
     var nivelTemperatura = 0;
     var nivelSuperficie = 0;
-
+    let estrategia;
     //Variable para determinar la complejidad de un incendio:
     var complejidadSiniestro = 0;
 
@@ -121,7 +122,7 @@ async function getEstrategiaSiniestroById(id) {
     const categorias = await Categoria.find();
 
     //Análisis de las variables del entorno:
-    //if (siniestro) {
+    if (siniestro) {
       if (siniestro.sin_velocidadViento >= 0 && siniestro.sin_velocidadViento <= 10) {
         nivelVelViento = 1;
       } else if (siniestro.sin_velocidadViento > 10 && siniestro.sin_velocidadViento <= 20) {
@@ -174,6 +175,7 @@ async function getEstrategiaSiniestroById(id) {
         complejidadSiniestro = 4;
       }
 
+      //Datos que sirven para las estadisticas:
 
       for (let i = 0; i < categorias.length; i++) {
         const categoria = categorias[i];
@@ -186,45 +188,56 @@ async function getEstrategiaSiniestroById(id) {
       }
       
 
-      //CONSIDERAR CANTIDAD DE BRIGADAS, UNIDADES Y TIPO DE UNIDADES PARA DETERMINAR ESTRATEGIA
+      //ESTRATEGIA CONSIDERA: BRIGADAS, UNIDADES, MATERIALES Y GESTIONES (PENDIENTE: UBICACIÓN).
 
-      if (siniestro.sin_distribucion_fuego === 'copas' && comlpejidadSiniestro == 1) {
-        estrategia = 'Aplicar técnicas de combate aéreo y enfocarse en controlar el fuego en la parte superior de los árboles.';
-      } else if ((siniestro.sin_distribucion_fuego === 'copas' && comlpejidadSiniestro == 2)) {
-        estrategia = 'Aplicar técnicas de combate aéreo y enfocarse en controlar el fuego en la parte superior de los árboles.';
-      } else if (siniestro.sin_distribucion_fuego === 'copas' && comlpejidadSiniestro == 3) {
-        estrategia = 'Aplicar técnicas de combate aéreo y enfocarse en controlar el fuego en la parte superior de los árboles.';
-      } else if (siniestro.sin_distribucion_fuego === 'copas' && comlpejidadSiniestro == 4) {
-
+      if (complejidadSiniestro == 1) {
+        if (siniestro.sin_distribucion_fuego.length === 1 && siniestro.sin_distribucion_fuego[0] === 'copas') {
+          console.log("COMPL 1 COPAS");
+          estrategia = "Ante un siniestro de nivel 1 con distribución del fuego en las copas de los árboles, se sugiere desplegar brigadas especializadas en trabajos en altura y el uso de herramientas manuales como motosierras para poda selectiva. Identificar y focalizar los árboles o grupos de árboles en llamas y extinguirlos, evitando la propagación del fuego a otras áreas.";
+        } else if (siniestro.sin_distribucion_fuego.includes('copas') && siniestro.sin_distribucion_fuego.includes('superficie') && siniestro.sin_distribucion_fuego.includes('subsuelo')) {
+          console.log("COMPL 1 SUP O SUB");
+          estrategia = 'Ante un siniestro de nivel 1 con distribución del fuego en las copas de los árboles, en la superficie y en el subsuelo simultáneamente, se sugiere controlar las llamas en las copas de los árboles identificando y focalizando los árboles o grupos de árboles en llamas, extinguiéndolos de manera selectiva para evitar la propagación del fuego a otras áreas. Se requieren brigadas especializadas en trabajos en altura y el uso de herramientas específicas, como motosierras para poda selectiva en alturas. Al mismo tiempo, es necesario desplegar brigadas especializadas en tácticas de ataque directo en la superficie y el subsuelo, utilizando herramientas manuales como mochilas contra incendios, mangueras y equipos de bomberos para combatir el fuego desde la base.';
+        } else if (siniestro.sin_distribucion_fuego.includes('superficie') || siniestro.sin_distribucion_fuego.includes('subsuelo') ) {
+          console.log("COMPL 1 COPAS, SUP y SUB");
+          estrategia = 'Ante un siniestro de nivel 1 con distribución del fuego en la superficie y en el subsuelo simultáneamente, se sugiere desplegar brigadas especializadas en ataque directo y uso de herramientas manuales como palas, mangueras o motosierras (para poda selectiva) y equipos de bomberos para combatir el fuego localmente.';
+        }
+      } else if (complejidadSiniestro == 2) {
+        if (siniestro.sin_distribucion_fuego.length === 1 && siniestro.sin_distribucion_fuego[0] === 'copas') {
+          console.log("COMPL 2 COPAS");
+          estrategia = 'Ante un siniestro de nivel 2 con distribución del fuego en las copas de los árboles, se sugiere desplegar brigadas especializadas en trabajos en alturas y manejo de unidades aéreas tales como aviones cisterna y helicópteros equipados con sistemas de descarga de agua.';
+        } else if (siniestro.sin_distribucion_fuego.includes('copas') && siniestro.sin_distribucion_fuego.includes('superficie') && siniestro.sin_distribucion_fuego.includes('subsuelo')) {
+          console.log("COMPL 2 COPAS");
+          estrategia = 'Ante un siniestro de nivel 2 con distribución del fuego en las copas de los árboles, en la superficie y en el subsuelo simultáneamente, se sugiere desplegar brigadas especializadas en el manejo de unidades aéreas tales como aviones cisterna y helicópteros equipados con sistemas de descarga de agua. Combinar con despliegue de brigadas y unidades terrestres especializadas en ataque directo utilizando herramientas manuales como mochilas contra incendios, mangueras y equipos de bomberos. Se recomienda coordinar esfuerzos desde ambos frentes (aereo y terrestre), identificar y focalizar los árboles o grupos de árboles en llamas y extinguirlos de manera selectiva, evitando la propagación del fuego a otras áreas. Asimismo, se deben priorizar la creación de cortafuegos y líneas de defensa in situ.';
+        } else if (siniestro.sin_distribucion_fuego.includes('superficie') || siniestro.sin_distribucion_fuego.includes('subsuelo') ) {
+          console.log("COMPL 2 COPAS");
+          estrategia = 'Ante un siniestro de nivel 2 con distribución del fuego en la superficie y en el subsuelo simultáneamente, se sugiere desplegar brigadas especializadas en ataque directo y uso de herramientas manuales como palas, mochilas contra incendios, mangueras, motosierras (para poda selectiva) y equipos de bomberos. Priorizar la creación de cortafuegos y líneas de defensa in situ, como también la rotación de brigadas expuestas a altas temperaturas. Solicitar apoyo logístico regional.';
+        }
+      } else if (complejidadSiniestro == 3) {
+        if (siniestro.sin_distribucion_fuego.length === 1 && siniestro.sin_distribucion_fuego[0] === 'copas') {
+          estrategia = 'Ante un siniestro de nivel 3 con distribución del fuego en las copas de los árboles, se sugiere identificar y focalizar los árboles o grupos de árboles en llamas y extinguirlos de manera selectiva, Desplegar brigadas especializadas en el manejo de unidades aereas (de nivel 2). Incorporar uso de helibombardero equipado con tanque de agua o retardante de fuego para atacar el fuego en las copas de los árboles.';
+        } else if (siniestro.sin_distribucion_fuego.includes('copas') && siniestro.sin_distribucion_fuego.includes('superficie') && siniestro.sin_distribucion_fuego.includes('subsuelo')) {
+          estrategia = 'Ante un siniestro de nivel 3 con distribución del fuego en las copas de los árboles, en la superficie y en el subsuelo simultáneamente, se sugiere establecer un centro de comando y control para coordinar el uso de unidades aéreas con brigadas y unidades terrestres especializadas en ataque directo y uso de maquinarias pesadas. Las unidades aéreas (aviones, helicopteros y helibombarderos) deben utilizar agua o retardante de fuego. Se deben implementar tácticas terrestres de extinción y contención más agresivas, priorizando la defensa perimetral. Solicitar apoyo logístico nacional.';
+        } else if (siniestro.sin_distribucion_fuego.includes('superficie') || siniestro.sin_distribucion_fuego.includes('subsuelo') ) {
+          estrategia = 'Ante un siniestro de nivel 3 con distribución del fuego en la superficie y en el subsuelo simultáneamente, se sugiere establecer un centro de comando y control para coordinar todas las operaciones terrestres, Desplegar brigadas especializadas en ataque directo y uso de maquinarias pesadas, implementar tácticas terrestres de extinción más agresivas y contención (defensa más allá del perímetro del incendio). Solicitar apoyo logístico nacional.';
+        }
+      } else {
+        if (siniestro.sin_distribucion_fuego.length === 1 && siniestro.sin_distribucion_fuego[0] === 'copas') {
+          estrategia = 'Ante un siniestro de nivel 4 con distribución del fuego en las copas de los árboles, se sugiere desplegar todos los recursos aéreos disponibles (brigadas y unidades). Implementar ataque aéreo intensivo con retardante de fuego u otros agentes químicos en las copas de los árboles. Se deben realizar múltiples pasadas para saturar la zona afectada. Solicitar gestión de aeronaves con mayores capacidades en el extranjero.';
+        } else if (siniestro.sin_distribucion_fuego.includes('copas') && siniestro.sin_distribucion_fuego.includes('superficie') && siniestro.sin_distribucion_fuego.includes('subsuelo')) {
+          estrategia = 'Ante un siniestro de nivel 4 con distribución del fuego en las copas de los árboles, en la superficie y en el subsuelo simultáneamente, se sugiere establecer un centro de comando y control para determinar acciones contundentes y coordinadas. Para las copas de los árboles, se recomienda desplegar todas las unidades aéreas disponibles y realizar ataque aéreo intensivo con retardante de fuego u otros agentes químicos. Se deben realizar múltiples pasadas para saturar la zona afectada. Además, se sugiere solicitar la gestión de aeronaves con mayores capacidades en el extranjero. Se requieren utilizar maquinarias o unidades especializadas y brigadas de respuesta enérgica y agresiva para controlar y extinguir el incendio. Asimismo, se recomienda solicitar la implementación del "estado de emergencia" y buscar apoyo logístico a nivel internacional.';
+        } else if (siniestro.sin_distribucion_fuego.includes('superficie') || siniestro.sin_distribucion_fuego.includes('subsuelo') ) {
+          estrategia = 'Ante un siniestro de nivel 4 con distribución del fuego en la superficie y en el subsuelo, se sugiere establecer un centro de comando para movilizar y desplegar y coordinar totalidad de brigadas y unidades terrestres e implementar tácticas agresivas que incluyan uso de maquinaria especializada y pesada de respuesta enérgica para controlar y extinguir el incendio. Solicitar al gobierno la implementación del ‘estado de emergencia’ como también apoyo logístico internacional.';
+        }
       }
 
-      if (siniestro.sin_distribucion_fuego === 'superficie' && comlpejidadSiniestro == 1) {
-        estrategia = 'Utilizar técnicas de combate terrestre y enfocarse en controlar el fuego en la superficie del suelo.';
-      } else if ((siniestro.sin_distribucion_fuego === 'superficie' && comlpejidadSiniestro == 2)) {
-        estrategia = 'Utilizar técnicas de combate terrestre y enfocarse en controlar el fuego en la superficie del suelo.';
-      } else if (siniestro.sin_distribucion_fuego === 'superficie' && comlpejidadSiniestro == 3) {
-        estrategia = 'Utilizar técnicas de combate terrestre y enfocarse en controlar el fuego en la superficie del suelo.';
-      } else if (siniestro.sin_distribucion_fuego === 'superficie' && comlpejidadSiniestro == 4) {
+      console.log("Estrategia: ", estrategia);
+      siniestro.sin_estrategia = estrategia;
+      return await siniestro.save();
 
-      }
-
-      if (siniestro.sin_distribucion_fuego === 'subsuelo' && comlpejidadSiniestro == 1) {
-        estrategia = 'Emplear técnicas de combate subterráneo y enfocarse en controlar el fuego que se encuentra bajo la superficie del suelo.';
-      } else if ((siniestro.sin_distribucion_fuego === 'subsuelo' && comlpejidadSiniestro == 2)) {
-        estrategia = 'Emplear técnicas de combate subterráneo y enfocarse en controlar el fuego que se encuentra bajo la superficie del suelo.';
-      } else if (siniestro.sin_distribucion_fuego === 'subsuelo' && comlpejidadSiniestro == 3) {
-        estrategia = 'Emplear técnicas de combate subterráneo y enfocarse en controlar el fuego que se encuentra bajo la superficie del suelo.';
-      } else if (siniestro.sin_distribucion_fuego === 'subsuelo' && comlpejidadSiniestro == 4) {
-
-      }
-
-    //}
-    //else {
-    //
-    //}
-  } catch (error) {
-      handleError(error, "siniestro.service -> getSiniestroByIdWrapper");
     }
+  } catch (error) {
+    handleError(error, "siniestro.service -> getSiniestroByIdWrapper");
+  }
 }
 
 /**
