@@ -147,6 +147,25 @@ async function deleteSiniestro(req, res) {
 
 //--------------------------------------------------------EStadisticas---------------------------------------------------------------------||
 
+
+/*
+ * @name getSumarIncendio
+ * @description Obtiene una  Estadisticacopa por su id
+ * @param req {Request}
+ * @param res {Response}
+ */
+/*
+async function getSumarIncendio(req, res) {
+  try {
+    const sumarIncendio = await SiniestroService.getSumarIncendio();
+    respondSuccess(req, res, 200, { sumarIncendio });
+  } catch (error) {
+    handleError(error, "siniestro.controller -> getSumarIncendio");
+    respondError(req, res, 500, "No se pudo obtener el total de sumar incendio");
+  }
+}
+*/
+
 /**
  * @name getEstadisticaCopaById
  * @description Obtiene una  Estadisticacopa por su id
@@ -223,6 +242,14 @@ async function getEstadisticaSiniestros(req, res) {
 
 
 
+async function getSumaTotal(req, res) {
+  try {
+    const sumaTotal = await siniestroService.getSumaTotal();
+    res.json({ sumaTotal });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
 
 
 
@@ -239,5 +266,7 @@ module.exports = {
   getEstrategiaSiniestroById,
   getEstadisticaSiniestroById,
 //  getEstadisticaSiniestros,
-//getEstadisticaCopaById
+//  getEstadisticaCopaById,
+//getSumarIncendio,
+  getSumaTotal
 };

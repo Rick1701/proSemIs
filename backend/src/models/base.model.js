@@ -25,7 +25,7 @@ const baseSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Brigada",
     required: false,
-  }]
+  }],
   base_estado: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Estado_Base",
