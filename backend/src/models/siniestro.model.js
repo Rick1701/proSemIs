@@ -54,7 +54,7 @@ const siniestroSchema = new mongoose.Schema({
   },
   sin_fechaTermino: {
     type: Date,
-    required: true,
+    required: false,
   },
   sin_latitud: {
     type: Number,
