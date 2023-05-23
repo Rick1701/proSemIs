@@ -7,7 +7,7 @@ const estado_unidadSchema = new mongoose.Schema({
   est_uni_descripcion: {
     type: String,
     required: true,
-    enum: ["Operativa", "No Operativa"],
+    //enum: ["Operativa", "No Operativa"],
   },
   est_uni_aerea: [{
     type: mongoose.Schema.Types.ObjectId,

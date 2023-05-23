@@ -13,6 +13,12 @@ const { setupDB } = require("./config/configDB.js");
 // Importa el handler de errores
 const { handleFatalError, handleError } = require("./utils/errorHandler.js");
 const { createRoles, createUsers } = require("./config/initialSetup");
+//const siniestroRoutes = require('./routes/siniestro.routes');
+//app.use('/api/siniestro', siniestroRoutes);
+
+
+
+
 
 /**
  * @name setupServer

@@ -26,19 +26,20 @@ const ubicacionRoutes = require("./ubicacion.routes.js");
 const regionRoutes = require("./region.routes.js");
 // Importa el enrutador de estado_brigadista
 const estado_brigadistaRoutes = require("./estado_brigadista.routes.js");
-
+// Importa el enrutador de base
 const baseRoutes = require("./base.routes.js");
-
+// Importa el enrutador de estado_unidad
 const estado_unidadRoutes = require("./estado_unidad.routes.js");
-
+// Importa el enrutador de uaerea
 const uaereaRoutes = require("./uaerea.routes.js");
-
+// Importa el enrutador de uterrestre
 const uterrestreRoutes = require("./uterrestre.routes.js");
 // Importa el enrutador de estado_brigadista
 const estado_baseRoutes = require("./estado_base.routes.js");
 // Importa el enrutador de estado_incidente
 const estado_incidenteRoutes = require("./estado_incidente.routes.js");
-
+// Importa el enrutador de estado_brigada
+const estado_brigadaRoutes = require("./estado_brigada.routes.js");
 
 // Crea una instancia del enrutador
 const router = express.Router();
@@ -63,15 +64,20 @@ router.use("/ubicacion", ubicacionRoutes);
 router.use("/region", regionRoutes);
 // Define las rutas para los estado_brigadista /api/estado_brigadista
 router.use("/estado_brigadista", estado_brigadistaRoutes);
-
+// Define las rutas para la base
 router.use("/base",baseRoutes);
+// Define las rutas para los estado_unidad
 router.use("/estado_unidad", estado_unidadRoutes);
+// Define las rutas para los uaerea
 router.use("/uaerea",uaereaRoutes);
+// Define las rutas para los uterrestre
 router.use("/uterrestre",uterrestreRoutes);
 // Define las rutas para los estado_brigadista /api/estado_brigadista
 router.use("/estado_base", estado_baseRoutes);
 // Define las rutas para los estado_incidente /api/estado_incidente
 router.use("/estado_incidente", estado_incidenteRoutes);
+// Define las rutas para los estado_brigada /api/estado_brigada
+router.use("/estado_brigada", estado_brigadaRoutes);
 
 
 // Exporta el enrutador

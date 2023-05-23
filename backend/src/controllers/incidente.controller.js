@@ -4,11 +4,6 @@ const { respondSuccess, respondError } = require("../utils/resHandler");
 const IncidenteService = require("../services/incidente.service");
 const { handleError } = require("../utils/errorHandler");
 
-/**
- * @name getIncidentes
- * @description Obtiene todos los incidentes
- * @param res {Response}
- */
 async function getIncidentes(req, res) {
   try {
     const incidentes = await IncidenteService.getIncidentes();
@@ -20,21 +15,21 @@ async function getIncidentes(req, res) {
   }
 }
 
-/**
- * @name createIncidente
- * @description Crea un nuevo incidente
- * @param req {Request}
- * @param res {Response}
- */
 async function createIncidente(req, res) {
   try {
-    const nuevoIncidente = await IncidenteService.createIncidente(req.body);
+    const { inc_descripcion, inc_brigadista, inc_uaerea, inc_uterrestre } = req.body;
+    const nuevoIncidente = await IncidenteService.createIncidente(
+      inc_descripcion,
+      inc_brigadista,
+      inc_uaerea,
+      inc_uterrestre
+    );
     nuevoIncidente === null
       ? respondError(
           req,
           res,
           400,
-          "Error en la validacion de datos",
+          "Error en la validación de datos",
           "Bad Request",
           { message: "Verifique los datos ingresados" },
         )
@@ -45,12 +40,6 @@ async function createIncidente(req, res) {
   }
 }
 
-/**
- * @name getIncidenteById
- * @description Obtiene un incidente por su id
- * @param req {Request}
- * @param res {Response}
- */
 async function getIncidenteById(req, res) {
   try {
     const { id } = req.params;
@@ -61,9 +50,9 @@ async function getIncidenteById(req, res) {
           req,
           res,
           404,
-          "No se encontro el incidente solicitado",
+          "No se encontró el incidente solicitado",
           "Not Found",
-          { message: "Verifique el id ingresado" },
+          { message: "Verifique el ID ingresado" },
         )
       : respondSuccess(req, res, 200, incidente);
   } catch (error) {
@@ -72,12 +61,6 @@ async function getIncidenteById(req, res) {
   }
 }
 
-/**
- * @name updateIncidente
- * @description Actualiza un incidente por su id
- * @param req {Request}
- * @param res {Response}
- */
 async function updateIncidente(req, res) {
   try {
     const { id } = req.params;
@@ -87,9 +70,9 @@ async function updateIncidente(req, res) {
           req,
           res,
           404,
-          "No se encontro el incidente solicitado",
+          "No se encontró el incidente solicitado",
           "Not Found",
-          { message: "Verifique el id ingresado" },
+          { message: "Verifique el ID ingresado" },
         )
       : respondSuccess(req, res, 200, incidente);
   } catch (error) {
@@ -98,12 +81,6 @@ async function updateIncidente(req, res) {
   }
 }
 
-/**
- * @name deleteIncidente
- * @description Elimina un incidente por su id
- * @param req {Request}
- * @param res {Response}
- */
 async function deleteIncidente(req, res) {
   try {
     const { id } = req.params;
@@ -113,11 +90,11 @@ async function deleteIncidente(req, res) {
           req,
           res,
           404,
-          "No se encontro el incidente solicitado",
+          "No se encontró el incidente solicitado",
           "Not Found",
-          { message: "Verifique el id ingresado" },
+          { message: "Verifique el ID ingresado" },
         )
-      : respondSuccess(req, res, 200, incidente);
+      : respondSuccess(req, res, 200, { message: "Incidente eliminado correctamente" });
   } catch (error) {
     handleError(error, "incidente.controller -> deleteIncidente");
     respondError(req, res, 500, "No se pudo eliminar el incidente");

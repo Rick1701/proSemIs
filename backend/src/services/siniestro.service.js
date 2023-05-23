@@ -3,6 +3,7 @@
 const Siniestro = require("../models/siniestro.model.js");
 const Categoria = require("../models/categoria.model.js");
 const { handleError } = require("../utils/errorHandler");
+const Incidente = require("../models/incidente.model.js");
 // const { userBodySchema } = require("../schema/user.schema");
 
 /**
@@ -27,7 +28,7 @@ const { handleError } = require("../utils/errorHandler");
 async function getSiniestros() {
   try {
     //const siniestros = await Siniestro.find().populate('sin_categoria').exec();
-    return await Siniestro.find().populate('sin_categoria').exec();
+    return await Siniestro.find().populate('sin_categoria').populate('sin_incidente','inc_descripcion').exec();
   } catch (error) {
     handleError(error, "Siniestro.service -> getSiniestros");
   }
@@ -40,9 +41,10 @@ async function getSiniestros() {
  * @param siniestro {Siniestro} - Objeto con los datos del siniestro
  * @returns {Promise<Siniestro|null>}
  */
+
 async function createSiniestro(siniestro) {
   // Esta funcion es similar al singup
-   try {
+  try {
     // const { error } = userBodySchema.validate(user);
     // if (error) return null;
     // const { name, email, roles } = user;
@@ -52,7 +54,10 @@ async function createSiniestro(siniestro) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_superficie, sin_distribucion_fuego /*sin_tipo_bosque, sin_estrategia*/} = siniestro;
+    
+    
+    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_superficie, sin_distribucion_fuego /*sin_tipo_bosque, sin_estrategia*/,sin_incidente} = siniestro;
+
 
     //Buscar la instancia de Categoría existente en base al ID proporcionado en body:
     //const categoria = await Categoria.findById(sin_categoria);
@@ -71,7 +76,7 @@ async function createSiniestro(siniestro) {
       sin_distribucion_fuego,
       //sin_estrategia
       //sin_tipo_bosque
-      //sin_categoria: categoria._id,
+      sin_incidente: incidente._id
     });
     //INSERTO LA ID DEL INCENDIO EN LA CATEGORIA:
     //categoria.cat_incendio.push(newSiniestro._id);
@@ -92,7 +97,7 @@ async function createSiniestro(siniestro) {
  */
 async function getSiniestroById(id) {
   try {
-    return await Siniestro.findById({ _id: id });
+    return await Siniestro.findById({ _id: id }).populate('sin_categoria', 'cat_nivel');
   } catch (error) {
     handleError(error, "siniestro.service -> getSiniestroById");
   }
@@ -176,7 +181,7 @@ async function getEstrategiaSiniestroById(id) {
       }
 
       //Datos que sirven para las estadisticas:
-
+      
       for (let i = 0; i < categorias.length; i++) {
         const categoria = categorias[i];
         if (categoria.cat_nivel == complejidadSiniestro) {
@@ -247,16 +252,75 @@ async function getEstrategiaSiniestroById(id) {
  * @param siniestro
  * @returns {Promise<Siniestro|null>}
  */
-async function updateSiniestro(id, siniestro) {
-  try {
-  //  const { error } = userBodySchema.validate(user);
-  //  if (error) return null;
 
-    return await Siniestro.findByIdAndUpdate(id, siniestro);
-  } catch (error) {
-    handleError(error, "siniestro.service -> updateSiniestro");
+async function updateSiniestro(id, updates) {
+  //Busco, actualizo y devuelvo un documento actualizado de la colección "Siniestro" en la base de datos 
+  const siniestro = await Siniestro.findByIdAndUpdate(id, updates, { new: true }).populate('sin_categoria');
+  //Verifico si la propiedad 'hitos' del objeto 'siniestro' está definida o no.
+  //Si no lo está se inicializa como un arreglo vacío
+  if (!siniestro.hitos) {
+    siniestro.hitos = [];
   }
+  const actualizaciones = Object.keys(updates); //Extraigo las claves de 'updates' y las asigno a la variable 'actualizaciones'
+  //console.log(actualizaciones); //Puedo imprimir en la consola las claves de las propiedades actualizadas
+  //Ahora creo un nuevo arreglo 'nuevosHitos' con el metodo 'map' en el arreglo 'actualizaciones'
+  const nuevosHitos = actualizaciones.map((clave) => {
+    return {
+      //Para cada clave en 'actualizaciones' creo un objeto 'Date' y 'Descripción'
+      fecha: new Date(),
+      descripcion: getHitoDescripcion(clave), //Se obtiene llamando a la función 'getHitoDescripcion' pasando la clave como argumento
+    };
+  });
+
+  //Utilizo el operador de propagación "spread operator" el cual descompone un objeto iterable en sus elementos individuales
+  siniestro.hitos.push(...nuevosHitos); //Tomo cada objeto individual dentro del arreglo 'nuevosHitos' y los agrego uno por uno al final del arreglo 'hitos' del objeto siniestro'
+  const siniestroGuardado = await siniestro.save(); //Guardo el objeto 'siniestro' actualizado en la base de datos
+  console.log('Hitos registrados:', nuevosHitos); //Imprimo en la consola un mensaje junto con el arreglo 'nuevosHitos', lo cual muestra los nuevos hitos generados
+  return siniestroGuardado; //Devuelvo el objeto 'siniestroGuardado' que representa al siniestro actualizado
 }
+
+//Declaro la función 'getHitoDescripcion' que toma el parametro 'action'
+function getHitoDescripcion(action) {
+  let descripcion = '';
+
+  //Utilizo una estructura 'switch' para determinar la descripción adecuada según el valor de 'action'
+  switch (action) {
+    case 'sin_velocidadViento':
+      descripcion = 'Actualización de velocidad del viento';
+      break;
+    case 'sin_temperatura':
+      descripcion = 'Actualización de temperatura';
+      break;
+    case 'sin_humedad':
+      descripcion = 'Actualización de humedad';
+      break;
+    case 'sin_fechaInicio':
+      descripcion = 'Actualización de fecha de inicio';
+      break;
+    case 'sin_fechaTermino':
+      descripcion = 'Actualización de fecha de término';
+      break;
+    case 'sin_latitud':
+      descripcion = 'Actualización de latitud';
+      break;
+    case 'sin_superficie':
+      descripcion = 'Actualización de superficie';
+      break;
+    case 'sin_distribucion_fuego':
+      descripcion = 'Actualización de distribución de fuego';
+      break;
+    case 'sin_categoria':
+      descripcion = 'Actualización de categoría';
+      break;
+    default:
+      descripcion = 'Actualización de siniestro';
+      break;
+  }
+  //Devuelvo el valor de la variable 'descripcion' que contiene la descripcion correspondiente al valor de 'action'
+  return descripcion;
+}
+
+
 
 /**
  * @name deleteSiniestro
@@ -272,11 +336,105 @@ async function deleteSiniestro(id) {
   }
 }
 
+
+
+
+
+
+
+
+//--------------------------------------------------------------- ESTADISTICAS METODOS ----------------------------------------------------------------]
+/*
+async function getSumaTotal() {
+  try {
+    const suma = await Siniestro.aggregate([{ $group: { _id: null, total: { $sum: "$sin_numeroIncendio" } } }]);
+    return suma[0].total;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+*/
+
+
+
+/*
+
+  @name sumarCantidadIDs
+  @description Realiza la sumatoria de los ID de las entidades
+  @returns {Promise<number|null>}
+
+async function getSumarIncendio() {
+  try {
+    const sum = siniestros.reduce((total, siniestro) => total + siniestro._id, 0);
+    return sum;
+  } catch (error) {
+    handleError(error, "siniestro.service -> getSumarIncendio");
+  }
+}
+
+
+async function getEstadisticaCopaById(id) {
+  try {
+
+// Retorna el resultado de la estadística solo con los atributos deseados:(separar con espacio de las comas para que funcione)
+  return await Siniestro.findById({ _id: id }).select(' sin_distribucion_fuego , sin_categoria ');
+
+    //return await Siniestro.findById({ _id: id });
+  } catch (error) {
+    handleError(error, "siniestro.service -> getEstadisticaCopaById");
+  }
+}
+*/
+
+
+/**
+ * @name getEstadisticasSiniestros
+ * @description
+ * @returns {Promise<Siniestro[]|[]>}
+ */
+//async function getSiniestros() {
+//  try {
+//    return await Siniestro.find();
+//  } catch (error) {
+//    handleError(error, "Siniestro.service -> getSiniestros");
+//  }
+//}
+
+
+/**
+ * @name getEstadisticaSiniestroById
+ * @description Obtiene la estadística de los siniestros
+ * @param id {string} - Id del siniestro
+ * @returns {Promise<Siniestro|null>}
+ */
+async function getEstadisticaSiniestroById(id) {
+  try {
+
+// Retorna el resultado de la estadística solo con los atributos deseados:(separar con espacio de las comas para que funcione)
+  return await Siniestro.findById({ _id: id }).select('sin_velocidadViento , sin_temperatura , sin_humedad , sin_latitud , sin_superficie');
+
+    //return await Siniestro.findById({ _id: id });
+  } catch (error) {
+    handleError(error, "siniestro.service -> getEstadisticaSiniestroById");
+  }
+}
+
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------]
+
+
 module.exports = {
   getSiniestros,
   createSiniestro,
   getSiniestroById,
   updateSiniestro,
   deleteSiniestro,
-  getEstrategiaSiniestroById
+  getEstrategiaSiniestroById,
+  getEstadisticaSiniestroById,
+  //getEstadisticaSiniestros,
+  //getEstadisticaCopaById,
+  //getSumarIncendio
+  //getSumaTotal
 };
+

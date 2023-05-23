@@ -4,9 +4,34 @@ const mongoose = require("mongoose");
 
 // Crea el esquema de la coleccion 'incidentes'
 const incidenteSchema = new mongoose.Schema({
-    inc_descripcion:{
+  inc_descripcion:{
     type: String,
     required: true,
+  },
+  inc_estado: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Estado_Incidente",
+    required: true,
+  },
+  inc_brigadista: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Brigadista",
+    required: false,
+  }],
+  inc_uaerea: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Uaerea",
+    required: false,
+  }],
+  inc_uterrestre: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Uterrestre",
+    required: false,
+  }],
+  inc_siniestro:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Siniestro",
+    required: false,
   }
 });
 

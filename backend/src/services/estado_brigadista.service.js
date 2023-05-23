@@ -25,15 +25,6 @@ const { handleError } = require("../utils/errorHandler");
 async function getEstados_Brigadistas() {
   try {
     return await Estado_Brigadista.find().populate('estab_brigadista').exec();
-    
-    /*categorias.forEach((categoria) => {
-      console.log("Categoría:", categoria);
-      console.log("Siniestros asociados:");
-      categoria.cat_incendio.forEach((siniestro) => {
-        console.log(siniestro);
-      });
-    });*/
-
   } catch (error) {
     handleError(error, "Estado_brigadista.service -> getEstado_Brigadista");
   }
@@ -46,17 +37,7 @@ async function getEstados_Brigadistas() {
  * @returns {Promise<Estado_Brigadista|null>}
  */
 async function createEstado_Brigadista(estado_brigadista) {
-  // Esta funcion es similar al singup
    try {
-    // const { error } = userBodySchema.validate(user);
-    // if (error) return null;
-    // const { name, email, roles } = user;
-
-    // const userFound = await User.findOne({ email: user.email });
-    // if (userFound) return null;
-
-    // const rolesFound = await Role.find({ name: { $in: roles } });
-    // const myRole = rolesFound.map((role) => role._id);
     const {estab_descripcion, estab_brigadista} = estado_brigadista;
     const newEstado_Brigadista = new Estado_Brigadista({
       estab_descripcion,

@@ -138,11 +138,45 @@ async function deleteBase(req, res) {
   }
 }
 
+
+
+
+//-------------------------------------------------------------Estadisticas-------------------------------------------------------------------------------||
+
+/**
+ * @name getEstadisticaBaseById
+ * @description Obtiene una  Estadisticabase por su id
+ * @param req {Request}
+ * @param res {Response}
+ */
+async function getEstadisticaBaseById(req, res) {
+  try {
+    const { id } = req.params;
+
+    const base = await BaseService.getEstadisticaBaseById(id);
+    base === null
+      ? respondError(
+          req,
+          res,
+          404,
+          "No se encontro la base solicitada",
+          "Not Found",
+          { message: "Verifique el id ingresado" },
+        )
+      : respondSuccess(req, res, 200, base);
+  } catch (error) {
+    handleError(error, "base.controller -> getEstadisticaBaseById");
+    respondError(req, res, 500, "No se pudo obtener la base");
+  }
+}
+//---------------------------------------------------------------------------------------------------------------------------------------------------------||
+
 module.exports = {
   getBases,
   createBase,
   getBaseById,
   updateBase,
   deleteBase,
+  getEstadisticaBaseById,
   asignarBaseAIncendioController
 };
