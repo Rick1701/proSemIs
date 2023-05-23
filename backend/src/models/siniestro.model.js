@@ -102,7 +102,7 @@ const siniestroSchema = new mongoose.Schema({
   sin_incidente: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Incidente",
-    required: true,
+    required: false,
   }],
   sin_bases_operando: [{
     type: mongoose.Schema.Types.ObjectId,
