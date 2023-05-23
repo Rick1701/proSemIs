@@ -52,7 +52,7 @@ async function createSiniestro(siniestro) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_superficie, sin_distribucion_fuego /*sin_categoria*/} = siniestro;
+    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_superficie, sin_distribucion_fuego, sin_tipo_bosque} = siniestro;
 
     //Buscar la instancia de Categoría existente en base al ID proporcionado en body:
     //const categoria = await Categoria.findById(sin_categoria);
@@ -68,7 +68,8 @@ async function createSiniestro(siniestro) {
       sin_fechaTermino,
       sin_latitud,
       sin_superficie,
-      sin_distribucion_fuego
+      sin_distribucion_fuego,
+      sin_tipo_bosque
       //sin_categoria: categoria._id,
     });
     //INSERTO LA ID DEL INCENDIO EN LA CATEGORIA:
@@ -173,7 +174,6 @@ async function getEstrategiaSiniestroById(id) {
         complejidadSiniestro = 4;
       }
 
-
       //Asignación del incendio a una categoría
       /*categorias.forEach((categoria)=>{
         if(categoria.cat_nivel == complejidadSiniestro){
@@ -182,6 +182,7 @@ async function getEstrategiaSiniestroById(id) {
           return categorias.save();
         }
       });*/
+    
 
       for (let i = 0; i < categorias.length; i++) {
         const categoria = categorias[i];
@@ -192,13 +193,39 @@ async function getEstrategiaSiniestroById(id) {
           break; // Sale del bucle después de guardar la categoría
         }
       }
-      /*if (siniestro.sin_distribucion_fuego == 'copas') {
+      
 
-      } else if (siniestro.sin_distribucion_fuego == 'superficie') {
+      //CONSIDERAR CANTIDAD DE BRIGADAS, UNIDADES Y TIPO DE UNIDADES PARA DETERMINAR ESTRATEGIA
 
-      } else if (siniestro.sin_distribucion_fuego == 'subsuelo') {
+      if (siniestro.sin_distribucion_fuego === 'copas' && comlpejidadSiniestro == 1) {
+        estrategia = 'Aplicar técnicas de combate aéreo y enfocarse en controlar el fuego en la parte superior de los árboles.';
+      } else if ((siniestro.sin_distribucion_fuego === 'copas' && comlpejidadSiniestro == 2)) {
+        estrategia = 'Aplicar técnicas de combate aéreo y enfocarse en controlar el fuego en la parte superior de los árboles.';
+      } else if (siniestro.sin_distribucion_fuego === 'copas' && comlpejidadSiniestro == 3) {
+        estrategia = 'Aplicar técnicas de combate aéreo y enfocarse en controlar el fuego en la parte superior de los árboles.';
+      } else if (siniestro.sin_distribucion_fuego === 'copas' && comlpejidadSiniestro == 4) {
 
-      }*/
+      }
+
+      if (siniestro.sin_distribucion_fuego === 'superficie' && comlpejidadSiniestro == 1) {
+        estrategia = 'Utilizar técnicas de combate terrestre y enfocarse en controlar el fuego en la superficie del suelo.';
+      } else if ((siniestro.sin_distribucion_fuego === 'superficie' && comlpejidadSiniestro == 2)) {
+        estrategia = 'Utilizar técnicas de combate terrestre y enfocarse en controlar el fuego en la superficie del suelo.';
+      } else if (siniestro.sin_distribucion_fuego === 'superficie' && comlpejidadSiniestro == 3) {
+        estrategia = 'Utilizar técnicas de combate terrestre y enfocarse en controlar el fuego en la superficie del suelo.';
+      } else if (siniestro.sin_distribucion_fuego === 'superficie' && comlpejidadSiniestro == 4) {
+
+      }
+
+      if (siniestro.sin_distribucion_fuego === 'subsuelo' && comlpejidadSiniestro == 1) {
+        estrategia = 'Emplear técnicas de combate subterráneo y enfocarse en controlar el fuego que se encuentra bajo la superficie del suelo.';
+      } else if ((siniestro.sin_distribucion_fuego === 'subsuelo' && comlpejidadSiniestro == 2)) {
+        estrategia = 'Emplear técnicas de combate subterráneo y enfocarse en controlar el fuego que se encuentra bajo la superficie del suelo.';
+      } else if (siniestro.sin_distribucion_fuego === 'subsuelo' && comlpejidadSiniestro == 3) {
+        estrategia = 'Emplear técnicas de combate subterráneo y enfocarse en controlar el fuego que se encuentra bajo la superficie del suelo.';
+      } else if (siniestro.sin_distribucion_fuego === 'subsuelo' && comlpejidadSiniestro == 4) {
+
+      }
 
     //}
     //else {

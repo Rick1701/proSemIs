@@ -18,7 +18,7 @@ const { handleError } = require("../utils/errorHandler");
 
 async function getCategorias() {
   try {
-    return await Categoria.find().populate('cat_incendio').exec();
+    return await Categoria.find().populate('cat_incendio').exec();//permite poblar las distintas conecciones fk
 
     /*categorias.forEach((categoria) => {
       console.log("Categoría:", categoria);

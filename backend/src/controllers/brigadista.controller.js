@@ -69,7 +69,7 @@ async function getBrigadistaById(req, res) {
       : respondSuccess(req, res, 200, brigadista);
   } catch (error) {
     handleError(error, "brigadista.controller -> getBrigadistaById");
-    respondError(req, res, 500, "No se pudo obtener al brigadista");
+  respondError(req, res, 500, "No se pudo obtener el brigadista");
   }
 }
 
@@ -88,14 +88,14 @@ async function updateBrigadista(req, res) {
           req,
           res,
           404,
-          "No se encontro al brigadista solicitada",
+          "No se encontro al brigadista solicitado",
           "Not Found",
           { message: "Verifique el id ingresado" },
         )
       : respondSuccess(req, res, 200, brigadista);
   } catch (error) {
     handleError(error, "brigadista.controller -> updateBrigadista");
-    respondError(req, res, 500, "No se pudo actualizar al brigadista");
+    respondError(req, res, 500, "No se pudo actualizar el brigadista");
   }
 }
 
