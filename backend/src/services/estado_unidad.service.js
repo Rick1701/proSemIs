@@ -47,10 +47,11 @@ async function createEstado_unidad(estado_unidad) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { est_uni_descripcion} = estado_unidad;
+    const { est_uni_descripcion, est_uni_aerea, est_uni_terrestre} = estado_unidad;
     const newEstado_unidad = new Estado_unidad({
       est_uni_descripcion,
-      
+      est_uni_aerea,
+      est_uni_terrestre
     });
     return await newEstado_unidad.save();
   } catch (error) {

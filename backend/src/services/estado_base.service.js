@@ -8,6 +8,7 @@ const { handleError } = require("../utils/errorHandler");
  * @typedef Estado_Base
  * @property {string} _id
  * @property {String} est_bas_descripcion
+ * @property {mongoose.Schema.Types.ObjectId} est_bas_base
  */
 
 /**
@@ -17,7 +18,7 @@ const { handleError } = require("../utils/errorHandler");
  */
 async function getEstados_Bases() {
   try {
-    return await Estado_Base.find();
+    return await Estado_Base.find().populate('est_bas_base', 'base_descripcion').exec();
   } catch (error) {
     handleError(error, "Estado_Base.service -> getEstados_Bases");
   }
@@ -41,9 +42,10 @@ async function createEstado_Base(estado_base) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const {est_bas_descripcion} = estado_base;
+    const {est_bas_descripcion, est_bas_base} = estado_base;    
     const newEstado_Base = new Estado_Base({
       est_bas_descripcion,
+      est_bas_base
     });
     return await newEstado_Base.save();
   } catch (error) {
