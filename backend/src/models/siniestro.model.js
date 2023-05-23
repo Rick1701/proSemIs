@@ -2,8 +2,12 @@
 // Importa el modulo 'mongoose' para crear la conexion a la base de datos
 const mongoose = require("mongoose");
 
-// Crea el esquema de la coleccion 'usuarios'
+// Crea el esquema de la coleccion 'siniestros'
 const siniestroSchema = new mongoose.Schema({
+  sin_numeroIncendio:{
+    type:Number,
+    required: false,
+  } ,
   sin_velocidadViento: {
     type: String,
     required: true,
@@ -41,10 +45,16 @@ const siniestroSchema = new mongoose.Schema({
   sin_fechaInicio: {
     type: Date,
     required: true,
+    validate: {
+      validator: function(value) {
+        return value <= this.sin_fechaTermino;
+      },
+      message: 'La fecha de inicio debe ser anterior a la fecha de termino.'
+    }
   },
   sin_fechaTermino: {
     type: Date,
-    required: true,
+    required: false,
   },
   sin_latitud: {
     type: Number,
@@ -65,17 +75,44 @@ const siniestroSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: ["copas","superficie","subsuelo"],
+    validate: {
+      validator: function(value) {
+        return ["copas", "superficie", "subsuelo"].includes(value);
+      },
+      message: 'El valor de sin_distribucion_fuego debe ser "copas", "superficie" o "subsuelo".'
+    }
+  },
+  sin_tipo_bosque: {
+    type: String,
+    required: true,
+    enum: ["monocultivo","nativo"],
+    validate: {
+      validator: function(value) {
+        return ["monocultivo","nativo"].includes(value);
+      },
+      message: 'El valor de sin_tipo_bosque debe ser "monocultivo" o "nativo".'
+    }
   },
   sin_categoria: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Categoria",
-    required: true,
+    required: false,
   },
   sin_incidente: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Incidente",
     required: true,
   }],
+  sin_bases_operando: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Base",
+    required: false,
+  }],
+  sin_estado : {
+    type: String,
+    required: false,
+    enum: ["iniciacion","propagacion","extincion"]
+  }
 });
 
 // Crea el modelo de datos 'Siniestro' a partir del esquema 'siniestroSchema'

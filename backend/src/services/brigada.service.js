@@ -62,7 +62,7 @@ async function createBrigada(brigada) {
     }
     const newBrigada = new Brigada({
       bri_nombre,
-      //bri_cantidad,
+      bri_cantidad,
       bri_especialidad,
       bri_brigadista,
       bri_base: base._id,

@@ -16,6 +16,7 @@ const baseSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+
   base_brigada: [{
     type: mongoose.Schema.Types.ObjectId,
     required: true,
@@ -26,6 +27,22 @@ const baseSchema = new mongoose.Schema({
     required: true,
     ref: "Uaerea"
   }],
+  base_uterrestre: [{
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "Uterrestre"
+  }],
+  base_incendio_actual: {
+  type: mongoose.Schema.Types.ObjectId,
+    ref: "Siniestro",
+    required: false,
+  },
+  base_estado: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Estado_Base",
+    required: true,
+  }
+
 });
 
 // Crea el modelo de datos 'Base' a partir del esquema 'siniestroSchema'
