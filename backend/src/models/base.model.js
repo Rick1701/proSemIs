@@ -37,6 +37,11 @@ const baseSchema = new mongoose.Schema({
     ref: "Siniestro",
     required: false,
   },
+  base_brigadas: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Brigada",
+    required: false,
+  }],
   base_estado: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Estado_Base",

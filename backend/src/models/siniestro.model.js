@@ -72,17 +72,18 @@ const siniestroSchema = new mongoose.Schema({
     }
   },
   sin_distribucion_fuego: {
-    type: String,
-    required: true,
-    enum: ["copas","superficie","subsuelo"],
-    validate: {
-      validator: function(value) {
-        return ["copas", "superficie", "subsuelo"].includes(value);
-      },
-      message: 'El valor de sin_distribucion_fuego debe ser "copas", "superficie" o "subsuelo".'
-    }
-  },
-  sin_tipo_bosque: {
+  type: [String],
+  required: true,
+  validate: {
+    validator: function(value) {
+      // Verificar que todos los valores estén permitidos
+      const allowedValues = ["copas", "superficie", "subsuelo"];
+      return value.every(val => allowedValues.includes(val));
+    },
+    message: 'Los valores de sin_distribucion_fuego deben ser "copas", "superficie" o "subsuelo".'
+  }
+},
+  /*sin_tipo_bosque: {
     type: String,
     required: true,
     enum: ["monocultivo","nativo"],
@@ -92,7 +93,7 @@ const siniestroSchema = new mongoose.Schema({
       },
       message: 'El valor de sin_tipo_bosque debe ser "monocultivo" o "nativo".'
     }
-  },
+  },*/
   sin_categoria: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Categoria",
@@ -112,6 +113,10 @@ const siniestroSchema = new mongoose.Schema({
     type: String,
     required: false,
     enum: ["iniciacion","propagacion","extincion"]
+  },
+  sin_estrategia : {
+    type: String,
+    required: false,
   }
 });
 
