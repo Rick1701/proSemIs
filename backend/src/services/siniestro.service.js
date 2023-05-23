@@ -276,20 +276,13 @@ async function deleteSiniestro(id) {
 
 
 //--------------------------------------------------------------- ESTADISTICAS METODOS ----------------------------------------------------------------]
-
-
 /*
-
-@name sumarCantidadIDs
-@description Realiza la sumatoria de los ID de las entidades
-@returns {Promise<number|null>}
-
-async function sumarCantidadIDs() {
+async function getSumaTotal() {
   try {
-    const count = await Siniestro.countDocuments();
-    return count;
+    const suma = await Siniestro.aggregate([{ $group: { _id: null, total: { $sum: "$sin_numeroIncendio" } } }]);
+    return suma[0].total;
   } catch (error) {
-    handleError(error, "siniestro.service -> sumarCantidadIDs");
+    throw new Error(error.message);
   }
 }
 */
@@ -297,6 +290,21 @@ async function sumarCantidadIDs() {
 
 
 /*
+
+  @name sumarCantidadIDs
+  @description Realiza la sumatoria de los ID de las entidades
+  @returns {Promise<number|null>}
+
+async function getSumarIncendio() {
+  try {
+    const sum = siniestros.reduce((total, siniestro) => total + siniestro._id, 0);
+    return sum;
+  } catch (error) {
+    handleError(error, "siniestro.service -> getSumarIncendio");
+  }
+}
+
+
 async function getEstadisticaCopaById(id) {
   try {
 
@@ -309,11 +317,6 @@ async function getEstadisticaCopaById(id) {
   }
 }
 */
-
-
-
-
-
 
 
 /**
@@ -362,6 +365,7 @@ module.exports = {
   getEstrategiaSiniestroById,
   getEstadisticaSiniestroById,
   //getEstadisticaSiniestros,
-  //getEstadisticaCopaById
-  //sumarCantidadIDs
+  //getEstadisticaCopaById,
+  //getSumarIncendio
+  //getSumaTotal
 };

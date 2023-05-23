@@ -4,6 +4,10 @@ const mongoose = require("mongoose");
 
 // Crea el esquema de la coleccion 'siniestros'
 const siniestroSchema = new mongoose.Schema({
+  sin_numeroIncendio:{
+    type:Number,
+    required: false,
+  } ,
   sin_velocidadViento: {
     type: String,
     required: true,
