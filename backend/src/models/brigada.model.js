@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const brigadaSchema = new mongoose.Schema({
   bri_nombre: {
     type: String,
-    required: true,
+    required: true
   },
   /*bri_cantidad: {
     type: Number,
@@ -15,19 +15,23 @@ const brigadaSchema = new mongoose.Schema({
   bri_especialidad: {
     type: String,
     required: true,
-    enum: ["Combate de incendios forestales","Primeros auxilios y atención médica de emergencia","Rescate y evacuación","Uso de herramientas y equipos","Evaluación y control de riesgos","Navegación y orientación en terreno"],
+    enum: ["Especialistas en ataque directo", "Especialistas en ataque indirecto"]
   },
   bri_brigadista: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Brigadista",
-    required: true,
+    required: true
   }],
-  bri_base: [{
+  bri_base: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Base",
-    required: true,
-  }]
-
+    required: true
+  },
+  bri_estado: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Estado_Brigada",
+    required: true
+  }
 });
 
 // Crea el modelo de datos 'Brigada' a partir del esquema 'brigadaSchema'

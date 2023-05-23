@@ -24,7 +24,7 @@ const { handleError } = require("../utils/errorHandler");
  */
 async function getBrigadistas() {
   try {
-    return await Brigadista.find().populate('brig_estado_brigadista', 'estab_descripcion').populate('brig_brigada', 'bri_nombre').exec();
+    return await Brigadista.find().populate('brig_estado_brigadista', 'estab_descripcion').populate('brig_brigada', 'bri_nombre').populate('brig_incidente', 'inc_descripcion').exec();
   } catch (error) {
     handleError(error, "Brigadista.service -> getBrigadistas");
   }
@@ -148,6 +148,45 @@ async function _updateEstadoBrigadista(brigadista, estado) {
     handleError(error, "brigadista.service -> _updateEstadoBrigadista");
   }
 }
+async function updateBrigadaEstado(brigadistaId, estado) {
+  try {
+    const brigadista = await Brigadista.findById(brigadistaId);
+    if (!brigadista) {
+      throw new Error("No se encontró el brigadista.");
+    }
+
+    brigadista.brig_estado_brigadista = estado;
+    await brigadista.save();
+
+    // Actualizar el estado de la brigada
+    const brigada = await Brigada.findById(brigadista.brig_brigada);
+    if (!brigada) {
+      throw new Error("No se encontró la brigada del brigadista.");
+    }
+
+    const brigadistas = brigada.bri_brigadista;
+
+    // Verificar si todos los brigadistas tienen el estado "No Disponible"
+    const todosNoDisponibles = brigadistas.every(
+      (brigadista) =>
+        brigadista.brig_estado_brigadista.estab_descripcion === "No Disponible"
+    );
+
+    // Actualizar el estado de la brigada según la condición
+    if (todosNoDisponibles) {
+      brigada.bri_estado.estab_descripcion = "Parcialmente Disponible";
+    } else {
+      brigada.bri_estado.estab_descripcion = "Totalmente Disponible";
+    }
+
+    await brigada.save();
+
+    return brigadista;
+  } catch (error) {
+    handleError(error, "brigadista.service -> updateBrigadaEstado");
+  }
+}
+
 module.exports = {
   getBrigadistas,
   createBrigadista,
@@ -155,4 +194,5 @@ module.exports = {
   updateBrigadista,
   deleteBrigadista,
   updateBrigadistaEstado,
+  updateBrigadaEstado
 };

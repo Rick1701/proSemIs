@@ -14,10 +14,10 @@ const router = express.Router();
 
 // Define las rutas para las estado_brigadaes
 router.get("/", estado_brigadaController.getEstados_Brigadas);
-router.post("/" /*, authoMiddleware.isAdmin,*/, estado_brigadaController.createEstado_Brigadista);
-router.get("/:id", estado_brigadaController.getEstado_BrigadistaById);
-router.put("/:id" /*, authoMiddleware.isAdmin,*/, estado_brigadaController.updateEstado_Brigadista);
-router.delete("/:id"/*, authoMiddleware.isAdmin,*/, estado_brigadaController.deleteEstado_Brigadista);
+router.post("/", estado_brigadaController.createEstado_Brigada);
+router.get("/:id", estado_brigadaController.getEstado_BrigadaById);
+router.put("/:id", estado_brigadaController.updateEstado_Brigada);
+router.delete("/:id", estado_brigadaController.deleteEstado_Brigada);
 
 // Exporta el enrutador
 module.exports = router;

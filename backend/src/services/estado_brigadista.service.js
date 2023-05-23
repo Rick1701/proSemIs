@@ -25,15 +25,6 @@ const { handleError } = require("../utils/errorHandler");
 async function getEstados_Brigadistas() {
   try {
     return await Estado_Brigadista.find().populate('estab_brigadista').exec();
-    
-    /*categorias.forEach((categoria) => {
-      console.log("Categoría:", categoria);
-      console.log("Siniestros asociados:");
-      categoria.cat_incendio.forEach((siniestro) => {
-        console.log(siniestro);
-      });
-    });*/
-
   } catch (error) {
     handleError(error, "Estado_brigadista.service -> getEstado_Brigadista");
   }

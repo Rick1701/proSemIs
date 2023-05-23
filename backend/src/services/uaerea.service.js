@@ -3,19 +3,14 @@
 const Uaerea = require("../models/uaerea.model.js");
 const Estado_Unidad = require("../models/estado_unidad.model.js");
 const Base = require("../models/base.model.js");
+const Incidente = require("../models/incidente.model.js");
 const { handleError } = require("../utils/errorHandler");
 // const { userBodySchema } = require("../schema/user.schema");
 
 /**
  * @typedef Uaerea
  * @property {string} _id
- * @property {String} sin_velocidadViento
- * @property {String} sin_direccionViento
- * @property {String} sin_temperatura
- * @property {String} sin_humedad
- * @property {String} sin_presion
- * @property {Date} sin_fechaInicio
- * @property {Date} sin_fechaTermino
+ * @property {String} uaerea_nombre
  */
 
 /**
@@ -25,7 +20,11 @@ const { handleError } = require("../utils/errorHandler");
  */
 async function getUaereas() {
   try {
-    return await Uaerea.find();
+    return await Uaerea.find()
+      .populate('uaerea_estado_unidad' ).exec();
+      /*.populate('uarea_base', 'base_descripcion')
+      .populate('uarea_incidente', 'inc_descripcion')
+      .exec();*/
   } catch (error) {
     handleError(error, "Uaerea.service -> getUaereas");
   }
@@ -39,10 +38,9 @@ async function getUaereas() {
  */
 async function createUaerea(uaerea) {
   try {
-    const { uaerea_nombre, uaerea_estado_unidad, uaerea_incidente, uaerea_base } = uaerea;
-    const estado_unidad = await Estado_Unidad.findById(uaerea_estado_unidad);
+    const { uaerea_nombre, uaerea_base } = uaerea;
+    const estado_unidad = await Estado_Unidad.findOne({ est_uni_descripcion: 'Operativa' });
     const base = await Base.findById(uaerea_base);
-
     if(!estado_unidad && !base){
       handleError(error, "uaerea.service -> createUaerea");
     }
@@ -108,11 +106,45 @@ async function deleteUaerea(id) {
     handleError(error, "uaerea.service -> deleteUaerea");
   }
 }
+async function updateUaereaEstado(uaereaId, estado) {
+  try {
+    const uaerea = await Uaerea.findById(uaereaId);
+    if (!uaerea) {
+      throw new Error("No se encontró la unidad aerea.");
+    }
+    await _updateEstadoUaerea(uaerea, estado);
+    return uaerea;
+  } catch (error) {
+    handleError(error, "brigadista.service -> updateBrigadistaEstado");
+  }
+}
 
+async function _updateEstadoUaerea(uaerea, estado) {
+  try {
+    const estadoUaerea = await Estado_Unidad.findOne({ est_uni_descripcion: estado });
+    if (!estadoUaerea) {
+      throw new Error("No se encontró el estado del brigadista.");
+    }
+
+    uaerea.uaerea_estado_unidad = estadoUaerea._id;
+    await uaerea.save();
+
+    // Si el estado es 'No Operativa', se desasocia la unidad del incidente actual
+    if (estado === "No Operativa" && uaerea.uaerea_incidente) {
+      const incidente = await Incidente.findById(uaerea.uaerea_incidente);
+      if (incidente) {
+        incidente.removeUaerea(uaerea._id);
+      }
+    }
+  } catch (error) {
+    handleError(error, "uaerea.service -> _updateEstadoUaerea");
+  }
+}
 module.exports = {
   getUaereas,
   createUaerea,
   getUaereaById,
   updateUaerea,
   deleteUaerea,
+  updateUaereaEstado
 };

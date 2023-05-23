@@ -71,6 +71,11 @@ const siniestroSchema = new mongoose.Schema({
     ref: "Categoria",
     required: true,
   },
+  sin_incidente: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Incidente",
+    required: true,
+  }],
 });
 
 // Crea el modelo de datos 'Siniestro' a partir del esquema 'siniestroSchema'

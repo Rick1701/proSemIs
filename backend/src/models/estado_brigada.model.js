@@ -21,4 +21,4 @@ const estado_brigadaSchema = new mongoose.Schema({
 const Estado_Brigada = mongoose.model("Estado_Brigada", estado_brigadaSchema);
 
 // Exporta el modelo de datos 'Estado_Brigada}'
-module.exports = Estado_Brigada};
+module.exports = Estado_Brigada;

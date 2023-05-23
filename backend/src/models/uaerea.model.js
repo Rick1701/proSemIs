@@ -21,7 +21,7 @@ const uaereaSchema = new mongoose.Schema({
   uarea_base: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Base",
-    required: false,
+    required: true,
   },
 });
 
