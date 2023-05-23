@@ -18,7 +18,7 @@ const { handleError } = require("../utils/errorHandler");
  * @description Obtiene todas las brigadas
  * @returns {Promise<Brigada[]|[]>}
  */
-async function getBrigadas() {
+async function getBrigadas(){
   try {
     //return await Brigada.find().populate('bri_brigadista', 'brig_rut brig_nombres brig_apellidos brig_estado_brigadista.estab_descripcion').exec();
     return await Brigada.find()
@@ -82,7 +82,16 @@ async function createBrigada(brigada) {
  */
 async function getBrigadaById(id) {
   try {
-    return await Brigada.findById({ _id: id });
+    return await Brigada.findById({ _id: id })
+    .populate({
+      path: 'bri_brigadista',
+      populate: {
+        path: 'brig_estado_brigadista',
+        select: 'estab_descripcion'
+      }
+    })
+    .populate('bri_estado', 'estabr_descripcion')
+    .exec();
   } catch (error) {
     handleError(error, "brigada.service -> getBrigadaById");
   }
