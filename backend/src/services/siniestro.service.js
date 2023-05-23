@@ -42,7 +42,7 @@ async function getSiniestros() {
  */
 async function createSiniestro(siniestro) {
   // Esta funcion es similar al singup
-   try {
+  try {
     // const { error } = userBodySchema.validate(user);
     // if (error) return null;
     // const { name, email, roles } = user;
@@ -174,6 +174,15 @@ async function getEstrategiaSiniestroById(id) {
         complejidadSiniestro = 4;
       }
 
+      //Asignación del incendio a una categoría
+      /*categorias.forEach((categoria)=>{
+        if(categoria.cat_nivel == complejidadSiniestro){
+          categoria.cat_incendio.push(id);
+          siniestro.sin_categoria = categoria._id;
+          return categorias.save();
+        }
+      });*/
+    
 
       for (let i = 0; i < categorias.length; i++) {
         const categoria = categorias[i];
@@ -259,11 +268,100 @@ async function deleteSiniestro(id) {
   }
 }
 
+
+
+
+
+
+
+
+//--------------------------------------------------------------- ESTADISTICAS METODOS ----------------------------------------------------------------]
+
+
+/*
+
+@name sumarCantidadIDs
+@description Realiza la sumatoria de los ID de las entidades
+@returns {Promise<number|null>}
+
+async function sumarCantidadIDs() {
+  try {
+    const count = await Siniestro.countDocuments();
+    return count;
+  } catch (error) {
+    handleError(error, "siniestro.service -> sumarCantidadIDs");
+  }
+}
+*/
+
+
+
+/*
+async function getEstadisticaCopaById(id) {
+  try {
+
+// Retorna el resultado de la estadística solo con los atributos deseados:(separar con espacio de las comas para que funcione)
+  return await Siniestro.findById({ _id: id }).select(' sin_distribucion_fuego , sin_categoria ');
+
+    //return await Siniestro.findById({ _id: id });
+  } catch (error) {
+    handleError(error, "siniestro.service -> getEstadisticaCopaById");
+  }
+}
+*/
+
+
+
+
+
+
+
+/**
+ * @name getEstadisticasSiniestros
+ * @description
+ * @returns {Promise<Siniestro[]|[]>}
+ */
+//async function getSiniestros() {
+//  try {
+//    return await Siniestro.find();
+//  } catch (error) {
+//    handleError(error, "Siniestro.service -> getSiniestros");
+//  }
+//}
+
+
+/**
+ * @name getEstadisticaSiniestroById
+ * @description Obtiene la estadística de los siniestros
+ * @param id {string} - Id del siniestro
+ * @returns {Promise<Siniestro|null>}
+ */
+async function getEstadisticaSiniestroById(id) {
+  try {
+
+// Retorna el resultado de la estadística solo con los atributos deseados:(separar con espacio de las comas para que funcione)
+  return await Siniestro.findById({ _id: id }).select('sin_velocidadViento , sin_temperatura , sin_humedad , sin_latitud , sin_superficie');
+
+    //return await Siniestro.findById({ _id: id });
+  } catch (error) {
+    handleError(error, "siniestro.service -> getEstadisticaSiniestroById");
+  }
+}
+
+
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------]
+
+
 module.exports = {
   getSiniestros,
   createSiniestro,
   getSiniestroById,
   updateSiniestro,
   deleteSiniestro,
-  getEstrategiaSiniestroById
+  getEstrategiaSiniestroById,
+  getEstadisticaSiniestroById,
+  //getEstadisticaSiniestros,
+  //getEstadisticaCopaById
+  //sumarCantidadIDs
 };

@@ -1,6 +1,8 @@
 "use strict";
 // Importa el modelo de datos 'User'
 const Base = require("../models/base.model.js");
+const Uaerea = require("../models/uaerea.model.js");
+const Uterrestre = require("../models/uterrestre.model.js");
 const Siniestro = require("../models/siniestro.model.js");
 const Estado_Base = require("../models/estado_base.model.js");
 const { handleError } = require("../utils/errorHandler");
@@ -129,11 +131,52 @@ async function deleteBase(id) {
   }
 }
 
+//-----------------------------------------------------------------------Estadisticas----------------------------------------------------------|
+// Ruta GET para obtener la entidad con proyección de atributos
+//router.get('/entidades', async (req, res) => {
+ // try {
+    // Realizar la consulta y especificar los atributos deseados en el método select()
+//    const entidades = await Entidad.find().select('latitud, incendios_asistidos');
+
+//    res.json(entidades);
+//  } catch (error) {
+    // Manejo de errores
+ //   console.error(error);
+  //  res.status(500).json({ error: 'Error en el servidor' });
+ // }
+//});
+
+
+
+
+/**
+ * @name getEstadisticaBaseById
+ * @description Obtiene la estadística de una Base
+ * @param id {string} - Id de la base
+ * @returns {Promise<Base|null>}
+ */
+async function getEstadisticaBaseById(id) {
+  try {
+
+    //me mostrara solo lo que quiero ver
+    return await Base.findById({ _id: id }).select('base_latitud , base_incendios_asistidos');
+   // return await Base.findById({ _id: id });
+  } catch (error) {
+    handleError(error, "base.service -> getEstadisticaBaseById");
+  }
+}
+
+
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------|
+
 module.exports = {
   getBases,
   createBase,
   getBaseById,
   updateBase,
   deleteBase,
+  getEstadisticaBaseById,
   asignarBaseAIncendio
 };
