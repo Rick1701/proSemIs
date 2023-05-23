@@ -50,7 +50,7 @@ async function createBrigada(brigada) {
       bri_nombre,
       bri_cantidad,
       bri_especialidad,
-      bri_base
+      bri_base,
       bri_brigadista
     });
     return await newBrigada.save();
