@@ -190,80 +190,38 @@ async function getEstrategiaSiniestroById(id) {
  * @param siniestro
  * @returns {Promise<Siniestro|null>}
  */
-/*async function updateSiniestro(id, siniestro) {
-  try {
-  //  const { error } = userBodySchema.validate(user);
-  //  if (error) return null;
 
-    return await Siniestro.findByIdAndUpdate(id, siniestro);
-  } catch (error) {
-    handleError(error, "siniestro.service -> updateSiniestro");
-  }
-}*/
-/*async function updateSiniestro(id, updates, action) {
-  try {
-    const siniestro = await Siniestro.findByIdAndUpdate(id, updates, { new: true }).populate('sin_categoria');
-    
-    if (!siniestro.hitos) {
-      siniestro.hitos = []; // Inicializar como un array vacío si no existe
-    }
-    
-    const nuevoHito = {
-      fecha: new Date(),
-      descripcion: getHitoDescripcion(action),
-    };
-    
-    siniestro.hitos.push(nuevoHito);
-    
-    const siniestroGuardado = await siniestro.save();
-    console.log('Hito registrado:', nuevoHito.descripcion);
-    
-    return siniestroGuardado;
-  } catch (error) {
-    handleError(error, "siniestro.service -> updateSiniestro");
-  }
-}*/
-/*
 async function updateSiniestro(id, updates) {
+  //Busco, actualizo y devuelvo un documento actualizado de la colección "Siniestro" en la base de datos 
   const siniestro = await Siniestro.findByIdAndUpdate(id, updates, { new: true }).populate('sin_categoria');
+  //Verifico si la propiedad 'hitos' del objeto 'siniestro' está definida o no.
+  //Si no lo está se inicializa como un arreglo vacío
   if (!siniestro.hitos) {
     siniestro.hitos = [];
   }
-  console.log(Object.keys(updates))
-  const nuevoHito = {
-    fecha: new Date(),
-    descripcion: getHitoDescripcion(Object.keys(updates)[0]),
-  };
-  siniestro.hitos.push(nuevoHito);
-  const siniestroGuardado = await siniestro.save();
-  console.log('Hito registrado:', nuevoHito);
-  return siniestroGuardado;
-}
-*/
-async function updateSiniestro(id, updates) {
-  const siniestro = await Siniestro.findByIdAndUpdate(id, updates, { new: true }).populate('sin_categoria');
-  if (!siniestro.hitos) {
-    siniestro.hitos = [];
-  }
-  const actualizaciones = Object.keys(updates);
-  console.log(actualizaciones);
-  
+  const actualizaciones = Object.keys(updates); //Extraigo las claves de 'updates' y las asigno a la variable 'actualizaciones'
+  //console.log(actualizaciones); //Puedo imprimir en la consola las claves de las propiedades actualizadas
+  //Ahora creo un nuevo arreglo 'nuevosHitos' con el metodo 'map' en el arreglo 'actualizaciones'
   const nuevosHitos = actualizaciones.map((clave) => {
     return {
+      //Para cada clave en 'actualizaciones' creo un objeto 'Date' y 'Descripción'
       fecha: new Date(),
-      descripcion: getHitoDescripcion(clave),
+      descripcion: getHitoDescripcion(clave), //Se obtiene llamando a la función 'getHitoDescripcion' pasando la clave como argumento
     };
   });
 
-  siniestro.hitos.push(...nuevosHitos);
-  const siniestroGuardado = await siniestro.save();
-  console.log('Hitos registrados:', nuevosHitos);
-  return siniestroGuardado;
+  //Utilizo el operador de propagación "spread operator" el cual descompone un objeto iterable en sus elementos individuales
+  siniestro.hitos.push(...nuevosHitos); //Tomo cada objeto individual dentro del arreglo 'nuevosHitos' y los agrego uno por uno al final del arreglo 'hitos' del objeto siniestro'
+  const siniestroGuardado = await siniestro.save(); //Guardo el objeto 'siniestro' actualizado en la base de datos
+  console.log('Hitos registrados:', nuevosHitos); //Imprimo en la consola un mensaje junto con el arreglo 'nuevosHitos', lo cual muestra los nuevos hitos generados
+  return siniestroGuardado; //Devuelvo el objeto 'siniestroGuardado' que representa al siniestro actualizado
 }
 
+//Declaro la función 'getHitoDescripcion' que toma el parametro 'action'
 function getHitoDescripcion(action) {
   let descripcion = '';
 
+  //Utilizo una estructura 'switch' para determinar la descripción adecuada según el valor de 'action'
   switch (action) {
     case 'sin_velocidadViento':
       descripcion = 'Actualización de velocidad del viento';
@@ -296,7 +254,7 @@ function getHitoDescripcion(action) {
       descripcion = 'Actualización de siniestro';
       break;
   }
-
+  //Devuelvo el valor de la variable 'descripcion' que contiene la descripcion correspondiente al valor de 'action'
   return descripcion;
 }
 
