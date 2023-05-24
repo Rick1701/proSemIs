@@ -45,12 +45,12 @@ const siniestroSchema = new mongoose.Schema({
   sin_fechaInicio: {
     type: Date,
     required: true,
-    validate: {
+    /*validate: {
       validator: function(value) {
         return value <= this.sin_fechaTermino;
       },
       message: 'La fecha de inicio debe ser anterior a la fecha de termino.'
-    }
+    }*/
   },
   sin_fechaTermino: {
     type: Date,

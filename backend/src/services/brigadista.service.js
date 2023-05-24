@@ -57,7 +57,6 @@ async function createBrigadista(brigadista) {
       brig_edad,
       brig_estado_brigadista: estado_brigadista._id,
       brig_brigada: brigada._id,
-      brig_incidente: null,
     });
     estado_brigadista.estab_brigadista.push(newBrigadista._id);
     await estado_brigadista.save();

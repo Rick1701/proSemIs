@@ -19,6 +19,7 @@ router.get("/:id", baseController.getBaseById);
 router.put("/:id" /*, authoMiddleware.isAdmin,*/, baseController.updateBase);
 router.delete("/:id"/*, authoMiddleware.isAdmin,*/, baseController.deleteBase);
 router.get("/estadisticabase/:id", baseController.getEstadisticaBaseById);
+router.get("/asignarbase/:baseId/:incendioId", baseController.asignarBaseAIncendioController);
 
 // Exporta el enrutador
 module.exports = router;
