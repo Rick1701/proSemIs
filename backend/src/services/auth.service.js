@@ -7,13 +7,13 @@ const { configEnv } = require("../config/configEnv.js");
 const { handleError } = require("../utils/errorHandler");
 
 const { JWT_SECRET } = configEnv();
-/*
+
 /**
  * @name signUp
  * @description Registra un nuevo usuario
  * @param user {User} - Objeto con los datos del usuario
  * @returns {Promise<*>}
- */
+ *//*
 async function signUp(user) {
   try {
     const { name, email, roles } = user;
@@ -62,6 +62,6 @@ async function signIn(user) {
 }
 
 module.exports = {
-  signIn,
-  signUp
+  signIn
+  //signUp
 };
