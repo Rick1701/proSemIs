@@ -60,7 +60,7 @@ function Dashboard({ children }) {
                 textAlign: 'center', // Añade la alineación centrada
               }}
             >
-              SISTEMA DE ENFRENTAMIENTO TEMPRANO DE SINIESTROS (SES)
+              SISTEMA DE ENFRENTAMIENTO TEMPRANO DE SINIESTROS (SETS)
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">

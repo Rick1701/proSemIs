@@ -10,7 +10,7 @@ const SiniestrosListado = () => {
   const [siniestros, setSiniestros] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3000/api/siniestro')
+    axios.get('http://localhost:3001/api/siniestro')
       .then(response => {
         setSiniestros(response.data.data); // Modifica esta línea
       })
