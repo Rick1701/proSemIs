@@ -18,6 +18,11 @@ const uterrestreSchema = new mongoose.Schema({
     ref: "Incidente",
     default: null,
   },
+  uterrestre_base: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Base",
+    required: true,
+  },
 });
 
 // Crea el modelo de datos 'Uterrestre' a partir del esquema 'uterrestreSchema'

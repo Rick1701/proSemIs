@@ -55,38 +55,58 @@ async function createIncidente(inc_descripcion, inc_brigadista, inc_uaerea, inc_
         brigadista.brig_incidente = [newIncidente._id];
       }
       await brigadista.save();
-      
-    } else if (inc_uaerea) {
-      const uaerea = await Uaerea.findById(inc_uaerea).populate('uaerea_estado_unidad').exec();
+    }else if (inc_uaerea) {
+      console.log("inc_uaerea:", inc_uaerea);
+      const uaerea = await Uaerea.findById(inc_uaerea).populate("uaerea_estado_unidad").exec();
       if (!uaerea) {
-        handleError(error,"No se encontró la unidad aérea.");
+        throw new Error("No se encontró la unidad aérea.");
       }
-      console.log(uaerea_estado_unidad)
       if (uaerea.uaerea_estado_unidad.est_uni_descripcion !== "Operativa") {
-        handleError(error,"No se puede asociar la unidad aerea. La unidad aerea no está operativa.");
+        throw new Error(
+          "No se puede asociar la unidad aérea. La unidad aérea no está operativa."
+        );
       }
+      // Actualizar el estado de la unidad aérea a 'No Operativa'
+      await updateUaereaEstado(uaerea, "No Operativa");
       newIncidente = new Incidente({
         inc_descripcion,
-        inc_uaerea: uaerea._id,
         inc_siniestro: inc_siniestro
       });
-      // Actualizar el estado de la uaerea 'No Operativa'
+      // Actualizar el estado de la unidad a 'No Operativa'
       await updateUaereaEstado(uaerea, "No Operativa");
+      // Guardar la _id del incidente en el modelo de la unidad asociada
+      if (uaerea.uni_incidente) {
+        uaerea.uni_incidente.push(newIncidente._id);
+      } else {
+        uaerea.uni_incidente = [newIncidente._id];
+      }
+      await uaerea.save();
     } else if (inc_uterrestre) {
-      const uterrestre = await Uterrestre.findById(inc_uterrestre).populate(uterrestre_estado_unidad).exec();
+      console.log("inc_uterrestre:", inc_uterrestre);
+      const uterrestre = await Uterrestre.findById(inc_uterrestre).populate("uterrestre_estado_unidad").exec();
       if (!uterrestre) {
-        handleError(error,"No se encontró la unidad terrestre.");
+        throw new Error("No se encontró la unidad terrestre.");
       }
       if (uterrestre.uterrestre_estado_unidad.est_uni_descripcion !== "Operativa") {
-        handleError(error,"No se puede asociar la unidad terrestre. La unidad terrestre no está operativa.");
+        throw new Error(
+          "No se puede asociar la unidad terrestre. La unidad terrestre no está operativa."
+        );
       }
+      // Actualizar el estado de la unidad terrestre a 'No Operativa'
+      await updateUterrestreEstado(uterrestre, "No Operativa");
       newIncidente = new Incidente({
         inc_descripcion,
-        inc_uterrestre: uterrestre._id,
         inc_siniestro: inc_siniestro
       });
-      // Actualizar el estado de la uaerea 'No Operativa'
+      // Actualizar el estado de la unidad a 'No Operativa'
       await updateUterrestreEstado(uterrestre, "No Operativa");
+      // Guardar la _id del incidente en el modelo de la unidad asociada
+      if (uterrestre.uni_incidente) {
+        uterrestre.uni_incidente.push(newIncidente._id);
+      } else {
+        uterrestre.uni_incidente = [newIncidente._id];
+      }
+      await uterrestre.save();
     } else {
       newIncidente = new Incidente({
         inc_descripcion,
