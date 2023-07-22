@@ -60,7 +60,7 @@ async function createBase(base) {
       //base_estado: estado_base._id
     });
     //estado_base.est_bas_base.push(newBase._id);
-    await estado_base.save();
+    //await estado_base.save();
     return await newBase.save();
   } catch (error) {
     handleError(error, "base.service -> createBase");
