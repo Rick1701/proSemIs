@@ -77,7 +77,7 @@ async function asignarBaseAIncendioController(req, res) {
   const baseId = req.params.baseId; // Obtener el ID de la base de los parámetros de la solicitud
   const incendioId = req.params.incendioId; // Obtener el ID del incendio de los parámetros de la solicitud
 
-  const resultado = await baseService.asignarBaseAIncendio(baseId, incendioId);
+  const resultado = await BaseService.asignarBaseAIncendio(baseId, incendioId);
 
   if (resultado) {
     res.status(200).json({ message: "La base se ha asociado correctamente al incendio." });

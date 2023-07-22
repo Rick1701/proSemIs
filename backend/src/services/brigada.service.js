@@ -54,19 +54,18 @@ async function createBrigada(brigada) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { bri_nombre, /*bri_cantidad*/ bri_especialidad, bri_brigadista, bri_base, bri_estado } = brigada;
+    const { bri_nombre, bri_especialidad, /*bri_brigadista*/ bri_base/*bri_estado*/ } = brigada;
     const base = await Base.findById(bri_base);
-    const estado_brigada = await Estado_Brigada.findById(bri_estado);
-    if (!base || !estado_brigada) {
+    //const estado_brigada = await Estado_Brigada.findById(bri_estado);
+    if (!base /*|| !estado_brigada*/) {
       handleError(error, "brigada.service -> createBrigada");
     }
     const newBrigada = new Brigada({
       bri_nombre,
-      bri_cantidad,
       bri_especialidad,
-      bri_brigadista,
+      //bri_brigadista,
       bri_base: base._id,
-      bri_estado: estado_brigada._id,
+      //bri_estado: estado_brigada._id,
     });
     return await newBrigada.save();
   } catch (error) {

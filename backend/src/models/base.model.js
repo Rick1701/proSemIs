@@ -19,17 +19,17 @@ const baseSchema = new mongoose.Schema({
 
   base_brigada: [{
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
+    required: false,
     ref:"Brigada"
   }],
   base_uaerea: [{
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
+    required: false,
     ref: "Uaerea"
   }],
   base_uterrestre: [{
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
+    required: false,
     ref: "Uterrestre"
   }],
   base_incendio_actual: {
@@ -45,7 +45,7 @@ const baseSchema = new mongoose.Schema({
   base_estado: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Estado_Base",
-    required: true,
+    required: false,
   }
 
 });

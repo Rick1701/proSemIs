@@ -48,11 +48,8 @@ async function createBase(base) {
 
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
-    const { base_descripcion,base_latitud,base_incendios_asistidos, base_brigada, base_uaerea, base_uterrestre, base_estado} = base;
-    const estado_base = await Estado_Base.findById(base_estado);
-    if(!estado_base){
-      handleError(error, "base.service -> createBase");
-    }
+    const { base_descripcion,base_latitud,base_incendios_asistidos, base_brigada, base_uaerea, base_uterrestre, /*base_estado*/} = base;
+    
     const newBase = new Base({
       base_descripcion,
       base_latitud,
@@ -60,10 +57,10 @@ async function createBase(base) {
       base_brigada,
       base_uaerea,
       base_uterrestre,
-      base_estado: estado_base._id
+      //base_estado: estado_base._id
     });
-    estado_base.est_bas_base.push(newBase._id);
-    await estado_base.save();
+    //estado_base.est_bas_base.push(newBase._id);
+    //await estado_base.save();
     return await newBase.save();
   } catch (error) {
     handleError(error, "base.service -> createBase");
@@ -91,7 +88,7 @@ async function asignarBaseAIncendio(baseId, incendioId) {
     const incendio = await Siniestro.findById(incendioId);
 
     if (base && incendio) {
-      incendio.base_incendio_actual = base._id;
+      incendio.sin_bases_operando = base._id;
       await incendio.save();
       return true; // Indica que la asociación se realizó con éxito
     } else {

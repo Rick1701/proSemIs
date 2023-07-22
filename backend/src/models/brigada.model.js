@@ -8,10 +8,6 @@ const brigadaSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  /*bri_cantidad: {
-    type: Number,
-    required: true,
-  },*/
   bri_especialidad: {
     type: String,
     required: true,
@@ -20,7 +16,7 @@ const brigadaSchema = new mongoose.Schema({
   bri_brigadista: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Brigadista",
-    required: true
+    required: false
   }],
   bri_base: {
     type: mongoose.Schema.Types.ObjectId,
@@ -30,7 +26,7 @@ const brigadaSchema = new mongoose.Schema({
   bri_estado: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Estado_Brigada",
-    required: true
+    required: false
   }
 });
 

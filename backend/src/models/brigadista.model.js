@@ -39,7 +39,7 @@ const brigadistaSchema = new mongoose.Schema({
   brig_incidente: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Incidente",
-    default: null,
+    required: false,
   },
 });
 

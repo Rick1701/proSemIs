@@ -18,29 +18,44 @@ async function getIncidentes() {
     handleError(error, "Incidente.service -> getIncidentes");
   }
 }
+
+
+
+
 async function createIncidente(inc_descripcion, inc_brigadista, inc_uaerea, inc_uterrestre, inc_siniestro) {
   try {
     const estado_incidente = await Estado_Incidente.findOne({ est_inc_descripcion: 'En proceso' });
     if (!estado_incidente) {
-      handleError(error,"No se encontró el estado de incidente 'En proceso'.");
+      handleError(error, "No se encontró el estado de incidente 'En proceso'.");
     }
     let newIncidente;
     if (inc_brigadista) {
       const brigadista = await Brigadista.findById(inc_brigadista).populate('brig_estado_brigadista').exec();
       if (!brigadista) {
-        handleError(error,"No se encontró el brigadista.");
+        handleError(error, "No se encontró el brigadista.");
       }
-      console.log(brigadista)
+
       if (brigadista.brig_estado_brigadista.estab_descripcion !== "Disponible") {
-        handleError(error,"No se puede asociar el incidente. El brigadista no está disponible.");
+        handleError(error, "No se puede asociar el incidente. El brigadista no está disponible.");
       }
       newIncidente = new Incidente({
         inc_descripcion,
         inc_brigadista: brigadista._id,
         inc_siniestro: inc_siniestro
       });
+
       // Actualizar el estado del brigadista a 'No Disponible'
       await updateBrigadistaEstado(brigadista, "No Disponible");
+
+      // Guardar la _id del incidente en el modelo del brigadista asociado
+      
+      if (brigadista.brig_incidente) {
+        brigadista.brig_incidente.push(newIncidente._id);
+      } else {
+        brigadista.brig_incidente = [newIncidente._id];
+      }
+      await brigadista.save();
+      
     } else if (inc_uaerea) {
       const uaerea = await Uaerea.findById(inc_uaerea).populate('uaerea_estado_unidad').exec();
       if (!uaerea) {
@@ -85,6 +100,7 @@ async function createIncidente(inc_descripcion, inc_brigadista, inc_uaerea, inc_
     handleError(error, "Incidente.service -> createIncidente");
   }
 }
+
 async function getIncidenteById(id) {
   try {
     return await Incidente.findById(id).populate('inc_siniestro').populate('inc_brigadista','brig_nombres brig_apellidos brig_rut').exec();
