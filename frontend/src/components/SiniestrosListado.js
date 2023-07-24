@@ -10,9 +10,10 @@ const SiniestrosListado = () => {
   const [siniestros, setSiniestros] = useState([]);
 
   useEffect(() => {
+    // Obtener los siniestros
     axios.get('http://localhost:3001/api/siniestro')
       .then(response => {
-        setSiniestros(response.data.data); // Modifica esta línea
+        setSiniestros(response.data.data);
       })
       .catch(error => {
         console.error('Error al obtener los siniestros:', error);
@@ -20,6 +21,8 @@ const SiniestrosListado = () => {
   }, []);
 
   console.log('hola', siniestros); // Verifica si se están recibiendo los datos correctamente
+
+
 
   if (!Array.isArray(siniestros)) {
     return <p>No se encontraron siniestros.</p>;
@@ -42,24 +45,28 @@ const SiniestrosListado = () => {
     { field: 'sin_estrategia', headerName: 'Estrategia', width: 150 },
   ];
 
-  const rows = siniestros.map(siniestro => ({
-    id: siniestro._id,
-    sin_numeroIncendio: siniestro.sin_numeroIncendio,
-    sin_velocidadViento: siniestro.sin_velocidadViento,
-    sin_temperatura: siniestro.sin_temperatura,
-    sin_humedad: siniestro.sin_humedad,
-    sin_fechaInicio: siniestro.sin_fechaInicio,
-    sin_fechaTermino: siniestro.sin_fechaTermino,
-    sin_latitud: siniestro.sin_latitud,
-    sin_superficie: siniestro.sin_superficie,
-    sin_distribucion_fuego: siniestro.sin_distribucion_fuego.join(', '),
-    sin_categoria: siniestro.sin_categoria,
-    sin_incidente: siniestro.sin_incidente.join(', '),
-    sin_bases_operando: siniestro.sin_bases_operando.join(', '),
-    sin_estado: siniestro.sin_estado,
-    sin_estrategia: siniestro.sin_estrategia,
-  }));
-
+  // Mapea los siniestros para obtener las filas del DataGrid
+  const rows = siniestros.map(siniestro => {
+    // Busca la categoría correspondiente al siniestro en el array de categorías
+    console.log("sin_bases_operando:", siniestro.sin_bases_operando);
+    // Crea un objeto con las propiedades necesarias para el DataGrid
+    return {
+      id: siniestro._id,
+      sin_numeroIncendio: siniestro.sin_numeroIncendio,
+      sin_velocidadViento: siniestro.sin_velocidadViento,
+      sin_temperatura: siniestro.sin_temperatura,
+      sin_humedad: siniestro.sin_humedad,
+      sin_fechaInicio: new Date(siniestro.sin_fechaInicio).toLocaleDateString(), // Formatea la fecha de inicio
+      sin_fechaTermino: new Date(siniestro.sin_fechaTermino).toLocaleDateString(), // Formatea la fecha de termino
+      sin_latitud: siniestro.sin_latitud,
+      sin_superficie: siniestro.sin_superficie,
+      sin_distribucion_fuego: siniestro.sin_distribucion_fuego.join(', '),
+      sin_categoria: siniestro.sin_categoria ? siniestro.sin_categoria.cat_nivel : 'N/A',// Utilizamos la propiedad cat_nivel de la categoría
+      sin_incidente: siniestro.sin_incidente.join(', '),
+      sin_bases_operando: siniestro.sin_bases_operando.length > 0 ? siniestro.sin_bases_operando[0].base_descripcion : 'N/A',      sin_estado: siniestro.sin_estado,
+      sin_estrategia: siniestro.sin_estrategia,
+    };
+  });
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />

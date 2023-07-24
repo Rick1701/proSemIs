@@ -27,8 +27,10 @@ const Incidente = require("../models/incidente.model.js");
  */
 async function getSiniestros() {
   try {
-    //const siniestros = await Siniestro.find().populate('sin_categoria').exec();
-    return await Siniestro.find().populate('sin_categoria').populate('sin_incidente','inc_descripcion').exec();
+    return await Siniestro.find()
+      .populate('sin_categoria', 'cat_nivel')
+      .populate('sin_incidente', 'inc_descripcion')
+      .populate('sin_bases_operando', 'base_descripcion'); // Agrega el populate para obtener la base asociada
   } catch (error) {
     handleError(error, "Siniestro.service -> getSiniestros");
   }

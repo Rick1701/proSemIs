@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react'; // Asegúrate de importar React
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -17,10 +17,9 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './Chart';
-import Deposits from './Deposits';
-import Orders from './Orders';
+import { secondaryListItems } from './listItems'; // Importa solo la constante secondaryListItems 
+import MainListItems from './listItems'; // Importa el componente MainListItems
+
 
 function Dashboard({ children }) {
   const [open, setOpen] = React.useState(true);
@@ -84,7 +83,7 @@ function Dashboard({ children }) {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
+            <MainListItems /> {/* Usa el componente MainListItems */}
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
           </List>
