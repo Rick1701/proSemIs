@@ -4,10 +4,12 @@ const mongoose = require("mongoose");
 
 // Crea el esquema de la coleccion 'siniestros'
 const siniestroSchema = new mongoose.Schema({
-  sin_numeroIncendio:{
-    type:Number,
-    required: false,
-  } ,
+  sin_numeroIncendio: {
+    type: Number,
+    required: true,
+    unique: true,
+    default: 1, // Valor inicial para el autoincremento
+  },
   sin_velocidadViento: {
     type: String,
     required: true,
@@ -117,6 +119,18 @@ const siniestroSchema = new mongoose.Schema({
   sin_estrategia : {
     type: String,
     required: false,
+  }
+});
+
+// Antes de guardar un nuevo documento, se ejecuta esta función para incrementar sin_numeroIncendio
+siniestroSchema.pre("save", async function (next) {
+  const doc = this;
+  try {
+    const count = await mongoose.model("Siniestro").countDocuments();
+    doc.sin_numeroIncendio = count + 1;
+    next();
+  } catch (error) {
+    next(error);
   }
 });
 
