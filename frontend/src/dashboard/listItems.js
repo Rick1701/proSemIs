@@ -16,9 +16,13 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 
 const MainListItems = () => {
   const [openSiniestros, setOpenSiniestros] = useState(false);
+  const [openGestiones, setOpenGestiones] = useState(false);
 
   const handleSiniestrosClick = () => {
     setOpenSiniestros(!openSiniestros);
+  };
+  const handleGestionesClick = () => {
+    setOpenGestiones(!openGestiones);
   };
 
   return (
@@ -57,12 +61,50 @@ const MainListItems = () => {
         </List>
       </Collapse>
 
-      <ListItemButton href="/gestiones">
-        <ListItemIcon>
-          <PeopleIcon />
-        </ListItemIcon>
-        <ListItemText primary="Gestion" />
-      </ListItemButton>
+{/* Sub-menu for Gestiones */}
+<ListItemButton onClick={handleGestionesClick}>
+  <ListItemIcon>
+    <ShoppingCartIcon />
+  </ListItemIcon>
+  <ListItemText primary="Gestiones" />
+  {openGestiones ? <ExpandLess /> : <ExpandMore />}
+</ListItemButton>
+
+{/* Sub-menu for Gestiones */}
+<Collapse in={openGestiones} timeout="auto" unmountOnExit>
+  <List component="div" disablePadding>
+    {/* Option for Bases */}
+    <ListItemButton href="/gestionBases" sx={{ pl: 4 }}>
+      <ListItemIcon>
+        <LayersIcon />
+      </ListItemIcon>
+      <ListItemText primary="Bases" />
+    </ListItemButton>
+    <ListItemButton href="/baseRegistro" sx={{ pl: 4 }}>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Registrar Base" />
+    </ListItemButton>
+
+    {/* Option for Incidentes */}
+    <ListItemButton href="/gestionIncidentes" sx={{ pl: 4 }}>
+      <ListItemIcon>
+        <LayersIcon />
+      </ListItemIcon>
+      <ListItemText primary="Incidentes" />
+    </ListItemButton>
+    <ListItemButton href="/incidentesRegistro" sx={{ pl: 4 }}>
+      <ListItemIcon>
+        <AssignmentIcon />
+      </ListItemIcon>
+      <ListItemText primary="Registrar Incidente" />
+    </ListItemButton>
+
+    {/* Add more options for other entities as needed */}
+  </List>
+</Collapse>
+
       <ListItemButton href="/estadisticas">
         <ListItemIcon>
           <BarChartIcon />

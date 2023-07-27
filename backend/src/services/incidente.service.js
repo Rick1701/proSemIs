@@ -13,7 +13,7 @@ const { updateUterrestreEstado } = require("./uterrestre.service.js");
 
 async function getIncidentes() {
   try {
-    return await Incidente.find().populate('inc_siniestro').populate('inc_brigadista','brig_nombres brig_apellidos brig_rut').exec();
+    return await Incidente.find().populate('inc_siniestro').populate('inc_brigadista','brig_nombres brig_apellidos brig_rut').populate('inc_estado','est_inc_descripcion').populate('inc_uaerea','uaerea_nombre').populate('inc_uterrestre','uterrestre_nombre').exec();
   } catch (error) {
     handleError(error, "Incidente.service -> getIncidentes");
   }

@@ -37,11 +37,11 @@ const IncidentesListado = () => {
   const rows = incidentes.map(incidente => ({
     id: incidente._id,
     inc_descripcion: incidente.inc_descripcion,
-    inc_estado: incidente.inc_estado,
-    inc_brigadista: incidente.inc_brigadista,
-    inc_uaerea: incidente.inc_uaerea,
-    inc_uterrestre: incidente.inc_uterrestre,
-    inc_siniestro: incidente.inc_siniestro,
+    inc_estado: incidente.inc_estado ? incidente.inc_estado.est_inc_descripcion : 'N/A',
+    inc_brigadista: incidente.inc_brigadista ? incidente.inc_brigadista.brig_rut : 'N/A',
+    inc_uaerea: incidente.inc_uaerea ? incidente.inc_uaerea.uaerea_nombre : 'N/A',
+    inc_uterrestre: incidente.inc_uterrestre ? incidente.inc_uterrestre.uterrestre_nombre : 'N/A',
+    inc_siniestro: incidente.inc_siniestro ,
   }));
 
   return (

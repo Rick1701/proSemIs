@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import BasesListado from '../components/BasesListado';
 import axios from 'axios';
+import Button from '@mui/material/Button';
 
 const GestionBasesPage = () => {
   const [bases, setBases] = useState([]);
