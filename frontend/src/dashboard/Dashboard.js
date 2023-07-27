@@ -111,7 +111,7 @@ function Dashboard({ children }) {
                   display: 'flex',
                   flexDirection: 'column',
                   height: '100%',
-                  mt: 10, // Añade un margen superior de 4
+                  mt: 10, // Margen superior
                 }}
               >
                 {children}

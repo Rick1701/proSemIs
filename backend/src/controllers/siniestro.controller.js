@@ -30,21 +30,25 @@ async function getSiniestros(req, res) {
 async function createSiniestro(req, res) {
   try {
     const nuevoSiniestro = await SiniestroService.createSiniestro(req.body);
-    nuevoSiniestro === null
-      ? respondError(
-          req,
-          res,
-          400,
-          "Error en la validacion de datos",
-          "Bad Request",
-          { message: "Verifique los datos ingresados" },
-        )
-      : respondSuccess(req, res, 201, nuevoSiniestro);
+    if (nuevoSiniestro) {
+      // Si el siniestro se creó exitosamente, respondemos con el siniestro completo
+      res.status(201).json(nuevoSiniestro);
+    } else {
+      respondError(
+        req,
+        res,
+        400,
+        "Error en la validación de datos",
+        "Bad Request",
+        { message: "Verifique los datos ingresados" }
+      );
+    }
   } catch (error) {
     handleError(error, "siniestro.controller -> createSiniestro");
     respondError(req, res, 500, "No se pudo crear el siniestro");
   }
 }
+
 
 /**
  * @name getSiniestroById
