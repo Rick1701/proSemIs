@@ -61,6 +61,22 @@ const siniestroSchema = new mongoose.Schema({
   sin_latitud: {
     type: Number,
     required: true,
+    validate: {
+      validator: function (value) {
+        return value >= 17 && value <= 56;
+      },
+      message: 'La latitud debe estar entre 17 y 56.',
+    },
+  },
+  sin_longitud: {
+    type: Number,
+    required: true,
+    validate: {
+      validator: function (value) {
+        return value === 30;
+      },
+      message: 'La longitud debe ser igual a 30.',
+    },
   },
   sin_superficie: {
     type: String,

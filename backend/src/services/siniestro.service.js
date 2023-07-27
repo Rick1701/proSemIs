@@ -58,7 +58,7 @@ async function createSiniestro(siniestro) {
     // const myRole = rolesFound.map((role) => role._id);
     
     
-    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_superficie, sin_distribucion_fuego /*sin_tipo_bosque, sin_estrategia,sin_incidente*/} = siniestro;
+    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_longitud, sin_superficie, sin_distribucion_fuego /*sin_tipo_bosque, sin_estrategia,sin_incidente*/} = siniestro;
 
 
     //Buscar la instancia de Categoría existente en base al ID proporcionado en body:
@@ -74,6 +74,7 @@ async function createSiniestro(siniestro) {
       sin_fechaInicio,
       sin_fechaTermino,
       sin_latitud,
+      sin_longitud: 30,
       sin_superficie,
       sin_distribucion_fuego,
       //sin_estrategia
@@ -169,6 +170,11 @@ async function getEstrategiaSiniestroById(id) {
       } else if (siniestro.sin_superficie > 45 && siniestro.sin_superficie <= 1000000) {
         nivelSuperficie = 4;
       }
+
+      console.log("Nivel de velocidad del viento:", nivelVelViento);
+      console.log("Nivel de humedad:", nivelHumedad);
+      console.log("Nivel de temperatura:", nivelTemperatura);
+      console.log("Nivel de superficie:", nivelSuperficie);
       
       //Determinación complejidad del siniestro:
 
@@ -181,6 +187,9 @@ async function getEstrategiaSiniestroById(id) {
       } else if ((nivelVelViento + nivelHumedad + nivelTemperatura + nivelSuperficie > 12) && (nivelVelViento + nivelHumedad + nivelTemperatura + nivelSuperficie <= 16)){
         complejidadSiniestro = 4;
       }
+
+      console.log("Complejidad del siniestro:", complejidadSiniestro);
+
 
       //Datos que sirven para las estadisticas:
       
