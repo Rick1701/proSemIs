@@ -6,13 +6,13 @@ import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List'; // Agrega la importación de List
 import Collapse from '@mui/material/Collapse';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 
 const MainListItems = () => {
   const [openSiniestros, setOpenSiniestros] = useState(false);
@@ -32,7 +32,7 @@ const MainListItems = () => {
       {/* Siniestros button with a nested sub-menu */}
       <ListItemButton onClick={handleSiniestrosClick}>
         <ListItemIcon>
-          <ShoppingCartIcon />
+          <LocalFireDepartmentIcon />
         </ListItemIcon>
         <ListItemText primary="Siniestros" />
         {openSiniestros ? <ExpandLess /> : <ExpandMore />}
