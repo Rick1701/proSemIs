@@ -1,114 +1,108 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+import Layout from '../components/Layout';
+import Link from 'next/link';
+import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import axios from 'axios'; 
+
+const optionsEspecialidad = [
+  "Especialistas en ataque directo",
+  "Especialistas en ataque indirecto"
+];
 
 const BrigadaRegistroPage = () => {
   const [formData, setFormData] = useState({
     bri_nombre: '',
     bri_especialidad: '',
-    bri_brigadista: null,
     bri_base: null,
-    bri_estado: null,
   });
 
-  const [estadosBrigada, setEstadosBrigada] = useState([]);
-  const [brigadista, setBrigadista] = useState([]);
-  const [base, setBase] = useState([]);
-
-  useEffect(() => {
-    // Obtener la lista de estados de brigada
-    axios.get('http://localhost:3001/api/estado_brigada')
-      .then(response => {
-        setEstadosBrigada(response.data.data);
-      })
-      .catch(error => {
-        console.error('Error al obtener los estados de la brigada:', error);
-      });
-
-    // Obtener la lista de brigadistas
-    axios.get('http://localhost:3001/api/brigadista')
-      .then(response => {
-        setBrigadista(response.data.data);
-      })
-      .catch(error => {
-        console.error('Error al obtener los brigadadista:', error);
-      });
-
-    // Obtener la lista de incidentes
-    axios.get('http://localhost:3001/api/base')
-      .then(response => {
-        setBase(response.data.data);
-      })
-      .catch(error => {
-        console.error('Error al obtener las bases:', error);
-      });
-  }, []);
+  const registerBrigada = async (formData) => {
+    try {
+      const response = await axios.post('http://localhost:3001/api/brigada', formData); 
+      console.log('Brigada registrada:', response.data);
+    } catch (error) {
+      console.error('Error al registrar la brigada:', error);
+    }
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleBaseChange = (event, values) => {
+    setFormData({
+      ...formData,
+      bri_base: values,
+    });
+  };
+
+  const handleEspecialidadChange = (event) => {
+    const { value } = event.target;
+    setFormData({
+      ...formData,
+      bri_especialidad: value,
+    });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Aquí puedes enviar los datos del formulario al backend utilizando axios.post()
-    console.log('Formulario enviado:', formData);
+    registerBrigada(formData);
+    console.log(formData); // Solo para verificar que los datos se están capturando correctamente.
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <TextField
-          name="bri_nombre"
-          label="Nombre"
-          value={formData.bri_nombre}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div>
-        <TextField
-          name="bri_especialidad"
-          label="Especialidad"
-          value={formData.bri_especialidad}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div>
-        <Autocomplete
-          name="bri_estado"
-          options={estadosBrigada}
-          getOptionLabel={(estado) => estado.estabr_descripcion}
-          onChange={(event, newValue) => setFormData({ ...formData, bri_estado: newValue })}
-          renderInput={(params) => <TextField {...params} label="Estado de la Brigada" required />}
-        />
-      </div>
-      {/* Autocomplete para brigadista */}
-      <div>
-        <Autocomplete
-          name="bri_brigadista"
-          options={brigadista}
-          getOptionLabel={(brigadista) => brigadista.brig_rut}
-          onChange={(event, newValue) => setFormData({ ...formData, bri_brigadista: newValue })}
-          renderInput={(params) => <TextField {...params} label="Brigadista asignado" />}
-      />
-      </div>
-      {/* Autocomplete para unidad aérea, unidad terrestre y siniestro */}
-      <div>
-        <Autocomplete
-          name="bri_base"
-          options={base}
-          getOptionLabel={(base) =>base.base_nombre}
-          onChange={(event, newValue) => setFormData({ ...formData, bri_base: newValue })}
-          renderInput={(params) => <TextField {...params} label="Base Asociada" />}
-      />
-      </div>
-
-      <Button type="submit" variant="contained" color="primary">Registrar</Button>
-    </form>
+    <Layout>
+      <h1>REGISTRO DE BRIGADA</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <TextField
+            name="bri_nombre"
+            label="Nombre"
+            value={formData.bri_nombre}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div>
+          <FormControl>
+            <Select
+              name="bri_especialidad"
+              value={formData.bri_especialidad}
+              onChange={handleEspecialidadChange}
+              required
+            >
+              <MenuItem value="" disabled>Selecciona una especialidad</MenuItem>
+              {optionsEspecialidad.map((option) => (
+                <MenuItem key={option} value={option}>{option}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+        <div>
+          <Autocomplete
+            id="bri_base"
+            options={[]}
+            value={formData.bri_base}
+            onChange={handleBaseChange}
+            renderInput={(params) => <TextField {...params} label="Base asociada" />}
+          />
+        </div>
+        <Button type="submit">Registrar</Button>
+      </form>
+      {/* Agregar el botón de regresar */}
+      <Link href="/home">
+        <Button>Regresar</Button>
+      </Link>
+    </Layout>
   );
 };
 

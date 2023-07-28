@@ -21,10 +21,6 @@ const BrigadasListado = () => {
 
   console.log('hola', brigadas); // Verifica si se están recibiendo los datos correctamente
 
-  if (!Array.isArray(bases)) {
-    return <p>No se encontraron las bases.</p>;
-  }
-
   const columns = [
     { field: 'bri_nombre', headerName: 'Nombre de la brigada', width: 150 },
     { field: 'bri_especialidad', headerName: 'Especialidad', width: 150 },

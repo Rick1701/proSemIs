@@ -45,7 +45,7 @@ const UterrestreRegistroPage = () => {
 
   return (
     <Layout>
-      <h1>REGISTRO DE UNIDADES</h1>
+      <h1>REGISTRO DE UNIDADES TERRESTRES</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <TextField

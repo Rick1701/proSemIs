@@ -45,7 +45,7 @@ const UaereasRegistroPage = () => {
 
   return (
     <Layout>
-      <h1>REGISTRO DE UNIDADES</h1>
+      <h1>REGISTRO DE UNIDADES AEREAS</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <TextField

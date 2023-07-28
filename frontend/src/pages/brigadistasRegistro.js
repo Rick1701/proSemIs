@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import Layout from '../components/Layout';
+import Link from 'next/link';
+import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import Button from '@mui/material/Button';
+import axios from 'axios';
 
 const BrigadistaRegistroPage = () => {
   const [formData, setFormData] = useState({
@@ -11,135 +13,114 @@ const BrigadistaRegistroPage = () => {
     brig_apellidos: '',
     brig_sexo: '',
     brig_edad: '',
-    brig_estado_brigadista: null,
     brig_brigada: null,
-    brig_incidente: null,
   });
 
-  const [estadosBrigadista, setEstadosBrigadista] = useState([]);
-  const [brigada, setBrigada] = useState([]);
-  const [incidente, setIncidente] = useState([]);
+  const sexoOptions = ["Masculino", "Femenino", "Otro"]; // Opciones para el campo "Sexo"
+  const [brigadaOptions, setBrigadaOptions] = useState([]); // Opciones para el campo "Brigada"
 
-  useEffect(() => {
-    // Obtener la lista de estados de brigadista
-    axios.get('http://localhost:3001/api/estado_brigadista')
-      .then(response => {
-        setEstadosBrigadista(response.data.data);
-      })
-      .catch(error => {
-        console.error('Error al obtener los estados del brigadista:', error);
-      });
 
-    // Obtener la lista de brigada
-    axios.get('http://localhost:3001/api/brigada')
-      .then(response => {
-        setBrigada(response.data.data);
-      })
-      .catch(error => {
-        console.error('Error al obtener las brigada:', error);
-      });
-
-    // Obtener la lista de incidentes
-    axios.get('http://localhost:3001/api/incidente')
-      .then(response => {
-        setIncidente(response.data.data);
-      })
-      .catch(error => {
-        console.error('Error al obtener los incidentes:', error);
-      });
-  }, []);
+  const registerBrigadista = async (formData) => {
+    try {
+      const response = await axios.post('http://localhost:3001/api/brigadista', formData);
+      console.log('Brigadista registrado:', response.data);
+    } catch (error) {
+      console.error('Error al registrar el brigadista:', error);
+    }
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleBrigadaChange = (event, value) => {
+    setFormData({
+      ...formData,
+      brig_brigada: value,
+    });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Aquí puedes enviar los datos del formulario al backend utilizando axios.post()
-    console.log('Formulario enviado:', formData);
+    registerBrigadista(formData);
+    console.log(formData); // Solo para verificar que los datos se están capturando correctamente.
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <TextField
-          name="brig_rut"
-          label="Rut"
-          value={formData.brig_rut}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div>
-        <TextField
-          name="brig_nombres"
-          label="Nombrees"
-          value={formData.brig_nombres}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div>
-        <TextField
-          name="brig_apellidos"
-          label="Apellidos"
-          value={formData.brig_apellidos}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div>
-        <TextField
-          name="brig_sexo"
-          label="Sexo"
-          value={formData.brig_sexo}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div>
-        <numberField
-          name="brig_edad"
-          label="Edad"
-          value={formData.brig_edad}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      <div>
-        <Autocomplete
-          name="brig_estado_brigadista"
-          options={estadosBrigadista}
-          getOptionLabel={(estado) => estado.estado_brigadista}
-          onChange={(event, newValue) => setFormData({ ...formData, brig_estado_brigadista: newValue })}
-          renderInput={(params) => <TextField {...params} label="Estado del Brigadista" required />}
-        />
-      </div>
-      {/* Autocomplete para brigadista */}
-      <div>
-        <Autocomplete
-          name="brig_brigada"
-          options={brigada}
-          getOptionLabel={(brigada) => brigada.bri_nombre}
-          onChange={(event, newValue) => setFormData({ ...formData, brig_brigada: newValue })}
-          renderInput={(params) => <TextField {...params} label="Brigada asignada" />}
-      />
-      </div>
-      {/* Autocomplete para unidad aérea, unidad terrestre y siniestro */}
-      <div>
-        <Autocomplete
-          name="brig_incidente"
-          options={incidente}
-          getOptionLabel={(incidente) =>incidente.inc_descripcion}
-          onChange={(event, newValue) => setFormData({ ...formData, brig_incidente: newValue })}
-          renderInput={(params) => <TextField {...params} label="incidente asociado" />}
-      />
-      </div>
-
-      <Button type="submit" variant="contained" color="primary">Registrar</Button>
-    </form>
+    <Layout>
+      <h1>REGISTRO DE BRIGADISTAS</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <TextField
+            name="brig_rut"
+            label="RUT"
+            value={formData.brig_rut}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div>
+          <TextField
+            name="brig_nombres"
+            label="Nombres"
+            value={formData.brig_nombres}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div>
+          <TextField
+            name="brig_apellidos"
+            label="Apellidos"
+            value={formData.brig_apellidos}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div>
+          {/* Utilizamos Autocomplete para el campo "Sexo" */}
+          <Autocomplete
+            name="brig_sexo"
+            options={sexoOptions}
+            getOptionLabel={(option) => option}
+            value={formData.brig_sexo}
+            onChange={(event, newValue) => setFormData({ ...formData, brig_sexo: newValue })}
+            renderInput={(params) => <TextField {...params} label="Sexo" required />}
+          />
+        </div>
+        <div>
+          <TextField
+            name="brig_edad"
+            label="Edad"
+            value={formData.brig_edad}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+        <div>
+          {/* Utilizamos Autocomplete para el campo "Brigada" */}
+          <Autocomplete
+            name="brig_brigada"
+            options={brigadaOptions}
+            getOptionLabel={(option) => option.nombre} // Ajustar al nombre de la propiedad que representa el nombre de la base en tu objeto base
+            value={formData.brig_brigada}
+            onChange={handleBrigadaChange}
+            renderInput={(params) => <TextField {...params} label="Brigada" />}
+          />
+        </div>
+        <Button type="submit">Registrar</Button>
+      </form>
+      {/* Agregar el botón de regresar */}
+      <Link href="/home">
+        <Button>Regresar</Button>
+      </Link>
+    </Layout>
   );
 };
+
 
 export default BrigadistaRegistroPage;
