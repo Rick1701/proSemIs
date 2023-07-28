@@ -1,6 +1,6 @@
 "use strict";
 // Importa el modelo de datos 'User'
-const Estado_unidad = require("../models/estado_unidad.model.js");
+const Estado_Unidad = require("../models/estado_unidad.model.js");
 const { handleError } = require("../utils/errorHandler");
 // const { userBodySchema } = require("../schema/user.schema");
 
@@ -21,7 +21,7 @@ const { handleError } = require("../utils/errorHandler");
  * @description Obtiene todos los Estado_unidades
  * @returns {Promise<Estado_unidad[]|[]>}
  */
-async function getEstado_unidades() {
+async function getEstado_Unidades() {
   try {
     return await Estado_unidad.find();
   } catch (error) {
@@ -35,7 +35,7 @@ async function getEstado_unidades() {
  * @param Estado_unidad {Estado_unidad} - Objeto con los datos del Estado_unidad
  * @returns {Promise<Estado_unidad|null>}
  */
-async function createEstado_unidad(estado_unidad) {
+async function createEstado_Unidad(estado_unidad) {
   // Esta funcion es similar al singup
    try {
     // const { error } = userBodySchema.validate(user);
@@ -48,12 +48,12 @@ async function createEstado_unidad(estado_unidad) {
     // const rolesFound = await Role.find({ name: { $in: roles } });
     // const myRole = rolesFound.map((role) => role._id);
     const { est_uni_descripcion, est_uni_aerea, est_uni_terrestre} = estado_unidad;
-    const newEstado_unidad = new Estado_unidad({
+    const newEstado_unidad = new Estado_Unidad({
       est_uni_descripcion,
       est_uni_aerea,
       est_uni_terrestre
     });
-    return await newEstado_unidad.save();
+    return await newEstado_Unidad.save();
   } catch (error) {
     handleError(error, "estado_unidad.service -> createEstado_unidad");
   }
@@ -65,9 +65,9 @@ async function createEstado_unidad(estado_unidad) {
  * @param id {string} - Id del Estado_unidad
  * @returns {Promise<Estado_unidad|null>}
  */
-async function getEstado_unidadById(id) {
+async function getEstado_UnidadById(id) {
   try {
-    return await Estado_unidad.findById({ _id: id });
+    return await Estado_Unidad.findById({ _id: id });
   } catch (error) {
     handleError(error, "estado_unidad.service -> getEstado_unidadById");
   }
@@ -80,12 +80,12 @@ async function getEstado_unidadById(id) {
  * @param estado_unidad
  * @returns {Promise<Estado_unidad|null>}
  */
-async function updateEstado_unidad(id, estado_unidad) {
+async function updateEstado_Unidad(id, estado_unidad) {
   try {
   //  const { error } = userBodySchema.validate(user);
   //  if (error) return null;
 
-    return await Estado_unidad.findByIdAndUpdate(id, estado_unidad);
+    return await Estado_Unidad.findByIdAndUpdate(id, estado_unidad);
   } catch (error) {
     handleError(error, "estado_unidad.service -> updateEstado_unidad");
   }
@@ -97,18 +97,18 @@ async function updateEstado_unidad(id, estado_unidad) {
  * @param id {string} - Id del Estado_unidad
  * @returns {Promise<Estado_unidad|null>}
  */
-async function deleteEstado_unidad(id) {
+async function deleteEstado_Unidad(id) {
   try {
-    return await Estado_unidad.findByIdAndDelete(id);
+    return await Estado_Unidad.findByIdAndDelete(id);
   } catch (error) {
     handleError(error, "estado_unidad.service -> deleteEstado_unidad");
   }
 }
 
 module.exports = {
-  getEstado_unidades,
-  createEstado_unidad,
-  getEstado_unidadById,
-  updateEstado_unidad,
-  deleteEstado_unidad,
+  getEstado_Unidades,
+  createEstado_Unidad,
+  getEstado_UnidadById,
+  updateEstado_Unidad,
+  deleteEstado_Unidad,
 };

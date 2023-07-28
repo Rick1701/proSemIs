@@ -20,11 +20,7 @@ const { handleError } = require("../utils/errorHandler");
  */
 async function getUaereas() {
   try {
-    return await Uaerea.find()
-      .populate('uaerea_estado_unidad' ).exec();
-      /*.populate('uarea_base', 'base_descripcion')
-      .populate('uarea_incidente', 'inc_descripcion')
-      .exec();*/
+    return await Uaerea.find().populate('uaerea_estado_unidad','est_uni_descripcion').populate('uaerea_base','base_descripcion').populate('uaerea_incidente','inc_descripcion').exec();
   } catch (error) {
     handleError(error, "Uaerea.service -> getUaereas");
   }
@@ -40,15 +36,17 @@ async function createUaerea(uaerea) {
   try {
     const { uaerea_nombre, uaerea_base } = uaerea;
     const estado_unidad = await Estado_Unidad.findOne({ est_uni_descripcion: 'Operativa' });
+    if (!estado_unidad) {
+      throw new Error("No se encontró el estado de unidad 'Operativa'.");
+    }
     const base = await Base.findById(uaerea_base);
-    if(!estado_unidad && !base){
-      handleError(error, "uaerea.service -> createUaerea");
+    if (!base) {
+      throw new Error("No se encontró la base.");
     }
     const newUaerea = new Uaerea({
       uaerea_nombre,
-      uaerea_estado_unidad: estado_unidad._id,
-      uaerea_incidente: null,
-      uaerea_base: base._id
+      uaerea_estado_unidad: estado_unidad._id, // Establecer el estado de unidad como 'Operativa'
+      uaerea_base: base._id,
     });
 
     estado_unidad.est_uni_aerea.push(newUaerea._id);
@@ -115,7 +113,7 @@ async function updateUaereaEstado(uaereaId, estado) {
     await _updateEstadoUaerea(uaerea, estado);
     return uaerea;
   } catch (error) {
-    handleError(error, "brigadista.service -> updateBrigadistaEstado");
+    handleError(error, "uaerea.service -> updateUaereaEstado");
   }
 }
 

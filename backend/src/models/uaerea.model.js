@@ -13,12 +13,12 @@ const uaereaSchema = new mongoose.Schema({
     ref: "Estado_Unidad",
     required: true,
   },
-  uarea_incidente: {
+  uaerea_incidente: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Incidente",
     default: null,
   },
-  uarea_base: {
+  uaerea_base: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Base",
     required: true,

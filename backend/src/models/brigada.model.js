@@ -11,7 +11,7 @@ const brigadaSchema = new mongoose.Schema({
   bri_especialidad: {
     type: String,
     required: true,
-    enum: ["Especialistas en ataque directo", "Especialistas en ataque indirecto"]
+    enum: ["Ataque directo", "Ataque indirecto", "Trabajo en altura"]
   },
   bri_brigadista: [{
     type: mongoose.Schema.Types.ObjectId,

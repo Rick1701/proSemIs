@@ -22,7 +22,7 @@ const estado_unidadSchema = new mongoose.Schema({
 });
 
 // Crea el modelo de datos 'Estado_unidad' a partir del esquema 'estado_unidadSchema'
-const Estado_unidad = mongoose.model("Estado_unidad", estado_unidadSchema);
+const Estado_Unidad = mongoose.model("Estado_Unidad", estado_unidadSchema);
 
 // Exporta el modelo de datos 'Estado_unidad'
-module.exports = Estado_unidad;
+module.exports = Estado_Unidad;
