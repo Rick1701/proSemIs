@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import Link from 'next/link';
+
 import { DataGrid } from '@mui/x-data-grid';
+import SettingsIcon from '@mui/icons-material/Settings';
+
 
 const SiniestrosListado = () => {
   console.log('SiniestrosListado se ha montado');
   const [siniestros, setSiniestros] = useState([]);
+
 
   useEffect(() => {
     // Obtener los siniestros
@@ -28,21 +30,42 @@ const SiniestrosListado = () => {
     return <p>No se encontraron siniestros.</p>;
   }
 
+  // Función para manejar el clic del enlace "Administrar" y mostrar detalles del siniestro
+  const handleAdministrarClick = (row) => {
+    // Aquí puedes realizar alguna acción al hacer clic en el enlace "Administrar" para una fila específica
+    console.log('Administrar siniestro:', row.id);
+    // Por ejemplo, puedes mostrar un diálogo o redirigir a otra página para ver los detalles del siniestro.
+    console.log('Mostrar detalles del siniestro:', row.id);
+  };
+
   const columns = [
-    { field: 'sin_numeroIncendio', headerName: 'Número de Incendio', width: 150 },
-    { field: 'sin_velocidadViento', headerName: 'Velocidad del Viento', width: 150 },
-    { field: 'sin_temperatura', headerName: 'Temperatura', width: 150 },
-    { field: 'sin_humedad', headerName: 'Humedad', width: 150 },
-    { field: 'sin_fechaInicio', headerName: 'Fecha de Inicio', width: 150 },
-    { field: 'sin_fechaTermino', headerName: 'Fecha de Termino', width: 150 },
-    { field: 'sin_latitud', headerName: 'Latitud', width: 150 },
-    { field: 'sin_superficie', headerName: 'Superficie', width: 150 },
-    { field: 'sin_distribucion_fuego', headerName: 'Distribución de Fuego', width: 150 },
-    { field: 'sin_categoria', headerName: 'Categoría', width: 150 },
-    { field: 'sin_incidente', headerName: 'Incidente', width: 150 },
-    { field: 'sin_bases_operando', headerName: 'Bases Operando', width: 150 },
-    { field: 'sin_estado', headerName: 'Estado', width: 150 },
+    { field: 'sin_numeroIncendio', headerName: 'N° Incendio', width: 150, align: 'center', headerAlign: 'center' },
+    { field: 'sin_velocidadViento', headerName: 'Vlocidad Viento ( nudos )  ', width: 150, align: 'center', headerAlign: 'center' },
+    { field: 'sin_temperatura', headerName: 'Temperatura ( ° )', width: 150, align: 'center', headerAlign: 'center' },
+    { field: 'sin_humedad', headerName: 'Humedad ( % )', width: 150, align: 'center', headerAlign: 'center' },
+    { field: 'sin_fechaInicio', headerName: 'Fecha de Inicio', width: 150, align: 'center', headerAlign: 'center' },
+    { field: 'sin_fechaTermino', headerName: 'Fecha de Termino', width: 150, align: 'center', headerAlign: 'center' },
+    { field: 'sin_latitud', headerName: 'Latitud ( ° )', width: 150, align: 'center', headerAlign: 'center' },
+    { field: 'sin_longitud', headerName: 'Longitud ( ´ )', width: 150, align: 'center', headerAlign: 'center' },
+    { field: 'sin_superficie', headerName: 'Superficie', width: 150, align: 'center', headerAlign: 'center' },
+    { field: 'sin_distribucion_fuego', headerName: 'Distribución de Fuego', width: 150, align: 'center', headerAlign: 'center' },
+    { field: 'sin_categoria', headerName: 'Categoría', width: 150, align: 'center', headerAlign: 'center' },
+    { field: 'sin_incidente', headerName: 'Incidente', width: 150, align: 'center', headerAlign: 'center' },
+    { field: 'sin_bases_operando', headerName: 'Bases Operando', width: 150, align: 'center', headerAlign: 'center' },
+    { field: 'sin_estado', headerName: 'Estado', width: 150, align: 'center', headerAlign: 'center' },
     { field: 'sin_estrategia', headerName: 'Estrategia', width: 150 },
+    {
+      field: 'administrarButton',
+      headerName: 'Administrar',
+      width: 150,
+      align: 'center',
+      headerAlign: 'center',
+      renderCell: (params) => (
+        <Link href={`/siniestrosShow/${params.row._id}`}>
+            <SettingsIcon style={{ cursor: 'pointer' }} />
+        </Link>
+      ),
+    },
   ];
 
   // Mapea los siniestros para obtener las filas del DataGrid
@@ -59,6 +82,7 @@ const SiniestrosListado = () => {
       sin_fechaInicio: new Date(siniestro.sin_fechaInicio).toLocaleDateString(), // Formatea la fecha de inicio
       sin_fechaTermino: new Date(siniestro.sin_fechaTermino).toLocaleDateString(), // Formatea la fecha de termino
       sin_latitud: siniestro.sin_latitud,
+      sin_longitud: siniestro.sin_longitud,
       sin_superficie: siniestro.sin_superficie,
       sin_distribucion_fuego: siniestro.sin_distribucion_fuego.join(', '),
       sin_categoria: siniestro.sin_categoria ? siniestro.sin_categoria.cat_nivel : 'N/A',// Utilizamos la propiedad cat_nivel de la categoría
@@ -69,7 +93,7 @@ const SiniestrosListado = () => {
     };
   });
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: 500, width: '100%' }}>
       <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />
     </div>
   );
