@@ -16,11 +16,16 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 
 const MainListItems = () => {
   const [openSiniestros, setOpenSiniestros] = useState(false);
+  const [openEstadisticas, setOpenEstadisticas] = useState(false);
 
   const handleSiniestrosClick = () => {
     setOpenSiniestros(!openSiniestros);
   };
 
+  
+  const handleEstaditicasClick = () => {
+    setOpenEstadisticas(!openEstadisticas);
+  };
   return (
     <React.Fragment>
       <ListItemButton href="/home">
@@ -63,12 +68,37 @@ const MainListItems = () => {
         </ListItemIcon>
         <ListItemText primary="Gestion" />
       </ListItemButton>
-      <ListItemButton href="/estadisticas">
+
+{/* Siniestros button with a nested sub-menu */}
+<ListItemButton onClick={handleEstaditicasClick}>
         <ListItemIcon>
-          <BarChartIcon />
+        <BarChartIcon />
         </ListItemIcon>
-        <ListItemText primary="Estadísticas" />
+        <ListItemText primary="Estadisticas" />
+        {openEstadisticas ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
+
+      {/* Sub-menu for Estadisticas */}
+      <Collapse in={openEstadisticas} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItemButton href="/estadisticas" sx={{ pl: 4 }}>
+            <ListItemIcon>
+            <BarChartIcon />
+            </ListItemIcon>
+            <ListItemText primary="EstadisticasNumericas" />
+          </ListItemButton>
+          <ListItemButton href="/Graficos" sx={{ pl: 4 }}>
+            <ListItemIcon>
+            <BarChartIcon />
+            </ListItemIcon>
+            <ListItemText primary="Graficos" />
+          </ListItemButton>
+          {/* Add more sub-menu items as needed */}
+        </List>
+      </Collapse>
+
+
+
     </React.Fragment>
   );
 };

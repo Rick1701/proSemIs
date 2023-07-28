@@ -222,34 +222,25 @@ async function getEstadisticaSiniestroById(req, res) {
 }
 
 /**
- * @name getEstadisticaSiniestros
+ * @name getEstadisticas
  * @description Obtiene las estadisticas de todos los siniestros
  * @param req {Request}
  * @param res {Response}
  */
-/*
-async function getEstadisticaSiniestros(req, res) {
+
+async function getEstadisticas(req, res) {
   try {
-    const estadisticasiniestros = await SiniestroService.getEstadisticaSiniestros();
-    estadisticasiniestros.length === 0
+    const estadisticas = await SiniestroService.getEstadisticas();
+    estadisticas.length === 0
       ? respondSuccess(req, res, 204)
-      : respondSuccess(req, res, 200, estadisticasiniestros);
+      : respondSuccess(req, res, 200, estadisticas);
   } catch (error) {
     respondError(req, res, 400, error.message);
   }
 }
-*/
 
 
 
-async function getSumaTotal(req, res) {
-  try {
-    const sumaTotal = await siniestroService.getSumaTotal();
-    res.json({ sumaTotal });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}
 
 
 
@@ -265,8 +256,5 @@ module.exports = {
   deleteSiniestro,
   getEstrategiaSiniestroById,
   getEstadisticaSiniestroById,
-//  getEstadisticaSiniestros,
-//  getEstadisticaCopaById,
-//getSumarIncendio,
-  getSumaTotal
+  //getEstadisticas,
 };

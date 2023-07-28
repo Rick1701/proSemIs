@@ -20,7 +20,8 @@ router.put("/:id" /*, authoMiddleware.isAdmin,*/, siniestroController.updateSini
 router.delete("/:id"/*, authoMiddleware.isAdmin,*/, siniestroController.deleteSiniestro);
 // Define la ruta para el método estadistica
 router.get("/estadisticasiniestro/:id", siniestroController.getEstadisticaSiniestroById);
-//router.get("/estadisticasiniestro", siniestroController.getEstadisticaSiniestros);
+//router.get("/estadisticas", siniestroController.getEstadisticas);
+
 
 //router.get("/estadisticacopa/:id", siniestroController.getEstadisticaCopaById);
 //router.get('/sumatotal', siniestroController.getSumaTotal);
