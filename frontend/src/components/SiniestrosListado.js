@@ -22,9 +22,48 @@ const SiniestrosListado = () => {
       });
   }, []);
 
-  console.log('hola', siniestros); // Verifica si se están recibiendo los datos correctamente
+  //console.log('hola', siniestros); // Verifica si se están recibiendo los datos correctamente
 
+  /* // Variable que recibe la id del siniestro desde la URL
+  const { id } = router.query;
+  // Estado inicial del siniestro
+  const [siniestro, setSiniestro] = useState({
+    sin_velocidadViento: '',
+    sin_temperatura: '',
+    sin_humedad: '',
+    sin_fechaInicio: null,
+    sin_fechaTermino: null,
+    sin_latitud: '',
+    sin_superficie: '',
+    sin_distribucion_fuego: [],
+    sin_categoria: null,
+    sin_incidente: [],
+    sin_bases_operando: [],
+    sin_estado: '',
+    sin_estrategia: '',
+  });
 
+  // Variable de estado para controlar si los datos se han cargado
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const { id } = router.query;
+    if (id) {
+      const timestamp = Date.now(); // Obtiene el timestamp actual
+      axios.get(`http://localhost:3001/api/siniestro/${id}?timestamp=${timestamp}`)
+        .then(response => {
+          setSiniestro(response.data);
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error('Error al obtener los detalles del siniestro:', error);
+        })
+        .finally(() => {
+          setLoading(false); // Actualiza el estado de loading a false cuando la solicitud se complete (ya sea éxito o error)
+        });
+    }
+  }, []);
+  */
 
   if (!Array.isArray(siniestros)) {
     return <p>No se encontraron siniestros.</p>;
@@ -61,7 +100,7 @@ const SiniestrosListado = () => {
       align: 'center',
       headerAlign: 'center',
       renderCell: (params) => (
-        <Link href={`/siniestrosShow/${params.row._id}`}>
+        <Link href={`/siniestrosShow/${params.row.id}`}> {/* Utiliza el ID del siniestro para crear la URL */}
             <SettingsIcon style={{ cursor: 'pointer' }} />
         </Link>
       ),
