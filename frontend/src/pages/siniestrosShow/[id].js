@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import SiniestrosTimeLine from '../../components/SiniestrosTimeLine';
 import Link from 'next/link';
+
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -30,6 +31,11 @@ const FieldTitle = ({ title, icon }) => {
   );
 };
 
+const formatDate = (date) => {
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  return new Date(date).toLocaleDateString(undefined, options);
+};
+
 const SiniestrosShowPage = () => {
   // Enrutador
   const router = useRouter();
@@ -52,34 +58,31 @@ const SiniestrosShowPage = () => {
     sin_estrategia: '',
   });
 
-  // Estado inicial de los hitos (inicializado con un dato de prueba)
-  const [hitos, setHitos] = useState([
-    {
-      fecha: '2023-07-29 10:00:00',
-      descripcion: 'Actualización de velocidad del viento',
-    },
-    // Puedes agregar más objetos de prueba aquí si lo deseas
-  ]);
+  // Estado para almacenar los hitos asociados al siniestro
+  const [hitos, setHitos] = useState([]);
 
   // Variable de estado para controlar si los datos se han cargado
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { id } = router.query;
-    if (id) {
-      axios.get(`http://localhost:3001/api/siniestro/${id}`)
-        .then(response => {
+    const fetchData = async () => {
+      try {
+        if (id) {
+          const response = await axios.get(`http://localhost:3001/api/siniestro/${id}`);
           setSiniestro(response.data);
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.error('Error al obtener los detalles del siniestro:', error);
-        })
-        .finally(() => {
-          setLoading(false); // Actualiza el estado de loading a false cuando la solicitud se complete (ya sea éxito o error)
-        });
-    }
-  }, []);
+          setHitos(response.data.hitos); // Actualiza el estado de 'hitos' con los hitos reales
+          console.log(response.data.hitos)
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error al obtener los detalles del siniestro:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
   
   return (
     <Layout>
@@ -87,7 +90,7 @@ const SiniestrosShowPage = () => {
         <div>Cargando...</div>
       ) : (
         <form>
-          <h1>Detalles del Siniestro</h1>
+          <h1>Detalles del Siniestro N° '{siniestro.sin_numeroIncendio}'</h1>
           <Grid container spacing={2} style={{ marginTop: '70px' }}>
             <Grid item xs={12} sm={3}>
               <FieldTitle title="Velocidad del Viento:" icon={<AirIcon fontSize="small" style={{ marginRight: '4px' }} />} />
@@ -95,6 +98,14 @@ const SiniestrosShowPage = () => {
                 value={siniestro.sin_velocidadViento ? siniestro.sin_velocidadViento : ''}
                 disabled
                 fullWidth
+                inputProps={{
+                  style: {
+                    textAlign: 'center',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    color: 'black',
+                  },
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
@@ -103,6 +114,14 @@ const SiniestrosShowPage = () => {
                 value={siniestro.sin_temperatura ? siniestro.sin_temperatura : ''}
                 disabled
                 fullWidth
+                inputProps={{
+                  style: {
+                    textAlign: 'center',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    color: 'black',
+                  },
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
@@ -111,14 +130,30 @@ const SiniestrosShowPage = () => {
                 value={siniestro.sin_humedad ? siniestro.sin_humedad : ''}
                 disabled
                 fullWidth
+                inputProps={{
+                  style: {
+                    textAlign: 'center',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    color: 'black',
+                  },
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
               <FieldTitle title="Fecha de Inicio:" icon={<EventIcon fontSize="small" style={{ marginRight: '4px' }} />}  />
               <TextField
-                value={siniestro.sin_fechaInicio ? siniestro.sin_fechaInicio : ''}
+                value={siniestro.sin_fechaInicio ? formatDate(siniestro.sin_fechaInicio) : ''}
                 disabled
                 fullWidth
+                inputProps={{
+                  style: {
+                    textAlign: 'center',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    color: 'black',
+                  },
+                }}
               />
             </Grid>
           </Grid>
@@ -130,6 +165,14 @@ const SiniestrosShowPage = () => {
                 value={siniestro.sin_latitud ? siniestro.sin_latitud : ''}
                 disabled
                 fullWidth
+                inputProps={{
+                  style: {
+                    textAlign: 'center',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    color: 'black',
+                  },
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
@@ -138,6 +181,14 @@ const SiniestrosShowPage = () => {
                 value={siniestro.sin_superficie ? siniestro.sin_superficie : ''}
                 disabled
                 fullWidth
+                inputProps={{
+                  style: {
+                    textAlign: 'center',
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    color: 'black',
+                  },
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={3}>

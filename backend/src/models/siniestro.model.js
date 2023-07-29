@@ -135,7 +135,25 @@ const siniestroSchema = new mongoose.Schema({
   sin_estrategia : {
     type: String,
     required: false,
-  }
+  },
+
+  // Nuevo campo para almacenar los hitos
+  hitos: [
+    {
+      fecha: {
+        type: Date,
+        default: Date.now,
+      },
+      descripcion: {
+        type: String,
+        required: true,
+      },
+      siniestroCompleto: {
+        type: mongoose.Schema.Types.Mixed,
+        required: true,
+      },
+    },
+  ],
 });
 
 // Antes de guardar un nuevo documento, se ejecuta esta función para incrementar sin_numeroIncendio
