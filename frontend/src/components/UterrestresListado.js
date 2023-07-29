@@ -35,7 +35,7 @@ const UterrestresListado = () => {
   const rows = uterrestres.map(uterrestre => ({
     id: uterrestre._id,
     uterrestre_nombre: uterrestre.uterrestre_nombre,
-    uterrestre_estado_unidad: uterrestre.uterrestre_estado_unidad,
+    uterrestre_estado_unidad: uterrestre.uterrestre_estado_unidad ? uterrestre.uterrestre_estado_unidad.est_uni_descripcion: 'N/A',
     uterrestre_incidente: uterrestre.uterrestre_incidente,
     uterrestre_base: uterrestre.uterrestre_base,
   }));

@@ -43,9 +43,9 @@ const BrigadistasListado = () => {
     brig_apellidos: brigadista.brig_apellidos,
     brig_sexo: brigadista.brig_sexo,
     brig_edad: brigadista.brig_edad,
-    brig_estado_brigadista: brigadista.brig_estado_brigadista,
-    brig_brigada: brigadista.brig_brigada,
-    brig_incidente: brigadista.brig_incidente,
+    brig_estado_brigadista: brigadista.brig_estado_brigadista ? brigadista.brig_estado_brigadista.estab_descripcion : 'N/A',
+    brig_brigada: brigadista.brig_brigada ? brigadista.brig_brigada.bri_nombre : 'N/A' ,
+    brig_incidente: brigadista.brig_incidente ? brigadista.brig_incidente.inc_descripcion : 'N/A',
 
   }));
 
