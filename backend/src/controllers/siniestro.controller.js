@@ -61,16 +61,18 @@ async function getSiniestroById(req, res) {
     const { id } = req.params;
 
     const siniestro = await SiniestroService.getSiniestroById(id);
-    siniestro === null
-      ? respondError(
-          req,
-          res,
-          404,
-          "No se encontro el siniestro solicitado",
-          "Not Found",
-          { message: "Verifique el id ingresado" },
-        )
-      : respondSuccess(req, res, 200, siniestro);
+    if (siniestro === null) {
+      respondError(
+        req,
+        res,
+        404,
+        "No se encontró el siniestro solicitado",
+        "Not Found",
+        { message: "Verifique el ID ingresado" }
+      );
+    } else {
+      res.status(200).json(siniestro);
+    }
   } catch (error) {
     handleError(error, "siniestro.controller -> getSiniestroById");
     respondError(req, res, 500, "No se pudo obtener el siniestro");
