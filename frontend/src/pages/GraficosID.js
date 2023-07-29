@@ -6,17 +6,10 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Graficos from './Graficos'; // Importa el componente Graficos
 
-const EstadisticasPage = () => {
+const GraficosIDPage = () => {
   return (
     <Layout>
-      {/* Contenido de la página de estadísticas */}
-      <h1>Estadísticas de los Siniestros</h1>
-      <p>Bienvenido a la página de estadísticas</p>
       
-      
-
-      {/* Listado de estadísticas */}
-      <EstadisticasListados />
       
 
     </Layout>
@@ -24,4 +17,4 @@ const EstadisticasPage = () => {
   );
 };
 
-export default EstadisticasPage;
+export default GraficosIDPage;

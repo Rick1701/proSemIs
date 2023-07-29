@@ -27,6 +27,7 @@ const MainListItems = () => {
   const [openBrigadistas, setOpenBrigadistas] = useState(false);
   const [openUterrestres, setOpenUterrestres] = useState(false); 
   const [openUaereas, setOpenUaereas] = useState(false);
+  const [openEstadisticas, setOpenEstadisticas] = useState(false);
 
   const handleSiniestrosClick = () => {
     setOpenSiniestros(!openSiniestros);
@@ -54,6 +55,10 @@ const MainListItems = () => {
   };
   const handleUaereasClick = () => {
     setOpenUaereas(!openUaereas);
+  };
+  
+  const handleEstaditicasClick = () => {
+    setOpenEstadisticas(!openEstadisticas);
   };
   return (
     <React.Fragment>
@@ -267,12 +272,37 @@ const MainListItems = () => {
       </Collapse>
 
 
-      <ListItemButton href="/estadisticas">
+
+      {/* Siniestros button with a nested sub-menu */}
+      <ListItemButton onClick={handleEstaditicasClick}>
         <ListItemIcon>
-          <BarChartIcon />
+        <BarChartIcon />
         </ListItemIcon>
-        <ListItemText primary="Estadísticas" />
+        <ListItemText primary="Estadisticas" />
+        {openEstadisticas ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
+
+      {/* Sub-menu for Estadisticas */}
+      <Collapse in={openEstadisticas} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItemButton href="/estadisticas" sx={{ pl: 4 }}>
+            <ListItemIcon>
+            <BarChartIcon />
+            </ListItemIcon>
+            <ListItemText primary="EstadisticasNumericas" />
+          </ListItemButton>
+          <ListItemButton href="/Graficos" sx={{ pl: 4 }}>
+            <ListItemIcon>
+            <BarChartIcon />
+            </ListItemIcon>
+            <ListItemText primary="Graficos" />
+          </ListItemButton>
+          {/* Add more sub-menu items as needed */}
+        </List>
+      </Collapse>
+
+
+
     </React.Fragment>
   );
 };

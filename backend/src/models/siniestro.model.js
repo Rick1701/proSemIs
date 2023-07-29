@@ -27,7 +27,7 @@ const siniestroSchema = new mongoose.Schema({
     validate: {
       validator: function (value) {
         // Validar si la temperatura está dentro del rango
-        const temperatura = parseInt(value);
+          const temperatura = parseInt(value);
         return temperatura >= 0 && temperatura <= 42;
       },
       message: "La temperatura debe estar entre 0 y 42 grados",
@@ -46,8 +46,8 @@ const siniestroSchema = new mongoose.Schema({
   },
   sin_fechaInicio: {
     type: Date,
-    required: true,
-    /*validate: {
+    required: true,/*
+    validate: {
       validator: function(value) {
         return value <= this.sin_fechaTermino;
       },

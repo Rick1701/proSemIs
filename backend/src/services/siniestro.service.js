@@ -349,62 +349,22 @@ async function deleteSiniestro(id) {
 
 
 //--------------------------------------------------------------- ESTADISTICAS METODOS ----------------------------------------------------------------]
-/*
-async function getSumaTotal() {
-  try {
-    const suma = await Siniestro.aggregate([{ $group: { _id: null, total: { $sum: "$sin_numeroIncendio" } } }]);
-    return suma[0].total;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-}
-*/
-
-
-
-/*
-
-  @name sumarCantidadIDs
-  @description Realiza la sumatoria de los ID de las entidades
-  @returns {Promise<number|null>}
-
-async function getSumarIncendio() {
-  try {
-    const sum = siniestros.reduce((total, siniestro) => total + siniestro._id, 0);
-    return sum;
-  } catch (error) {
-    handleError(error, "siniestro.service -> getSumarIncendio");
-  }
-}
-
-
-async function getEstadisticaCopaById(id) {
-  try {
-
-// Retorna el resultado de la estadística solo con los atributos deseados:(separar con espacio de las comas para que funcione)
-  return await Siniestro.findById({ _id: id }).select(' sin_distribucion_fuego , sin_categoria ');
-
-    //return await Siniestro.findById({ _id: id });
-  } catch (error) {
-    handleError(error, "siniestro.service -> getEstadisticaCopaById");
-  }
-}
-*/
 
 
 /**
- * @name getEstadisticasSiniestros
+ * @name getEstadisticas
  * @description
  * @returns {Promise<Siniestro[]|[]>}
  */
-//async function getSiniestros() {
-//  try {
-//    return await Siniestro.find();
-//  } catch (error) {
-//    handleError(error, "Siniestro.service -> getSiniestros");
-//  }
-//}
-
+/*
+async function getEstadisticas() {
+  try {
+    return await Siniestro.find();
+  } catch (error) {
+    handleError(error, "Siniestro.service -> getEstadisticas");
+  }
+}
+*/
 
 /**
  * @name getEstadisticaSiniestroById
@@ -426,6 +386,11 @@ async function getEstadisticaSiniestroById(id) {
 
 
 
+
+
+
+
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------]
 
 
@@ -437,9 +402,7 @@ module.exports = {
   deleteSiniestro,
   getEstrategiaSiniestroById,
   getEstadisticaSiniestroById,
-  //getEstadisticaSiniestros,
-  //getEstadisticaCopaById,
-  //getSumarIncendio
-  //getSumaTotal
+  //getEstadisticas,
+
 };
 
