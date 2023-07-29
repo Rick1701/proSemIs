@@ -19,7 +19,7 @@ const brigadistaSchema = new mongoose.Schema({
   brig_sexo: {
     type: String,
     required: true,
-    enum: ["Masculino", "Femenino"],
+    enum: ["Masculino", "Femenino", "Otro"],
   },
   brig_edad: {
     type: Number,

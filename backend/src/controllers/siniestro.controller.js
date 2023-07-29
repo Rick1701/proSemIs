@@ -30,21 +30,25 @@ async function getSiniestros(req, res) {
 async function createSiniestro(req, res) {
   try {
     const nuevoSiniestro = await SiniestroService.createSiniestro(req.body);
-    nuevoSiniestro === null
-      ? respondError(
-          req,
-          res,
-          400,
-          "Error en la validacion de datos",
-          "Bad Request",
-          { message: "Verifique los datos ingresados" },
-        )
-      : respondSuccess(req, res, 201, nuevoSiniestro);
+    if (nuevoSiniestro) {
+      // Si el siniestro se creó exitosamente, respondemos con el siniestro completo
+      res.status(201).json(nuevoSiniestro);
+    } else {
+      respondError(
+        req,
+        res,
+        400,
+        "Error en la validación de datos",
+        "Bad Request",
+        { message: "Verifique los datos ingresados" }
+      );
+    }
   } catch (error) {
     handleError(error, "siniestro.controller -> createSiniestro");
     respondError(req, res, 500, "No se pudo crear el siniestro");
   }
 }
+
 
 /**
  * @name getSiniestroById
@@ -57,16 +61,18 @@ async function getSiniestroById(req, res) {
     const { id } = req.params;
 
     const siniestro = await SiniestroService.getSiniestroById(id);
-    siniestro === null
-      ? respondError(
-          req,
-          res,
-          404,
-          "No se encontro el siniestro solicitado",
-          "Not Found",
-          { message: "Verifique el id ingresado" },
-        )
-      : respondSuccess(req, res, 200, siniestro);
+    if (siniestro === null) {
+      respondError(
+        req,
+        res,
+        404,
+        "No se encontró el siniestro solicitado",
+        "Not Found",
+        { message: "Verifique el ID ingresado" }
+      );
+    } else {
+      res.status(200).json(siniestro);
+    }
   } catch (error) {
     handleError(error, "siniestro.controller -> getSiniestroById");
     respondError(req, res, 500, "No se pudo obtener el siniestro");
@@ -222,34 +228,25 @@ async function getEstadisticaSiniestroById(req, res) {
 }
 
 /**
- * @name getEstadisticaSiniestros
+ * @name getEstadisticas
  * @description Obtiene las estadisticas de todos los siniestros
  * @param req {Request}
  * @param res {Response}
  */
-/*
-async function getEstadisticaSiniestros(req, res) {
+
+async function getEstadisticas(req, res) {
   try {
-    const estadisticasiniestros = await SiniestroService.getEstadisticaSiniestros();
-    estadisticasiniestros.length === 0
+    const estadisticas = await SiniestroService.getEstadisticas();
+    estadisticas.length === 0
       ? respondSuccess(req, res, 204)
-      : respondSuccess(req, res, 200, estadisticasiniestros);
+      : respondSuccess(req, res, 200, estadisticas);
   } catch (error) {
     respondError(req, res, 400, error.message);
   }
 }
-*/
 
 
 
-async function getSumaTotal(req, res) {
-  try {
-    const sumaTotal = await siniestroService.getSumaTotal();
-    res.json({ sumaTotal });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-}
 
 
 
@@ -265,8 +262,5 @@ module.exports = {
   deleteSiniestro,
   getEstrategiaSiniestroById,
   getEstadisticaSiniestroById,
-//  getEstadisticaSiniestros,
-//  getEstadisticaCopaById,
-//getSumarIncendio,
-  getSumaTotal
+  //getEstadisticas,
 };

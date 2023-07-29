@@ -27,8 +27,10 @@ const Incidente = require("../models/incidente.model.js");
  */
 async function getSiniestros() {
   try {
-    //const siniestros = await Siniestro.find().populate('sin_categoria').exec();
-    return await Siniestro.find().populate('sin_categoria').populate('sin_incidente','inc_descripcion').exec();
+    return await Siniestro.find()
+      .populate('sin_categoria', 'cat_nivel')
+      .populate('sin_incidente', 'inc_descripcion')
+      .populate('sin_bases_operando', 'base_descripcion'); // Agrega el populate para obtener la base asociada
   } catch (error) {
     handleError(error, "Siniestro.service -> getSiniestros");
   }
@@ -56,7 +58,7 @@ async function createSiniestro(siniestro) {
     // const myRole = rolesFound.map((role) => role._id);
     
     
-    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_superficie, sin_distribucion_fuego /*sin_tipo_bosque, sin_estrategia,sin_incidente*/} = siniestro;
+    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_longitud, sin_superficie, sin_distribucion_fuego /*sin_tipo_bosque, sin_estrategia,sin_incidente*/} = siniestro;
 
 
     //Buscar la instancia de Categoría existente en base al ID proporcionado en body:
@@ -72,6 +74,7 @@ async function createSiniestro(siniestro) {
       sin_fechaInicio,
       sin_fechaTermino,
       sin_latitud,
+      sin_longitud: 30,
       sin_superficie,
       sin_distribucion_fuego,
       //sin_estrategia
@@ -167,6 +170,11 @@ async function getEstrategiaSiniestroById(id) {
       } else if (siniestro.sin_superficie > 45 && siniestro.sin_superficie <= 1000000) {
         nivelSuperficie = 4;
       }
+
+      console.log("Nivel de velocidad del viento:", nivelVelViento);
+      console.log("Nivel de humedad:", nivelHumedad);
+      console.log("Nivel de temperatura:", nivelTemperatura);
+      console.log("Nivel de superficie:", nivelSuperficie);
       
       //Determinación complejidad del siniestro:
 
@@ -179,6 +187,9 @@ async function getEstrategiaSiniestroById(id) {
       } else if ((nivelVelViento + nivelHumedad + nivelTemperatura + nivelSuperficie > 12) && (nivelVelViento + nivelHumedad + nivelTemperatura + nivelSuperficie <= 16)){
         complejidadSiniestro = 4;
       }
+
+      console.log("Complejidad del siniestro:", complejidadSiniestro);
+
 
       //Datos que sirven para las estadisticas:
       
@@ -338,62 +349,22 @@ async function deleteSiniestro(id) {
 
 
 //--------------------------------------------------------------- ESTADISTICAS METODOS ----------------------------------------------------------------]
-/*
-async function getSumaTotal() {
-  try {
-    const suma = await Siniestro.aggregate([{ $group: { _id: null, total: { $sum: "$sin_numeroIncendio" } } }]);
-    return suma[0].total;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-}
-*/
-
-
-
-/*
-
-  @name sumarCantidadIDs
-  @description Realiza la sumatoria de los ID de las entidades
-  @returns {Promise<number|null>}
-
-async function getSumarIncendio() {
-  try {
-    const sum = siniestros.reduce((total, siniestro) => total + siniestro._id, 0);
-    return sum;
-  } catch (error) {
-    handleError(error, "siniestro.service -> getSumarIncendio");
-  }
-}
-
-
-async function getEstadisticaCopaById(id) {
-  try {
-
-// Retorna el resultado de la estadística solo con los atributos deseados:(separar con espacio de las comas para que funcione)
-  return await Siniestro.findById({ _id: id }).select(' sin_distribucion_fuego , sin_categoria ');
-
-    //return await Siniestro.findById({ _id: id });
-  } catch (error) {
-    handleError(error, "siniestro.service -> getEstadisticaCopaById");
-  }
-}
-*/
 
 
 /**
- * @name getEstadisticasSiniestros
+ * @name getEstadisticas
  * @description
  * @returns {Promise<Siniestro[]|[]>}
  */
-//async function getSiniestros() {
-//  try {
-//    return await Siniestro.find();
-//  } catch (error) {
-//    handleError(error, "Siniestro.service -> getSiniestros");
-//  }
-//}
-
+/*
+async function getEstadisticas() {
+  try {
+    return await Siniestro.find();
+  } catch (error) {
+    handleError(error, "Siniestro.service -> getEstadisticas");
+  }
+}
+*/
 
 /**
  * @name getEstadisticaSiniestroById
@@ -415,6 +386,11 @@ async function getEstadisticaSiniestroById(id) {
 
 
 
+
+
+
+
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------]
 
 
@@ -426,9 +402,7 @@ module.exports = {
   deleteSiniestro,
   getEstrategiaSiniestroById,
   getEstadisticaSiniestroById,
-  //getEstadisticaSiniestros,
-  //getEstadisticaCopaById,
-  //getSumarIncendio
-  //getSumaTotal
+  //getEstadisticas,
+
 };
 

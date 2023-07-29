@@ -13,11 +13,11 @@ const estado_unidadController = require("../controllers/estado_unidad.controller
 const router = express.Router();
 
 // Define las rutas para los usuarios
-router.get("/", estado_unidadController.getEstado_unidades);
-router.post("/" /*, authoMiddleware.isAdmin,*/, estado_unidadController.createEstado_unidad);
-router.get("/:id", estado_unidadController.getEstado_unidadById);
-router.put("/:id" /*, authoMiddleware.isAdmin,*/, estado_unidadController.updateEstado_unidad);
-router.delete("/:id"/*, authoMiddleware.isAdmin,*/, estado_unidadController.deleteEstado_unidad);
+router.get("/", estado_unidadController.getEstado_Unidades);
+router.post("/" /*, authoMiddleware.isAdmin,*/, estado_unidadController.createEstado_Unidad);
+router.get("/:id", estado_unidadController.getEstado_UnidadById);
+router.put("/:id" /*, authoMiddleware.isAdmin,*/, estado_unidadController.updateEstado_Unidad);
+router.delete("/:id"/*, authoMiddleware.isAdmin,*/, estado_unidadController.deleteEstado_Unidad);
 
 // Exporta el enrutador
 module.exports = router;

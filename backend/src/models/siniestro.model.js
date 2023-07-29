@@ -4,10 +4,12 @@ const mongoose = require("mongoose");
 
 // Crea el esquema de la coleccion 'siniestros'
 const siniestroSchema = new mongoose.Schema({
-  sin_numeroIncendio:{
-    type:Number,
-    required: false,
-  } ,
+  sin_numeroIncendio: {
+    type: Number,
+    required: true,
+    unique: true,
+    default: 1, // Valor inicial para el autoincremento
+  },
   sin_velocidadViento: {
     type: String,
     required: true,
@@ -25,7 +27,7 @@ const siniestroSchema = new mongoose.Schema({
     validate: {
       validator: function (value) {
         // Validar si la temperatura está dentro del rango
-        const temperatura = parseInt(value);
+          const temperatura = parseInt(value);
         return temperatura >= 0 && temperatura <= 42;
       },
       message: "La temperatura debe estar entre 0 y 42 grados",
@@ -44,8 +46,8 @@ const siniestroSchema = new mongoose.Schema({
   },
   sin_fechaInicio: {
     type: Date,
-    required: true,
-    /*validate: {
+    required: true,/*
+    validate: {
       validator: function(value) {
         return value <= this.sin_fechaTermino;
       },
@@ -59,6 +61,22 @@ const siniestroSchema = new mongoose.Schema({
   sin_latitud: {
     type: Number,
     required: true,
+    validate: {
+      validator: function (value) {
+        return value >= 17 && value <= 56;
+      },
+      message: 'La latitud debe estar entre 17 y 56.',
+    },
+  },
+  sin_longitud: {
+    type: Number,
+    required: true,
+    validate: {
+      validator: function (value) {
+        return value === 30;
+      },
+      message: 'La longitud debe ser igual a 30.',
+    },
   },
   sin_superficie: {
     type: String,
@@ -117,6 +135,18 @@ const siniestroSchema = new mongoose.Schema({
   sin_estrategia : {
     type: String,
     required: false,
+  }
+});
+
+// Antes de guardar un nuevo documento, se ejecuta esta función para incrementar sin_numeroIncendio
+siniestroSchema.pre("save", async function (next) {
+  const doc = this;
+  try {
+    const count = await mongoose.model("Siniestro").countDocuments();
+    doc.sin_numeroIncendio = count + 1;
+    next();
+  } catch (error) {
+    next(error);
   }
 });
 
