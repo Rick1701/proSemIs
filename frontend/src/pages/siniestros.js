@@ -9,8 +9,12 @@ const SiniestrosPage = () => {
   return (
     <Layout>
       {/* Contenido de la página de siniestros */}
-      <h1>Título del Siniestro</h1>
-      <p>Descripción del Siniestro</p>
+      <div style={{ marginBottom: '30px' }}>
+        <h1>Registro de Siniestros</h1>
+      </div>      
+
+
+      {/*<p></p>*/}
 
       {/* Listado de siniestros */}
       <SiniestrosListado />
@@ -18,11 +22,9 @@ const SiniestrosPage = () => {
       {/* Mostrar los botones directamente en la página */}
       <Stack spacing={2} direction="row">
         {/* Agregar redireccionamiento a la página de siniestrosListado */}
-        <Link href="/siniestrosListado">
-          <Button>Ver Listado</Button>
+        <Link href="/siniestrosRegistro">
+          <Button>AGREGAR SINIESTRO</Button>
         </Link>
-        <Button disabled>Disabled</Button>
-        <Button>Link</Button>
       </Stack>
     </Layout>
   );

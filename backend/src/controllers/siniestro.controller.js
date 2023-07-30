@@ -117,7 +117,7 @@ async function updateSiniestro(req, res) {
           "Not Found",
           { message: "Verifique el id ingresado" },
         )
-      : respondSuccess(req, res, 200, siniestro);
+      : res.status(200).json(siniestro);
   } catch (error) {
     handleError(error, "siniestro.controller -> updateSiniestro");
     respondError(req, res, 500, "No se pudo actualizar el siniestro");
