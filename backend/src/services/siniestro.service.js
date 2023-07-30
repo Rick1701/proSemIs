@@ -261,6 +261,8 @@ async function getEstrategiaSiniestroById(id) {
 async function updateSiniestro(id, updates) {
   //Busco, actualizo y devuelvo un documento actualizado de la colección "Siniestro" en la base de datos 
   const siniestro = await Siniestro.findByIdAndUpdate(id, updates, { new: true }).populate('sin_categoria');
+  
+  
   //Verifico si la propiedad 'hitos' del objeto 'siniestro' está definida o no.
   //Si no lo está se inicializa como un arreglo vacío
   if (!siniestro.hitos) {
@@ -274,6 +276,7 @@ async function updateSiniestro(id, updates) {
       //Para cada clave en 'actualizaciones' creo un objeto 'Date' y 'Descripción'
       fecha: new Date(),
       descripcion: getHitoDescripcion(clave), //Se obtiene llamando a la función 'getHitoDescripcion' pasando la clave como argumento
+      siniestroCompleto: { ...siniestro.toObject() }, // Copia del objeto siniestro en el momento actual
     };
   });
 
