@@ -31,7 +31,7 @@ function Dashboard({ children }) {
     <ThemeProvider theme={createTheme()}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <MuiAppBar position="absolute" open={open}>
+        <MuiAppBar position="absolute" open={open} sx={{ background: '#778D45' }}>
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
@@ -61,47 +61,27 @@ function Dashboard({ children }) {
             >
               SISTEMA DE ENFRENTAMIENTO TEMPRANO DE SINIESTROS (SETS)
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
           </Toolbar>
         </MuiAppBar>
         <MuiDrawer variant="permanent" open={open}>
-          <Toolbar
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              px: [1],
-            }}
-          >
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </Toolbar>
           <Divider />
           <List component="nav">
-            <MainListItems /> {/* Usa el componente MainListItems */}
+            <MainListItems />  {/*Usa el componente MainListItems */}
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}
           </List>
         </MuiDrawer>
         <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
-            display: 'flex', // Añade display flex
-            justifyContent: 'center', // Centra horizontalmente
-          }}
-        >
+            component="main"
+            sx={{
+              backgroundColor: '#564734',
+              flexGrow: 1,
+              height: '100vh',
+              overflow: 'auto',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mb: 4 }}>
             <Grid item xs={12}>
