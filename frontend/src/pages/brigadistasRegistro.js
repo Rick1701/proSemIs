@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 
 const BrigadistaRegistroPage = () => {
   const [formData, setFormData] = useState({
@@ -132,11 +133,27 @@ const BrigadistaRegistroPage = () => {
             renderInput={(params) => <TextField {...params} label="Brigada" />}
           />
         </div>
-        <Button type="submit">Registrar</Button>
+        <Button type="submit" sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} >Registrar</Button>
       </form>
+      {showSuccessMessage && (
+        <div
+          style={{
+            background: 'green',
+            color: 'white',
+            padding: '10px',
+            marginTop: '10px',
+            textAlign: 'center',
+            borderRadius: '4px',
+          }}
+        >
+          Brigadista registrado con éxito
+        </div>
+      )}
       {/* Agregar el botón de regresar */}
-      <Link href="/home">
-        <Button>Regresar</Button>
+      <Link href="/home" passHref>
+        <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }}>
+          Regresar
+        </Button>
       </Link>
     </Layout>
   );

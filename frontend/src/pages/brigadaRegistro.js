@@ -8,6 +8,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 
 const optionsEspecialidad = [
   "Ataque directo",
@@ -23,7 +24,7 @@ const BrigadaRegistroPage = () => {
   });
 
   const [basesOptions, setBasesOptions] = useState([]);
-
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false); 
   useEffect(() => {
     // Obtener las bases
     axios.get('http://localhost:3001/api/base')
@@ -40,6 +41,11 @@ const BrigadaRegistroPage = () => {
     try {
       const response = await axios.post('http://localhost:3001/api/brigada', formData); 
       console.log('Brigada registrada:', response.data);
+      setBrigadaRegistrada(true);
+      setShowSuccessMessage(true);
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 2000);
     } catch (error) {
       console.error('Error al registrar la brigada:', error);
     }
@@ -113,11 +119,27 @@ const BrigadaRegistroPage = () => {
             renderInput={(params) => <TextField {...params} label="Base asociada" />}
           />
         </div>
-        <Button type="submit">Registrar</Button>
+        <Button type="submit" sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} >Registrar</Button>
       </form>
+      {showSuccessMessage && (
+        <div
+          style={{
+            background: 'green',
+            color: 'white',
+            padding: '10px',
+            marginTop: '10px',
+            textAlign: 'center',
+            borderRadius: '4px',
+          }}
+        >
+          Brigada registrada con éxito
+        </div>
+      )}
       {/* Agregar el botón de regresar */}
-      <Link href="/home">
-        <Button>Regresar</Button>
+      <Link href="/home" passHref>
+        <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }}>
+          Regresar
+        </Button>
       </Link>
     </Layout>
   );

@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 
 const IncidenteRegistroPage = () => {
   const [formData, setFormData] = useState({
@@ -175,9 +176,8 @@ if (selectedBrigadista) {
             renderInput={(params) => <TextField {...params} label="Siniestro asociado" />}
           />
         </div>
-        <Button type="submit">Registrar</Button>
+        <Button type="submit" sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} >Registrar</Button>
       </form>
-      {/* Mostrar mensaje de éxito si se registró el incidente correctamente */}
       {showSuccessMessage && (
         <div
           style={{
@@ -192,8 +192,11 @@ if (selectedBrigadista) {
           Incidente registrado con éxito
         </div>
       )}
-      <Link href="/home">
-        <Button>Regresar</Button>
+      {/* Agregar el botón de regresar */}
+      <Link href="/home" passHref>
+        <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }}>
+          Regresar
+        </Button>
       </Link>
     </Layout>
   );

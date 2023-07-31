@@ -7,6 +7,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import axios from 'axios';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 
 const BaseRegistroPage = () => {
   const [formData, setFormData] = useState({
@@ -78,7 +79,7 @@ const BaseRegistroPage = () => {
             required
           />
         </div>
-        <Button type="submit">Registrar</Button>
+        <Button type="submit" sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} >Registrar</Button>
       </form>
       {showSuccessMessage && (
         <div
@@ -95,8 +96,10 @@ const BaseRegistroPage = () => {
         </div>
       )}
       {/* Agregar el botón de regresar */}
-      <Link href="/home">
-        <Button>Regresar</Button>
+      <Link href="/home" passHref>
+        <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }}>
+          Regresar
+        </Button>
       </Link>
     </Layout>
   );

@@ -7,6 +7,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import axios from 'axios'; 
+import ArrowBack from '@mui/icons-material/ArrowBack';
 
 const UterrestreRegistroPage = () => {
   const [formData, setFormData] = useState({
@@ -14,7 +15,8 @@ const UterrestreRegistroPage = () => {
     uterrestre_base: null,
   });
   const [basesOptions, setBasesOptions] = useState([]);
-
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false); 
+  
   useEffect(() => {
     // Obtener las bases
     axios.get('http://localhost:3001/api/base')
@@ -30,6 +32,12 @@ const UterrestreRegistroPage = () => {
     try {
       const response = await axios.post('http://localhost:3001/api/uterrestre', formData); 
       console.log('Unidad terrestre registrada:', response.data);
+      setUterrestreRegistrada(true);
+      setShowSuccessMessage(true);
+
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 2000);
     } catch (error) {
       console.error('Error al registrar la unidad terrestre:', error);
     }
@@ -80,11 +88,27 @@ const UterrestreRegistroPage = () => {
             renderInput={(params) => <TextField {...params} label="Base asociada" />}
         />
         </div>
-        <Button type="submit">Registrar</Button>
+        <Button type="submit" sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} >Registrar</Button>
       </form>
+      {showSuccessMessage && (
+        <div
+          style={{
+            background: 'green',
+            color: 'white',
+            padding: '10px',
+            marginTop: '10px',
+            textAlign: 'center',
+            borderRadius: '4px',
+          }}
+        >
+          Unidad terrestre registrada con éxito
+        </div>
+      )}
       {/* Agregar el botón de regresar */}
-      <Link href="/home">
-        <Button>Regresar</Button>
+      <Link href="/home" passHref>
+        <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }}>
+          Regresar
+        </Button>
       </Link>
     </Layout>
   );
