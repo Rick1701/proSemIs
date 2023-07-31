@@ -21,7 +21,7 @@ const IncidenteRegistroPage = () => {
   const [uterrestresOptions, setUterrestresOptions] = useState([]);
   const [siniestrosOptions, setSiniestrosOptions] = useState([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false); 
-
+  const [incidenteRegistrada, setIncidenteRegistrado] = useState(false);
   useEffect(() => {
     // Obtener los brigadistas
     axios.get('http://localhost:3001/api/brigadista')
@@ -68,6 +68,7 @@ const IncidenteRegistroPage = () => {
     try {
       const response = await axios.post('http://localhost:3001/api/incidente', formData);
       console.log('incidente registrado:', response.data);
+      setIncidenteRegistrado(true); 
       setShowSuccessMessage(true);
       setTimeout(() => {
         setShowSuccessMessage(false);

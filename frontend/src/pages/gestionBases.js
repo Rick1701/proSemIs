@@ -85,7 +85,7 @@ const GestionBasesPage = () => {
 
   return (
     <Layout>
-      <h1>Gestión de Bases</h1>
+      <h1>Listado de Bases</h1>
       {/* Formulario para crear o editar una base */}
       {/* Listado de bases */}
       <BasesListado bases={bases} setEditingBaseId={handleEditBase} onDelete={handleDeleteBase} />
