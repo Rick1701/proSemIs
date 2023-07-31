@@ -4,22 +4,32 @@ import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import Link from 'next/link';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 
 
 const EstadisticasListados = () => {
   console.log('SiniestrosListado se ha montado');
   const [siniestros, setSiniestros] = useState([]);
+  const [selectedSiniestro, setSelectedSiniestro] = useState(null);
+
 
   useEffect(() => {
     // Obtener los siniestros
     axios.get('http://localhost:3001/api/siniestro')
       .then(response => {
-        setSiniestros(response.data.data);
+        // Ordenar los siniestros cronológicamente por el campo sin_fechaInicio
+    const sortedSiniestros = response.data.data.sort((a, b) => new Date(b.sin_fechaInicio) - new Date(a.sin_fechaInicio));
+    setSiniestros(sortedSiniestros);
       })
       .catch(error => {
         console.error('Error al obtener los siniestros:', error);
       });
   }, []);
+
+
+  
+
+
 
   console.log('hola', siniestros); // Verifica si se están recibiendo los datos correctamente
 
@@ -32,28 +42,25 @@ const EstadisticasListados = () => {
     { field: 'sin_velocidadViento', headerName: 'Velocidad del Viento', width: 150 },
     { field: 'sin_temperatura', headerName: 'Temperatura', width: 150 },
     { field: 'sin_humedad', headerName: 'Humedad', width: 150 },
-    { field: 'sin_latitud', headerName: 'Latitud', width: 150 },
+    { field: 'sin_latitud', headerName: 'Latitud', width: 150 },   
+
     {
       field: 'acciones',
-      headerName: 'Acciones',
+      headerName: 'Graficar',
       width: 120,
       renderCell: (params) => (
-        <Button variant="outlined" size="small" onClick={() => handleRedireccionar(params.row.id)} >
-          GraficosID
+        <Button variant="outlined" size="small" onClick={() => handleMostrarGrafico(params.row)}>
+          
+          <AssessmentIcon fontSize="large" />
         </Button>
       ),
     },
   ];
 
-  const handleRedireccionar = (siniestroId) => {
-    return (
-      <Link href={`/Graficos/${siniestroId}`}>
-        <Button variant="outlined" size="small">
-          GraficosID
-        </Button>
-      </Link>
-    );
+  const handleMostrarGrafico = (siniestro) => {
+    setSelectedSiniestro(siniestro);
   };
+
 
   
   const getChartData = (siniestro) => {
@@ -83,9 +90,22 @@ const EstadisticasListados = () => {
   return (
     <div>
       <div style={{ height: 400, width: '100%' }}>
-        <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />
+        <DataGrid rows={rows} columns={columns} pageSize={5} />
       </div>
-   
+      {/* Renderizar el gráfico debajo de la tabla */}
+      {selectedSiniestro && (
+        <div>
+          <h2>Gráfico del Siniestro N°: {selectedSiniestro.sin_numeroIncendio}</h2>
+          <BarChart width={600} height={300} data={getChartData(selectedSiniestro)}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="nombreDelDato" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="UnidadDeMedida" fill="#8884d8" />
+          </BarChart>
+        </div>
+      )}
     </div>
   );
 };
