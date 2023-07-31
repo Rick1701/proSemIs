@@ -9,8 +9,7 @@ const UaereasPage = () => {
   return (
     <Layout>
       {/* Contenido de la página de uaerea */}
-      <h1>Título del listado aerea</h1>
-      <p>Descripción del listado</p>
+      <h1>Listado de unidades aereas</h1>
 
       {/* Listado de uaerea */}
       <UaereasListado />

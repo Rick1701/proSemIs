@@ -22,7 +22,7 @@ const BrigadaRegistroPage = () => {
     bri_especialidad: '',
     bri_base: null,
   });
-
+  const [brigadaRegistrada, setBrigadaRegistrada] = useState(false); 
   const [basesOptions, setBasesOptions] = useState([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false); 
   useEffect(() => {

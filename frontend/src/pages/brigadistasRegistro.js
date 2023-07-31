@@ -20,7 +20,8 @@ const BrigadistaRegistroPage = () => {
   const sexoOptions = ["Masculino", "Femenino", "Otro"]; // Opciones para el campo "Sexo"
   const [registroExitoso, setRegistroExitoso] = useState(false);
   const [brigadaOptions, setBrigadaOptions] = useState([]);
-
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false); 
+  const [brigadistaRegistrado, setBrigadistaRegistrado] = useState(false); 
   useEffect(() => {
     // Obtener las brigadas
     axios.get('http://localhost:3001/api/brigada')
@@ -39,6 +40,11 @@ const BrigadistaRegistroPage = () => {
       const response = await axios.post('http://localhost:3001/api/brigadista', formData);
       console.log('Brigadista registrado:', response.data);
       setRegistroExitoso(true); // Establecer el estado de registro exitoso en true
+      setBrigadistaRegistrado(true);
+      setShowSuccessMessage(true);
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 2000);
     } catch (error) {
       console.error('Error al registrar el brigadista:', error);
       setRegistroExitoso(false); // Establecer el estado de registro exitoso en false

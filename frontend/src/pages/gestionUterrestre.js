@@ -9,8 +9,7 @@ const UterrestresPage = () => {
   return (
     <Layout>
       {/* Contenido de la página de incidente */}
-      <h1>Título del listado uterrestre</h1>
-      <p>Descripción del listado</p>
+      <h1>Listado de unidades terrestre</h1>
 
       {/* Listado de incidentes */}
       <UterrestresListado />

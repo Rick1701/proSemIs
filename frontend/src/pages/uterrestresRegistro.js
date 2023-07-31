@@ -16,7 +16,7 @@ const UterrestreRegistroPage = () => {
   });
   const [basesOptions, setBasesOptions] = useState([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false); 
-  
+  const [uterrestreRegistrada, setUterrestreRegistrada] = useState(false); 
   useEffect(() => {
     // Obtener las bases
     axios.get('http://localhost:3001/api/base')
@@ -70,14 +70,14 @@ const UterrestreRegistroPage = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <TextField
-            name="uaerea_nombre"
+            name="uterrestre_nombre"
             label="Nombre"
-            value={formData.uaerea_nombre}
+            value={formData.uterrestre_nombre}
             onChange={handleInputChange}
             required
           />
         </div>
-        {/* Autocomplete para brigadista */}
+        {/* Autocomplete para base */}
         <div>
           <Autocomplete
             id="bri_base"
