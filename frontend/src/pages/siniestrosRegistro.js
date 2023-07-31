@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router'; // Importa el enrutador de Next.js
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Dayjs from 'dayjs';
@@ -35,6 +36,8 @@ const FieldTitle = ({ title, icon }) => {
 
 
 const SiniestrosRegistroPage = () => {
+  const router = useRouter(); // Asigna el enrutador a la variable router
+
   // Estado inicial del formulario
   const [formData, setFormData] = useState({
     sin_velocidadViento: '',
@@ -68,7 +71,6 @@ const SiniestrosRegistroPage = () => {
         const estrategiaResponse = await axios.get(`http://localhost:3001/api/siniestro/estrategia/${_id}`);
         console.log('Estrategia del siniestro:', estrategiaResponse.data);
       }
-  
       // Puedes mostrar una notificación de éxito o redirigir al usuario a la página de inicio
     } catch (error) {
       console.error('Error al registrar el siniestro:', error);
@@ -126,14 +128,20 @@ const SiniestrosRegistroPage = () => {
   };
 
   // Manejador para el envío del formulario
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    registerSiniestro(formData); // Llama a la función para registrar el siniestro en el backend
+    await registerSiniestro(formData); // Llama a la función para registrar el siniestro en el backend
+    router.push(`/siniestros`); // Redireccionar a la página de siniestros después del registro exitoso
+
     // Aquí puedes enviar el formData al backend para registrar el siniestro
     // mediante una función o servicio que se comunique con el backend.
     // Por ejemplo, podrías llamar a una función "registerSiniestro(formData)".
     console.log(formData); // Solo para verificar que los datos se están capturando correctamente.
   };
+
+  const handleRegresarClick = async () => {
+    router.push(`/home`);
+  }
 
   return (
     <Layout>
@@ -216,97 +224,22 @@ const SiniestrosRegistroPage = () => {
               renderInput={(params) => <TextField {...params} label="Seleccione una distribución" fullWidth />}
             />
           </Grid>
-          {/*<Grid item xs={12} sm={3}>
-            <Typography variant="" style={{ marginBottom: '8px', fontFamily: 'Arial', fontWeight: 'bold' }}>
-              Categoría
-            </Typography>
-            <Autocomplete
-              id="sin_categoria"
-              options={[]} // Agregar las opciones disponibles para las categorías
-              value={formData.sin_categoria}
-              onChange={handleCategoriaChange}
-              renderInput={(params) => <TextField {...params} label="Seleccione una categoría" fullWidth />}
-            />
-          </Grid>*/}
-        </Grid>
 
-        <Grid container spacing={2} style={{ marginTop: '70px' }}>
-          {/*<Grid item xs={12} sm={4}>
-            <Typography variant="" style={{ marginBottom: '8px', fontFamily: 'Arial', fontWeight: 'bold' }}>
-              Incidente
-            </Typography>
-            <Autocomplete
-              multiple
-              id="sin_incidente"
-              options={[]} // Agregar las opciones disponibles para los incidentes
-              value={formData.sin_incidente}
-              onChange={handleIncidenteChange}
-              renderInput={(params) => <TextField {...params} label="Incidente" fullWidth />}
-            />
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Typography variant="" style={{ marginBottom: '8px', fontFamily: 'Arial', fontWeight: 'bold' }}>
-              Bases Operando
-            </Typography>
-            <Autocomplete
-              multiple
-              id="sin_bases_operando"
-              options={[]} // Agregar las opciones disponibles para las bases operando
-              value={formData.sin_bases_operando}
-              onChange={handleBasesOperandoChange}
-              renderInput={(params) => <TextField {...params} label="Bases Operando" fullWidth />}
-            />
-          </Grid>*/}
-          <Grid item xs={12} sm={8}>
-            <FieldTitle title="Estado siniestro:" icon={<AirIcon fontSize="small" style={{ marginRight: '4px' }} />}  /> 
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={formData.sin_estado === 'iniciacion'}
-                  onChange={handleInputChange}
-                  name="sin_estado"
-                  value="iniciacion"
-                />
-              }
-              label="Iniciación"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={formData.sin_estado === 'propagacion'}
-                  onChange={handleInputChange}
-                  name="sin_estado"
-                  value="propagacion"
-                />
-              }
-              label="Propagación"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={formData.sin_estado === 'extincion'}
-                  onChange={handleInputChange}
-                  name="sin_estado"
-                  value="extincion"
-                />
-              }
-              label="Extinción"
-            />
-          </Grid>
         </Grid>
 
 
         <Grid container justifyContent="flex-end" spacing={2} style={{ marginTop: '70px' }}>
-          <Grid item>
-            <Button endIcon={<Save />} type="submit">Registrar</Button>
+            <Grid item>
+            <Button variant="contained" startIcon={<Save />} type="submit">
+                Registrar
+              </Button>
+            </Grid>
+            <Grid item>
+            <Button variant="contained" startIcon={<ArrowBack />} onClick={handleRegresarClick}>
+                Regresar
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item>
-            {/* botón de regresar */}
-            <Link href="/home">
-              <Button endIcon={<ArrowBack />}>Cancelar</Button>
-            </Link>
-          </Grid>
-        </Grid>
       </form>
     </Layout>
   );

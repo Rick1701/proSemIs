@@ -4,26 +4,36 @@ import Layout from '../components/Layout';
 import SiniestrosListado from '../components/SiniestrosListado';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import { Save, Delete, ArrowBack } from '@mui/icons-material'; // Importa los iconos que desees usar
+import { Grid } from '@mui/material'; // Importa el componente Grid
+
+
 
 const SiniestrosPage = () => {
   return (
     <Layout>
       {/* Contenido de la página de siniestros */}
-      <h1>Título del Siniestro</h1>
-      <p>Descripción del Siniestro</p>
+      <div style={{ marginBottom: '30px' }}>
+        <h1>Registro de Siniestros</h1>
+      </div>      
+
+      <div><h4>La última tupla de la tabla muestra el último siniestro registrado</h4></div>
+
+      {/*<p></p>*/}
 
       {/* Listado de siniestros */}
       <SiniestrosListado />
 
       {/* Mostrar los botones directamente en la página */}
-      <Stack spacing={2} direction="row">
-        {/* Agregar redireccionamiento a la página de siniestrosListado */}
-        <Link href="/siniestrosListado">
-          <Button>Ver Listado</Button>
-        </Link>
-        <Button disabled>Disabled</Button>
-        <Button>Link</Button>
-      </Stack>
+      <Grid container justifyContent="flex-end" spacing={2} style={{ marginTop: '70px' }}>
+            <Grid item>
+              <Link href={`/siniestrosRegistro`} passHref>
+                <Button variant="contained" startIcon={<Save />}>
+                  Registrar Nuevo Siniestro
+                </Button>
+              </Link>
+            </Grid>
+        </Grid>
     </Layout>
   );
 };

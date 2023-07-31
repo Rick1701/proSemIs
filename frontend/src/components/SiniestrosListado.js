@@ -3,11 +3,9 @@ import axios from 'axios';
 import Link from 'next/link';
 
 import { DataGrid } from '@mui/x-data-grid';
-import SettingsIcon from '@mui/icons-material/Settings';
-
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 
 const SiniestrosListado = () => {
-  console.log('SiniestrosListado se ha montado');
   const [siniestros, setSiniestros] = useState([]);
 
 
@@ -22,48 +20,6 @@ const SiniestrosListado = () => {
       });
   }, []);
 
-  //console.log('hola', siniestros); // Verifica si se están recibiendo los datos correctamente
-
-  /* // Variable que recibe la id del siniestro desde la URL
-  const { id } = router.query;
-  // Estado inicial del siniestro
-  const [siniestro, setSiniestro] = useState({
-    sin_velocidadViento: '',
-    sin_temperatura: '',
-    sin_humedad: '',
-    sin_fechaInicio: null,
-    sin_fechaTermino: null,
-    sin_latitud: '',
-    sin_superficie: '',
-    sin_distribucion_fuego: [],
-    sin_categoria: null,
-    sin_incidente: [],
-    sin_bases_operando: [],
-    sin_estado: '',
-    sin_estrategia: '',
-  });
-
-  // Variable de estado para controlar si los datos se han cargado
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const { id } = router.query;
-    if (id) {
-      const timestamp = Date.now(); // Obtiene el timestamp actual
-      axios.get(`http://localhost:3001/api/siniestro/${id}?timestamp=${timestamp}`)
-        .then(response => {
-          setSiniestro(response.data);
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.error('Error al obtener los detalles del siniestro:', error);
-        })
-        .finally(() => {
-          setLoading(false); // Actualiza el estado de loading a false cuando la solicitud se complete (ya sea éxito o error)
-        });
-    }
-  }, []);
-  */
 
   if (!Array.isArray(siniestros)) {
     return <p>No se encontraron siniestros.</p>;
@@ -78,6 +34,18 @@ const SiniestrosListado = () => {
   };
 
   const columns = [
+    {
+      field: 'administrarButton',
+      headerName: 'Detalles',
+      width: 150,
+      align: 'center',
+      headerAlign: 'center',
+      renderCell: (params) => (
+        <Link href={`/siniestrosShow/${params.row.id}`}> {/* Utiliza el ID del siniestro para crear la URL */}
+            <ContentPasteSearchIcon style={{ cursor: 'pointer' }} />
+        </Link>
+      ),
+    },
     { field: 'sin_numeroIncendio', headerName: 'N° Incendio', width: 150, align: 'center', headerAlign: 'center' },
     { field: 'sin_velocidadViento', headerName: 'Vlocidad Viento ( nudos )  ', width: 150, align: 'center', headerAlign: 'center' },
     { field: 'sin_temperatura', headerName: 'Temperatura ( ° )', width: 150, align: 'center', headerAlign: 'center' },
@@ -93,24 +61,12 @@ const SiniestrosListado = () => {
     { field: 'sin_bases_operando', headerName: 'Bases Operando', width: 150, align: 'center', headerAlign: 'center' },
     { field: 'sin_estado', headerName: 'Estado', width: 150, align: 'center', headerAlign: 'center' },
     { field: 'sin_estrategia', headerName: 'Estrategia', width: 150 },
-    {
-      field: 'administrarButton',
-      headerName: 'Administrar',
-      width: 150,
-      align: 'center',
-      headerAlign: 'center',
-      renderCell: (params) => (
-        <Link href={`/siniestrosShow/${params.row.id}`}> {/* Utiliza el ID del siniestro para crear la URL */}
-            <SettingsIcon style={{ cursor: 'pointer' }} />
-        </Link>
-      ),
-    },
+
   ];
 
   // Mapea los siniestros para obtener las filas del DataGrid
   const rows = siniestros.map(siniestro => {
     // Busca la categoría correspondiente al siniestro en el array de categorías
-    console.log("sin_bases_operando:", siniestro.sin_bases_operando);
     // Crea un objeto con las propiedades necesarias para el DataGrid
     return {
       id: siniestro._id,
@@ -133,7 +89,46 @@ const SiniestrosListado = () => {
   });
   return (
     <div style={{ height: 500, width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />
+      {/* Modificar los colores de la tabla */}
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={5}
+        components={{
+          // Personalizar el encabezado de la tabla
+          Header: ({ headerClassName, ...props }) => (
+            <div
+              className={`${headerClassName} custom-header`}
+              style={{
+                backgroundColor: '#f5f5f5', // Color de fondo del encabezado
+                borderBottom: '1px solid #ccc', // Borde inferior
+                color: '#333', // Color del texto del encabezado
+                fontWeight: 'bold', // Fuente en negrita
+              }}
+              {...props}
+            />
+          ),
+          
+          }}
+          sx={{
+            // Estilo global para la tabla (opcional)
+            '.custom-header': {
+              fontSize: '16px', // Tamaño de fuente del encabezado
+            },
+            '.custom-cell': {
+              fontSize: '14px', // Tamaño de fuente de las celdas
+            },
+            '.MuiDataGrid-row': {
+              // Estilo de las filas de la tabla
+              '&:nth-of-type(odd)': {
+                backgroundColor: '#f9f9f9', // Color de fondo de las filas impares
+              },
+              '&:hover': {
+                backgroundColor: '#f0f0f0', // Color de fondo al pasar el mouse por encima
+              },
+            },
+          }}
+        />
     </div>
   );
 };

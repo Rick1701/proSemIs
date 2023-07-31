@@ -58,7 +58,7 @@ async function createSiniestro(siniestro) {
     // const myRole = rolesFound.map((role) => role._id);
     
     
-    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_longitud, sin_superficie, sin_distribucion_fuego /*sin_tipo_bosque, sin_estrategia,sin_incidente*/} = siniestro;
+    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_fechaInicio, sin_fechaTermino, sin_latitud, sin_superficie, sin_distribucion_fuego /*sin_tipo_bosque, sin_estrategia,sin_incidente*/} = siniestro;
 
 
     //Buscar la instancia de Categoría existente en base al ID proporcionado en body:
@@ -77,16 +77,33 @@ async function createSiniestro(siniestro) {
       sin_longitud: 30,
       sin_superficie,
       sin_distribucion_fuego,
-      //sin_estrategia
+      sin_estado: 'INICIACIÓN'
       //sin_tipo_bosque
       //sin_incidente: incidente._id
     });
-    //INSERTO LA ID DEL INCENDIO EN LA CATEGORIA:
-    //categoria.cat_incendio.push(newSiniestro._id);
-    //UNA VEZ INSERTADA LA ID DEL INCENDIO EN LA CATEGORIA, GUARDO LA CATEGORIA:
-    //await categoria.save();
-    //UNA VEZ GUARDADA LA CATEGORIA, GUARDO EL INCENDIO Y RETORNO:
-    return await newSiniestro.save();
+
+    // Guardar el siniestro en la base de datos
+    const siniestroGuardado = await newSiniestro.save();
+
+    // Obtener la estrategia después de guardar el siniestro
+    const estrategia = await getEstrategiaSiniestroById(siniestroGuardado._id);
+
+    // Actualizar el campo sin_estrategia en el objeto siniestro
+    siniestroGuardado.sin_estrategia = estrategia;
+    // Crear el hito con la información actualizada
+    const hito = {
+      fecha: new Date(),
+      descripcion: "Inicio del Siniestro",
+      siniestroCompleto: {
+        ...siniestroGuardado.toObject()
+      },
+    };
+
+    // Agregar el hito al array de hitos
+    siniestroGuardado.hitos.push(hito);
+
+    // Guardar el siniestro con el hito
+    return await siniestroGuardado.save();
   } catch (error) {
     handleError(error, "siniestro.service -> createSiniestro");
   }
@@ -242,7 +259,8 @@ async function getEstrategiaSiniestroById(id) {
 
       console.log("Estrategia: ", estrategia);
       siniestro.sin_estrategia = estrategia;
-      return await siniestro.save();
+      siniestro.save();
+      return await estrategia;
 
     }
   } catch (error) {
@@ -259,32 +277,53 @@ async function getEstrategiaSiniestroById(id) {
  */
 
 async function updateSiniestro(id, updates) {
-  //Busco, actualizo y devuelvo un documento actualizado de la colección "Siniestro" en la base de datos 
-  const siniestro = await Siniestro.findByIdAndUpdate(id, updates, { new: true }).populate('sin_categoria');
-  
-  
-  //Verifico si la propiedad 'hitos' del objeto 'siniestro' está definida o no.
-  //Si no lo está se inicializa como un arreglo vacío
-  if (!siniestro.hitos) {
-    siniestro.hitos = [];
-  }
-  const actualizaciones = Object.keys(updates); //Extraigo las claves de 'updates' y las asigno a la variable 'actualizaciones'
-  //console.log(actualizaciones); //Puedo imprimir en la consola las claves de las propiedades actualizadas
-  //Ahora creo un nuevo arreglo 'nuevosHitos' con el metodo 'map' en el arreglo 'actualizaciones'
-  const nuevosHitos = actualizaciones.map((clave) => {
-    return {
-      //Para cada clave en 'actualizaciones' creo un objeto 'Date' y 'Descripción'
-      fecha: new Date(),
-      descripcion: getHitoDescripcion(clave), //Se obtiene llamando a la función 'getHitoDescripcion' pasando la clave como argumento
-      siniestroCompleto: { ...siniestro.toObject() }, // Copia del objeto siniestro en el momento actual
-    };
-  });
+  try{
+    //Busco, actualizo y devuelvo un documento actualizado de la colección "Siniestro" en la base de datos 
+    const siniestro = await Siniestro.findByIdAndUpdate(id, updates, { new: true }).populate('sin_categoria');
+    
+    
+    //Verifico si la propiedad 'hitos' del objeto 'siniestro' está definida o no.
+    //Si no lo está se inicializa como un arreglo vacío
+    if (!siniestro.hitos) {
+      siniestro.hitos = [];
+    }
+    
+    // Validar si 'sin_fechaTermino' ya está definida en el siniestro
+    if (!siniestro.sin_fechaTermino) {
+      // Si 'sin_fechaTermino' no está definida, entonces cambiar el estado a 'PROPAGACIÓN'
+      siniestro.sin_estado = 'PROPAGACIÓN';
+    }
+    else{
+      siniestro.sin_estado = 'EXTINCIÓN';
+    }
+    // Guardar los datos cambiados del siniestro
+    const siniestroGuardado = await siniestro.save();
 
-  //Utilizo el operador de propagación "spread operator" el cual descompone un objeto iterable en sus elementos individuales
-  siniestro.hitos.push(...nuevosHitos); //Tomo cada objeto individual dentro del arreglo 'nuevosHitos' y los agrego uno por uno al final del arreglo 'hitos' del objeto siniestro'
-  const siniestroGuardado = await siniestro.save(); //Guardo el objeto 'siniestro' actualizado en la base de datos
-  console.log('Hitos registrados:', nuevosHitos); //Imprimo en la consola un mensaje junto con el arreglo 'nuevosHitos', lo cual muestra los nuevos hitos generados
-  return siniestroGuardado; //Devuelvo el objeto 'siniestroGuardado' que representa al siniestro actualizado
+    // Obtener la estrategia actualizada y guardar los nuevos parámetros del siniestro en el método 'getEstrategiaSiniestroById'
+    const estrategia = await getEstrategiaSiniestroById(siniestroGuardado._id);
+
+    const actualizaciones = Object.keys(updates); //Extraigo las claves de 'updates' y las asigno a la variable 'actualizaciones'
+    //Ahora creo un nuevo arreglo 'nuevosHitos' con el metodo 'map' en el arreglo 'actualizaciones'
+    const nuevosHitos = actualizaciones.map((clave) => {
+      return {
+        //Para cada clave en 'actualizaciones' creo un objeto 'Date' y 'Descripción'
+        fecha: new Date(),
+        descripcion: getHitoDescripcion(clave), //Se obtiene llamando a la función 'getHitoDescripcion' pasando la clave como argumento
+        siniestroCompleto: { ...siniestroGuardado.toObject(), sin_estrategia: estrategia }, // Copia del objeto siniestro en el momento actual con la nueva estrategia
+      };
+    });
+
+    // Agregar el nuevo hito al arreglo de hitos del objeto siniestro
+    siniestroGuardado.hitos.push(...nuevosHitos);
+
+    // Guardar el siniestro con el nuevo hito en la base de datos
+    const siniestroConHitoGuardado = await siniestroGuardado.save();
+
+    console.log('Hito registrado:', nuevosHitos); // Imprimir en la consola un mensaje junto con el nuevo hito registrado
+    return siniestroConHitoGuardado; // Devuelvo el objeto 'siniestroConHitoGuardado' que representa al siniestro actualizado con el nuevo hito
+  } catch (error) {
+    handleError(error, "siniestro.service -> updateSiniestro");
+  }
 }
 
 //Declaro la función 'getHitoDescripcion' que toma el parametro 'action'

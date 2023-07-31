@@ -130,7 +130,7 @@ const siniestroSchema = new mongoose.Schema({
   sin_estado : {
     type: String,
     required: false,
-    enum: ["iniciacion","propagacion","extincion"]
+    enum: ["INICIACIÓN","PROPAGACIÓN","EXTINCIÓN"]
   },
   sin_estrategia : {
     type: String,
@@ -150,7 +150,7 @@ const siniestroSchema = new mongoose.Schema({
       },
       siniestroCompleto: {
         type: mongoose.Schema.Types.Mixed,
-        required: true,
+        required: false,
       },
     },
   ],

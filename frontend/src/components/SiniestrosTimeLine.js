@@ -13,16 +13,15 @@ const SiniestrosTimeLine = ({ hitos = [] }) => {
   
     return {
       title: formattedDate,
-      cardTitle: `Número de Incendio: ${hito.descripcion}`,
+      cardTitle: `Descripción: ${hito.descripcion}`,
       cardSubtitle: `Estado: ${hito.siniestroCompleto.sin_estado}`,
-      cardDetailedText: `Estrategia: ${hito.siniestroCompleto.sin_estrategia}`,
+      cardDetailedText: hito.siniestroCompleto.sin_estado === 'EXTINCIÓN' ? 'Incendio Apagado.' : `Estrategia: ${hito.siniestroCompleto.sin_estrategia}`,
     };
-  });
-
+  }).filter(Boolean); // Filtra los elementos que no son null
 
   // Agrega un console.log aquí para asegurarte de que los datos se están pasando correctamente.
-  console.log(items);
-  console.log(hitos)
+  console.log('items: ',items);
+  console.log('Hitos: ',hitos)
 
   return (
     <div style={{ width: '100%', height: '400px' }}>
