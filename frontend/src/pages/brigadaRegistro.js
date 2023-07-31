@@ -9,6 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import ArrowBack from '@mui/icons-material/ArrowBack';
+import Grid from '@mui/material/Grid';
+import InputLabel from '@mui/material/InputLabel';
 
 const optionsEspecialidad = [
   "Ataque directo",
@@ -82,66 +84,79 @@ const BrigadaRegistroPage = () => {
 
   return (
     <Layout>
-      <h1>REGISTRO DE BRIGADA</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <TextField
-            name="bri_nombre"
-            label="Nombre"
-            value={formData.bri_nombre}
-            onChange={handleInputChange}
+  <h1>REGISTRO DE BRIGADA</h1>
+  <form onSubmit={handleSubmit}>
+    <Grid container spacing={2}>
+      {/* Campos a rellenar */}
+      <Grid item xs={12} sm={6}>
+        <TextField
+          name="bri_nombre"
+          label="Nombre"
+          value={formData.bri_nombre}
+          onChange={handleInputChange}
+          required
+          fullWidth
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Autocomplete
+          id="bri_base"
+          options={basesOptions}
+          getOptionLabel={(option) => option.base_descripcion} 
+          value={formData.bri_base}
+          onChange={handleBaseChange}
+          renderInput={(params) => <TextField {...params} label="Base asociada" fullWidth />}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <FormControl fullWidth>
+          <InputLabel htmlFor="bri_especialidad">Especialidad</InputLabel>
+          <Select
+            id="bri_especialidad"
+            name="bri_especialidad"
+            value={formData.bri_especialidad}
+            onChange={handleEspecialidadChange}
             required
-          />
-        </div>
-        <div>
-          <FormControl>
-            <Select
-              name="bri_especialidad"
-              value={formData.bri_especialidad}
-              onChange={handleEspecialidadChange}
-              required
-            >
-              <MenuItem value="" disabled>Selecciona una especialidad</MenuItem>
-              {optionsEspecialidad.map((option) => (
-                <MenuItem key={option} value={option}>{option}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </div>
-        {/* Autocomplete para base */}
-        <div>
-          <Autocomplete
-            id="bri_base"
-            options={basesOptions}
-            getOptionLabel={(option) => option.base_descripcion} 
-            value={formData.bri_base}
-            onChange={handleBaseChange}
-            renderInput={(params) => <TextField {...params} label="Base asociada" />}
-          />
-        </div>
-        <Button type="submit" sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} >Registrar</Button>
-      </form>
-      {showSuccessMessage && (
-        <div
-          style={{
-            background: 'green',
-            color: 'white',
-            padding: '10px',
-            marginTop: '10px',
-            textAlign: 'center',
-            borderRadius: '4px',
-          }}
-        >
-          Brigada registrada con éxito
-        </div>
-      )}
-      {/* Agregar el botón de regresar */}
-      <Link href="/home" passHref>
-        <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }}>
-          Regresar
+            style={{ marginBottom: '16px', minWidth: '200px' }} // Añadimos margen bottom y modificamos el ancho
+          >
+            {optionsEspecialidad.map((option) => (
+              <MenuItem key={option} value={option}>{option}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+    </Grid>
+    {/* Botones "Regresar" y "Registrar" */}
+    <Grid container spacing={2}>
+      <Grid item xs={12} sm={6}>
+        <Link href="/home" passHref>
+          <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} fullWidth>
+            Regresar
+          </Button>
+        </Link>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Button type="submit" sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} fullWidth>
+          Registrar
         </Button>
-      </Link>
-    </Layout>
+      </Grid>
+    </Grid>
+  </form>
+  {showSuccessMessage && (
+    <div
+      style={{
+        background: 'green',
+        color: 'white',
+        padding: '10px',
+        marginTop: '10px',
+        textAlign: 'center',
+        borderRadius: '4px',
+      }}
+    >
+      Brigada registrada con éxito
+    </div>
+  )}
+</Layout>
   );
 };
 

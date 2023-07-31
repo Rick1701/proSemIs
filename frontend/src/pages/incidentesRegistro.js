@@ -4,8 +4,9 @@ import Link from 'next/link';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import axios from 'axios';
+import Grid from '@mui/material/Grid';
 import ArrowBack from '@mui/icons-material/ArrowBack';
+import axios from 'axios';
 
 const IncidenteRegistroPage = () => {
   const [formData, setFormData] = useState({
@@ -123,18 +124,21 @@ if (selectedBrigadista) {
   return (
     <Layout>
       <h1>REGISTRO DE INCIDENTES</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+              <form onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+        <Grid item xs={12}>
           <TextField
             name="inc_descripcion"
             label="Descripción del incidente"
             value={formData.inc_descripcion}
             onChange={handleInputChange}
             required
+            fullWidth
           />
-        </div>
-        {/* Autocomplete para brigadista */}
-        <div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
           <Autocomplete
             id="inc_brigadista"
             options={brigadistasOptions}
@@ -142,10 +146,10 @@ if (selectedBrigadista) {
             value={formData.inc_brigadista}
             onChange={(event, newValue) => setFormData({ ...formData, inc_brigadista: newValue })}
             renderInput={(params) => <TextField {...params} label="Brigadista afectado" />}
+            fullWidth
           />
-        </div>
-        {/* Autocomplete para unidad aérea */}
-        <div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
           <Autocomplete
             id="inc_uaerea"
             options={uaereasOptions}
@@ -153,10 +157,10 @@ if (selectedBrigadista) {
             value={formData.inc_uaerea}
             onChange={(event, newValue) => setFormData({ ...formData, inc_uaerea: newValue })}
             renderInput={(params) => <TextField {...params} label="Unidad aérea afectada" />}
+            fullWidth
           />
-        </div>
-        {/* Autocomplete para unidad terrestre */}
-        <div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
           <Autocomplete
             id="inc_uterrestre"
             options={uterrestresOptions}
@@ -164,10 +168,10 @@ if (selectedBrigadista) {
             value={formData.inc_uterrestre}
             onChange={(event, newValue) => setFormData({ ...formData, inc_uterrestre: newValue })}
             renderInput={(params) => <TextField {...params} label="Unidad terrestre afectada" />}
+            fullWidth
           />
-        </div>
-        {/* Autocomplete para siniestro */}
-        <div>
+        </Grid>
+        <Grid item xs={12} sm={6}>
           <Autocomplete
             id="inc_siniestro"
             options={siniestrosOptions}
@@ -175,31 +179,42 @@ if (selectedBrigadista) {
             value={formData.inc_siniestro}
             onChange={(event, newValue) => setFormData({ ...formData, inc_siniestro: newValue })}
             renderInput={(params) => <TextField {...params} label="Siniestro asociado" />}
+            fullWidth
           />
-        </div>
-        <Button type="submit" sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} >Registrar</Button>
-      </form>
-      {showSuccessMessage && (
-        <div
-          style={{
-            background: 'green',
-            color: 'white',
-            padding: '10px',
-            marginTop: '10px',
-            textAlign: 'center',
-            borderRadius: '4px',
-          }}
-        >
-          Incidente registrado con éxito
-        </div>
-      )}
-      {/* Agregar el botón de regresar */}
-      <Link href="/home" passHref>
-        <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }}>
-          Regresar
-        </Button>
-      </Link>
-    </Layout>
+        </Grid>
+      </Grid>
+      <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} textAlign="left">
+                <Link href="/home" passHref>
+                  <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} fullWidth>
+                    Regresar
+                  </Button>
+                </Link>
+              </Grid>
+              <Grid item xs={12} sm={6} textAlign="right">
+                <Button type="submit" sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} fullWidth>
+                  Registrar
+                </Button>
+              </Grid>
+            </Grid>
+          </form>
+        </Grid>
+      </Grid>
+    {showSuccessMessage && (
+      <div
+        style={{
+          background: 'green',
+          color: 'white',
+          padding: '10px',
+          marginTop: '10px',
+          textAlign: 'center',
+          borderRadius: '4px',
+        }}
+      >
+        Incidente registrado con éxito
+      </div>
+    )}
+  </Layout>
   );
 };
 

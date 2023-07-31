@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
 import ArrowBack from '@mui/icons-material/ArrowBack';
+import Grid from '@mui/material/Grid';
 
 const BrigadistaRegistroPage = () => {
   const [formData, setFormData] = useState({
@@ -81,65 +82,90 @@ const BrigadistaRegistroPage = () => {
         </div>
       ) : null}
       <form onSubmit={handleSubmit}>
-        <div>
-          <TextField
-            name="brig_rut"
-            label="RUT"
-            value={formData.brig_rut}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div>
-          <TextField
-            name="brig_nombres"
-            label="Nombres"
-            value={formData.brig_nombres}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div>
-          <TextField
-            name="brig_apellidos"
-            label="Apellidos"
-            value={formData.brig_apellidos}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div>
-          {/* Utilizamos Autocomplete para el campo "Sexo" */}
-          <Autocomplete
-            name="brig_sexo"
-            options={sexoOptions}
-            getOptionLabel={(option) => option}
-            value={formData.brig_sexo}
-            onChange={(event, newValue) => setFormData({ ...formData, brig_sexo: newValue })}
-            renderInput={(params) => <TextField {...params} label="Sexo" required />}
-          />
-        </div>
-        <div>
-          <TextField
-            name="brig_edad"
-            label="Edad"
-            value={formData.brig_edad}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div>
-          {/* Utilizamos Autocomplete para el campo "Brigada" */}
-          <Autocomplete
-            name="brig_brigada"
-            options={brigadaOptions}
-            getOptionLabel={(option) => option.bri_nombre} // Cambiar de option.brig_brigada a option.bri_nombre
-            value={formData.brig_brigada}
-            onChange={handleBrigadaChange}
-            renderInput={(params) => <TextField {...params} label="Brigada" />}
-          />
-        </div>
-        <Button type="submit" sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} >Registrar</Button>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            {/* Campos a rellenar */}
+            <TextField
+              name="brig_rut"
+              label="RUT"
+              value={formData.brig_rut}
+              onChange={handleInputChange}
+              required
+              fullWidth
+              style={{ marginBottom: '16px' }} // Añadimos margen inferior
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              name="brig_nombres"
+              label="Nombres"
+              value={formData.brig_nombres}
+              onChange={handleInputChange}
+              required
+              fullWidth
+              style={{ marginBottom: '16px' }} // Añadimos margen inferior
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              name="brig_apellidos"
+              label="Apellidos"
+              value={formData.brig_apellidos}
+              onChange={handleInputChange}
+              required
+              fullWidth
+              style={{ marginBottom: '16px' }} // Añadimos margen inferior
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            {/* Utilizamos Autocomplete para el campo "Sexo" */}
+            <Autocomplete
+              name="brig_sexo"
+              options={sexoOptions}
+              getOptionLabel={(option) => option}
+              value={formData.brig_sexo}
+              onChange={(event, newValue) => setFormData({ ...formData, brig_sexo: newValue })}
+              renderInput={(params) => <TextField {...params} label="Sexo" required />}
+              style={{ marginBottom: '16px' }} // Añadimos margen inferior
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              name="brig_edad"
+              label="Edad"
+              value={formData.brig_edad}
+              onChange={handleInputChange}
+              required
+              fullWidth
+              style={{ marginBottom: '16px' }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Autocomplete
+              name="brig_brigada"
+              options={brigadaOptions}
+              getOptionLabel={(option) => option.bri_nombre}
+              value={formData.brig_brigada}
+              onChange={handleBrigadaChange}
+              renderInput={(params) => <TextField {...params} label="Brigada" />}
+              style={{ marginBottom: '16px' }}
+            />
+          </Grid>
+        </Grid>
+        <Grid container spacing={2} style={{ marginTop: '-10px' }}>
+          <Grid item xs={12} sm={6}>
+            <Link href="/home" passHref>
+              <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} fullWidth>
+                Regresar
+              </Button>
+            </Link>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Button type="submit" sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} fullWidth>
+              Registrar
+            </Button>
+          </Grid>
+        </Grid>
       </form>
       {showSuccessMessage && (
         <div
@@ -155,13 +181,8 @@ const BrigadistaRegistroPage = () => {
           Brigadista registrado con éxito
         </div>
       )}
-      {/* Agregar el botón de regresar */}
-      <Link href="/home" passHref>
-        <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }}>
-          Regresar
-        </Button>
-      </Link>
     </Layout>
+
   );
 };
 

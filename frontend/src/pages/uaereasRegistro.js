@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
 import ArrowBack from '@mui/icons-material/ArrowBack';
+import Grid from '@mui/material/Grid';
 
 const UaereasRegistroPage = () => {
   const [formData, setFormData] = useState({
@@ -65,51 +66,67 @@ const UaereasRegistroPage = () => {
 
   return (
     <Layout>
-      <h1>REGISTRO DE UNIDADES AÉREAS</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <TextField
-            name="uaerea_nombre"
-            label="Nombre"
-            value={formData.uaerea_nombre}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
+  <h1>REGISTRO DE UNIDADES AÉREAS</h1>
+  <form onSubmit={handleSubmit}>
+    <Grid container spacing={2}>
+      {/* Campos a rellenar */}
+      <Grid item xs={12} sm={6} textAlign="center">
+        <TextField
+          name="uaerea_nombre"
+          label="Nombre"
+          value={formData.uaerea_nombre}
+          onChange={handleInputChange}
+          required
+          fullWidth
+          style={{ marginBottom: '16px' }} // Añadimos margen inferior
+        />
+      </Grid>
+      <Grid item xs={12} sm={6}>
         {/* Autocomplete para bases */}
-        <div>
-          <Autocomplete
-            id="bri_base"
-            options={basesOptions}
-            getOptionLabel={(option) => option.base_descripcion} 
-            value={formData.bri_base}
-            onChange={handleBaseChange}
-            renderInput={(params) => <TextField {...params} label="Base asociada" />}
-          />
-        </div>
-        <Button type="submit" sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} >Registrar</Button>
-      </form>
-      {showSuccessMessage && (
-        <div
-          style={{
-            background: 'green',
-            color: 'white',
-            padding: '10px',
-            marginTop: '10px',
-            textAlign: 'center',
-            borderRadius: '4px',
-          }}
-        >
-          Unidad aerea registrada con éxito
-        </div>
-      )}
-      {/* Agregar el botón de regresar */}
-      <Link href="/home" passHref>
-        <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }}>
-          Regresar
+        <Autocomplete
+          id="uaerea_base"
+          options={basesOptions}
+          getOptionLabel={(option) => option.base_descripcion}
+          value={formData.uaerea_base}
+          onChange={handleBaseChange}
+          renderInput={(params) => <TextField {...params} label="Base asociada" />}
+          style={{ marginBottom: '16px' }} // Añadimos margen inferior
+          fullWidth
+        />
+      </Grid>
+    </Grid>
+    {/* Botones "Regresar" y "Registrar" */}
+    <Grid container spacing={2} style={{ marginTop: '-20x' }}> 
+      <Grid item xs={12} sm={6}>
+        <Link href="/home" passHref>
+          <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} fullWidth>
+            Regresar
+          </Button>
+        </Link>
+      </Grid>
+      <Grid item xs={12} sm={6}>
+        <Button type="submit" sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} fullWidth>
+          Registrar
         </Button>
-      </Link>
-    </Layout>
+      </Grid>
+    </Grid>
+  </form>
+  {showSuccessMessage && (
+    <div
+      style={{
+        background: 'green',
+        color: 'white',
+        padding: '10px',
+        marginTop: '10px',
+        textAlign: 'center',
+        borderRadius: '4px',
+      }}
+    >
+      Unidad aérea registrada con éxito
+    </div>
+  )}
+</Layout>
+
   );
 };
 
