@@ -254,7 +254,7 @@ const MainListItems = () => {
           {/* Sub-menú para Unidades Aéreas */}
           <Collapse in={openUaereas} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton href="/gestionUaereas" sx={{ pl: 8 }}>
+              <ListItemButton href="/gestionUaerea" sx={{ pl: 8 }}>
                 <ListItemIcon>
                   <LayersIcon />
                 </ListItemIcon>

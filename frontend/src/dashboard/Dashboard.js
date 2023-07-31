@@ -1,4 +1,4 @@
-import React from 'react'; // Asegúrate de importar React
+import React, { useState } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -17,12 +17,14 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { secondaryListItems } from './listItems'; // Importa solo la constante secondaryListItems 
+import { secondaryListItems } from './listItems'; // Importa solo la constante secondaryListItems
 import MainListItems from './listItems'; // Importa el componente MainListItems
 
+// ... (Código anterior)
 
-function Dashboard({ children }) {
-  const [open, setOpen] = React.useState(true);
+const Dashboard = ({ children }) => {
+  const [open, setOpen] = useState(true);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -122,6 +124,6 @@ function Dashboard({ children }) {
       </Box>
     </ThemeProvider>
   );
-}
+};
 
 export default Dashboard;

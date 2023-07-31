@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Layout from '../components/Layout';
 import Link from 'next/link';
 import Button from '@mui/material/Button';
@@ -7,11 +8,11 @@ import Autocomplete from '@mui/material/Autocomplete';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import axios from 'axios'; 
 
 const optionsEspecialidad = [
-  "Especialistas en ataque directo",
-  "Especialistas en ataque indirecto"
+  "Ataque directo",
+  "Ataque indirecto",
+  "Trabajo en altura"
 ];
 
 const BrigadaRegistroPage = () => {
@@ -20,6 +21,20 @@ const BrigadaRegistroPage = () => {
     bri_especialidad: '',
     bri_base: null,
   });
+
+  const [basesOptions, setBasesOptions] = useState([]);
+
+  useEffect(() => {
+    // Obtener las bases
+    axios.get('http://localhost:3001/api/base')
+      .then(response => {
+        const bases = response.data.data;
+        setBasesOptions(bases);
+      })
+      .catch(error => {
+        console.error('Error al obtener las bases:', error);
+      });
+  }, []);
 
   const registerBrigada = async (formData) => {
     try {
@@ -87,10 +102,12 @@ const BrigadaRegistroPage = () => {
             </Select>
           </FormControl>
         </div>
+        {/* Autocomplete para base */}
         <div>
           <Autocomplete
             id="bri_base"
-            options={[]}
+            options={basesOptions}
+            getOptionLabel={(option) => option.base_descripcion} 
             value={formData.bri_base}
             onChange={handleBaseChange}
             renderInput={(params) => <TextField {...params} label="Base asociada" />}

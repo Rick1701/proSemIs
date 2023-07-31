@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import Link from 'next/link';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import axios from 'axios'; 
+import axios from 'axios';
 
 const IncidenteRegistroPage = () => {
   const [formData, setFormData] = useState({
@@ -16,10 +14,63 @@ const IncidenteRegistroPage = () => {
     inc_uterrestre: null,
     inc_siniestro: null,
   });
+
+  const [brigadistasOptions, setBrigadistasOptions] = useState([]);
+  const [uaereasOptions, setUaereasOptions] = useState([]);
+  const [uterrestresOptions, setUterrestresOptions] = useState([]);
+  const [siniestrosOptions, setSiniestrosOptions] = useState([]);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false); 
+
+  useEffect(() => {
+    // Obtener los brigadistas
+    axios.get('http://localhost:3001/api/brigadista')
+      .then(response => {
+        const brigadistas = response.data.data;
+        setBrigadistasOptions(brigadistas);
+      })
+      .catch(error => {
+        console.error('Error al obtener los brigadistas:', error);
+      });
+
+    // Obtener las unidades aéreas
+    axios.get('http://localhost:3001/api/uaerea')
+      .then(response => {
+        const uaereas = response.data.data;
+        setUaereasOptions(uaereas);
+      })
+      .catch(error => {
+        console.error('Error al obtener las unidades aéreas:', error);
+      });
+
+    // Obtener las unidades terrestres
+    axios.get('http://localhost:3001/api/uterrestre')
+      .then(response => {
+        const uterrestres = response.data.data;
+        setUterrestresOptions(uterrestres);
+      })
+      .catch(error => {
+        console.error('Error al obtener las unidades terrestres:', error);
+      });
+
+    // Obtener los siniestros
+    axios.get('http://localhost:3001/api/siniestro')
+      .then(response => {
+        const siniestros = response.data.data;
+        setSiniestrosOptions(siniestros);
+      })
+      .catch(error => {
+        console.error('Error al obtener los siniestros:', error);
+      });
+  }, []);
+
   const registerIncidente = async (formData) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/incidente', formData); 
+      const response = await axios.post('http://localhost:3001/api/incidente', formData);
       console.log('incidente registrado:', response.data);
+      setShowSuccessMessage(true);
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 2000);
     } catch (error) {
       console.error('Error al registrar el incidente:', error);
     }
@@ -33,38 +84,38 @@ const IncidenteRegistroPage = () => {
     });
   };
 
-  const handleBrigadistaChange = (event, values) => {
-    setFormData({
-      ...formData,
-      inc_brigadista: values,
-    });
-  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-  const handleUaereaChange = (event, value) => {
-    setFormData({
-      ...formData,
-      inc_uaerea: value,
-    });
-  };
+    // Verificar si el brigadista seleccionado está disponible
+    const selectedBrigadista = brigadistasOptions.find(brigadista => brigadista.brig_rut === formData.inc_brigadista);
+if (selectedBrigadista) {
+  // Obtener el estado del brigadista seleccionado
+  const brigadistaEstado = selectedBrigadista.estado_brigadista.estab_descripcion;
+  if (brigadistaEstado === 'No Disponible') {
+    alert('El brigadista seleccionado no está disponible. Por favor, elige otro brigadista.');
+    return;
+  }
+}
 
-  const handleUterrestreChange = (event, value) => {
-    setFormData({
-      ...formData,
-      inc_uterrestre: value,
-    });
-  };
 
-  const handleSiniestroChange = (event, value) => {
-    setFormData({
-      ...formData,
-      inc_siniestro: value,
-    });
-  };
+    // Verificar si la unidad aérea seleccionada está operativa
+    const selectedUaerea = uaereasOptions.find(uaerea => uaerea.uaerea_nombre === formData.inc_uaerea);
+    if (selectedUaerea && selectedUaerea.estado === 'No Operativa') {
+      alert('La unidad aérea seleccionada no está operativa. Por favor, elige otra unidad.');
+      return;
+    }
 
-  const handleSubmit = (a) => {
-    a.preventDefault();
+    // Verificar si la unidad terrestre seleccionada está operativa
+    const selectedUterrestre = uterrestresOptions.find(uterrestre => uterrestre.uterrestre_nombre === formData.inc_uterrestre);
+    if (selectedUterrestre && selectedUterrestre.estado === 'No Operativa') {
+      alert('La unidad terrestre seleccionada no está operativa. Por favor, elige otra unidad.');
+      return;
+    }
+
+    // Continuar con el registro del incidente si todo está correcto
     registerIncidente(formData);
-    console.log(formData); // Solo para verificar que los datos se están capturando correctamente.
+    console.log(formData);
   };
 
   return (
@@ -84,45 +135,63 @@ const IncidenteRegistroPage = () => {
         <div>
           <Autocomplete
             id="inc_brigadista"
-            options={[]}
+            options={brigadistasOptions}
+            getOptionLabel={(option) => option.brig_rut} // Opción a mostrar en el campo
             value={formData.inc_brigadista}
-            onChange={handleBrigadistaChange}
+            onChange={(event, newValue) => setFormData({ ...formData, inc_brigadista: newValue })}
             renderInput={(params) => <TextField {...params} label="Brigadista afectado" />}
-        />
+          />
         </div>
-        {/* Autocomplete para unidad aérea, unidad terrestre y siniestro */}
+        {/* Autocomplete para unidad aérea */}
         <div>
           <Autocomplete
             id="inc_uaerea"
-            options={[]}
+            options={uaereasOptions}
+            getOptionLabel={(option) => option.uaerea_nombre} // Opción a mostrar en el campo
             value={formData.inc_uaerea}
-            onChange={handleUaereaChange}
-            renderInput={(params) => <TextField {...params} label="unidad aerea afectada" />}
-        />
+            onChange={(event, newValue) => setFormData({ ...formData, inc_uaerea: newValue })}
+            renderInput={(params) => <TextField {...params} label="Unidad aérea afectada" />}
+          />
         </div>
         {/* Autocomplete para unidad terrestre */}
         <div>
           <Autocomplete
             id="inc_uterrestre"
-            options={[]}
+            options={uterrestresOptions}
+            getOptionLabel={(option) => option.uterrestre_nombre} // Opción a mostrar en el campo
             value={formData.inc_uterrestre}
-            onChange={handleUterrestreChange}
-            renderInput={(params) => <TextField {...params} label="unidad terrestre afectada" />}
-        />
+            onChange={(event, newValue) => setFormData({ ...formData, inc_uterrestre: newValue })}
+            renderInput={(params) => <TextField {...params} label="Unidad terrestre afectada" />}
+          />
         </div>
         {/* Autocomplete para siniestro */}
         <div>
           <Autocomplete
             id="inc_siniestro"
-            options={[]}
+            options={siniestrosOptions}
+            getOptionLabel={(option) => option.sin_numeroIncendio} // Opción a mostrar en el campo
             value={formData.inc_siniestro}
-            onChange={handleSiniestroChange}
-            renderInput={(params) => <TextField {...params} label="siniestro asociado" />}
-        />
+            onChange={(event, newValue) => setFormData({ ...formData, inc_siniestro: newValue })}
+            renderInput={(params) => <TextField {...params} label="Siniestro asociado" />}
+          />
         </div>
         <Button type="submit">Registrar</Button>
       </form>
-      {/* Agregar el botón de regresar */}
+      {/* Mostrar mensaje de éxito si se registró el incidente correctamente */}
+      {showSuccessMessage && (
+        <div
+          style={{
+            background: 'green',
+            color: 'white',
+            padding: '10px',
+            marginTop: '10px',
+            textAlign: 'center',
+            borderRadius: '4px',
+          }}
+        >
+          Incidente registrado con éxito
+        </div>
+      )}
       <Link href="/home">
         <Button>Regresar</Button>
       </Link>

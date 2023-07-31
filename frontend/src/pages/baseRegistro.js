@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import axios from 'axios'; 
+import axios from 'axios';
 
 const BaseRegistroPage = () => {
   const [formData, setFormData] = useState({
@@ -14,10 +14,20 @@ const BaseRegistroPage = () => {
     base_latitud: '',
     base_incendios_asistidos: '',
   });
+
+  const [baseRegistrada, setBaseRegistrada] = useState(false); 
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false); 
+
   const registerBase = async (formData) => {
     try {
       const response = await axios.post('http://localhost:3001/api/base', formData); 
       console.log('Base registrada:', response.data);
+      setBaseRegistrada(true); // Marcar la base como registrada exitosamente
+      setShowSuccessMessage(true); // Mostrar el mensaje de éxito
+      // Ocultar el mensaje de éxito después de segundos
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 2000);
     } catch (error) {
       console.error('Error al registrar la base:', error);
     }
@@ -30,7 +40,6 @@ const BaseRegistroPage = () => {
       [name]: value,
     });
   };
-
 
   const handleSubmit = (a) => {
     a.preventDefault();
@@ -71,6 +80,20 @@ const BaseRegistroPage = () => {
         </div>
         <Button type="submit">Registrar</Button>
       </form>
+      {showSuccessMessage && (
+        <div
+          style={{
+            background: 'green',
+            color: 'white',
+            padding: '10px',
+            marginTop: '10px',
+            textAlign: 'center',
+            borderRadius: '4px',
+          }}
+        >
+          Base registrada con éxito
+        </div>
+      )}
       {/* Agregar el botón de regresar */}
       <Link href="/home">
         <Button>Regresar</Button>

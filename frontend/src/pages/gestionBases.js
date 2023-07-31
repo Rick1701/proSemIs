@@ -87,11 +87,6 @@ const GestionBasesPage = () => {
     <Layout>
       <h1>Gestión de Bases</h1>
       {/* Formulario para crear o editar una base */}
-      <form onSubmit={handleSubmit}>
-        {/* ... (código del formulario anterior) ... */}
-        <button type="submit">Guardar Base</button>
-      </form>
-
       {/* Listado de bases */}
       <BasesListado bases={bases} setEditingBaseId={handleEditBase} onDelete={handleDeleteBase} />
     </Layout>

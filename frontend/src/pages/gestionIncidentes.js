@@ -15,16 +15,6 @@ const IncidentesPage = () => {
 
       {/* Listado de incidentes */}
       <IncidentesListado />
-
-      {/* Mostrar los botones directamente en la página */}
-      <Stack spacing={2} direction="row">
-        {/* Agregar redireccionamiento a la página de incidentesListado */}
-        <Link href="/incidentesListado">
-          <Button>Ver Listado</Button>
-        </Link>
-        <Button disabled>Disabled</Button>
-        <Button>Link</Button>
-      </Stack>
     </Layout>
   );
 };

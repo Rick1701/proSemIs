@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import Link from 'next/link';
 import Button from '@mui/material/Button';
@@ -13,6 +13,19 @@ const UterrestreRegistroPage = () => {
     uterrestre_nombre: '',
     uterrestre_base: null,
   });
+  const [basesOptions, setBasesOptions] = useState([]);
+
+  useEffect(() => {
+    // Obtener las bases
+    axios.get('http://localhost:3001/api/base')
+      .then(response => {
+        const bases = response.data.data;
+        setBasesOptions(bases);
+      })
+      .catch(error => {
+        console.error('Error al obtener las bases:', error);
+      });
+  }, []);
   const registerUterrestre = async (formData) => {
     try {
       const response = await axios.post('http://localhost:3001/api/uterrestre', formData); 
@@ -59,9 +72,10 @@ const UterrestreRegistroPage = () => {
         {/* Autocomplete para brigadista */}
         <div>
           <Autocomplete
-            id="uterrestre_base"
-            options={[]}
-            value={formData.uterrestre_base}
+            id="bri_base"
+            options={basesOptions}
+            getOptionLabel={(option) => option.base_descripcion} 
+            value={formData.bri_base}
             onChange={handleBaseChange}
             renderInput={(params) => <TextField {...params} label="Base asociada" />}
         />

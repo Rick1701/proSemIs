@@ -4,6 +4,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { DataGrid } from '@mui/x-data-grid';
+import Button from '@mui/material/Button';
 
 const BasesListado = ({ bases, setEditingBaseId, onDelete }) => {
   const columns = [
@@ -21,9 +22,18 @@ const BasesListado = ({ bases, setEditingBaseId, onDelete }) => {
       width: 150,
       renderCell: (params) => (
         <div>
-          <button onClick={() => setEditingBaseId(params.id)}>Modificar</button>
-          <button onClick={() => onDelete(params.id)}>Eliminar</button>
-        </div>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => {
+            if (window.confirm('¿Estás seguro de eliminar esta base?')) {
+              onDelete(params.id);
+            }
+          }}
+        >
+          Eliminar
+        </Button>
+      </div>
       ),
     },
   ];
@@ -34,9 +44,9 @@ const BasesListado = ({ bases, setEditingBaseId, onDelete }) => {
     base_latitud: base.base_latitud,
     base_incendios_asistidos: base.base_incendios_asistidos,
     base_incendio_actual: base.base_incendio_actual,
-    base_uterrestre: base.base_uterrestre,
-    base_uaerea: base.base_uaerea,
-    base_brigada: base.base_brigada,
+    base_uterrestre: base.base_uterrestre.length,
+    base_uaerea: base.base_uaerea.length,
+    base_brigada: base.base_brigada.length,
     base_estado: base.base_estado,
   }));
 

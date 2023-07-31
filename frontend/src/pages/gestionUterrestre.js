@@ -14,19 +14,9 @@ const UterrestresPage = () => {
 
       {/* Listado de incidentes */}
       <UterrestresListado />
-        {/* Mostrar los botones directamente en la página */}
-      <Stack spacing={2} direction="row">
-        {/* Agregar redireccionamiento a la página de uaereasListado */}
-        <Link href="/UterrestresListado">
-          <Button>Ver Listado</Button>
-        </Link>
-        <Button disabled>Disabled</Button>
-        <Button>Link</Button>
-      </Stack>
+  
     </Layout>
   );
 };
 
 export default UterrestresPage;
-
-
