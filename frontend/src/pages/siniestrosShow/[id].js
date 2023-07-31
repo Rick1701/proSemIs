@@ -326,25 +326,25 @@ const SiniestrosShowPage = () => {
           <Grid container justifyContent="flex-end" spacing={2} style={{ marginTop: '70px' }}>
             <Grid item>
               <Link href={`/siniestrosEdit/${id}`} passHref>
-                <Button variant="contained" startIcon={<Save />}>
+                <Button variant="contained" startIcon={<Save />} sx={{ bgcolor: '#313236', '&:hover': { bgcolor: '#F3F3FB' } }}>
                   Modificar
                 </Button>
               </Link>
             </Grid>
             <Grid item>
-            <Button variant="contained" startIcon={<Delete />} onClick={handleDelete}>
-              Eliminar
-            </Button>
+              <Button variant="contained" startIcon={<Delete />} onClick={handleDelete} sx={{ bgcolor: '#313236', '&:hover': { bgcolor: '#F3F3FB' } }}>
+                Eliminar
+              </Button>
             </Grid>
             <Grid item>
               {/* Botón para apagar el siniestro */}
-              <Button variant="contained" startIcon={<ReportOffIcon />} onClick={handleApagarSiniestro}>
+              <Button variant="contained" startIcon={<ReportOffIcon />} onClick={handleApagarSiniestro} sx={{ bgcolor: '#313236', '&:hover': { bgcolor: '#F3F3FB' } }}>
                 Apagar Siniestro
               </Button>
             </Grid>
             <Grid item>
               <Link href="/siniestros" passHref>
-                <Button variant="contained" startIcon={<ArrowBack />}>
+                <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', '&:hover': { bgcolor: '#F3F3FB' } }}>
                   Regresar
                 </Button>
               </Link>

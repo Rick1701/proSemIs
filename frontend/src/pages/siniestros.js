@@ -28,7 +28,7 @@ const SiniestrosPage = () => {
       <Grid container justifyContent="flex-end" spacing={2} style={{ marginTop: '70px' }}>
             <Grid item>
               <Link href={`/siniestrosRegistro`} passHref>
-                <Button variant="contained" startIcon={<Save />}>
+                <Button variant="contained" startIcon={<Save />} sx={{ bgcolor: '#313236', '&:hover': { bgcolor: '#F3F3FB' } }}>
                   Registrar Nuevo Siniestro
                 </Button>
               </Link>

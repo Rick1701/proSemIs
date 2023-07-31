@@ -229,17 +229,17 @@ const SiniestrosRegistroPage = () => {
 
 
         <Grid container justifyContent="flex-end" spacing={2} style={{ marginTop: '70px' }}>
-            <Grid item>
-            <Button variant="contained" startIcon={<Save />} type="submit">
-                Registrar
-              </Button>
-            </Grid>
-            <Grid item>
-            <Button variant="contained" startIcon={<ArrowBack />} onClick={handleRegresarClick}>
-                Regresar
-              </Button>
-            </Grid>
+          <Grid item>
+            <Button variant="contained" startIcon={<Save />} type="submit" sx={{ bgcolor: '#313236', '&:hover': { bgcolor: '#F3F3FB' } }}>
+              Registrar
+            </Button>
           </Grid>
+          <Grid item>
+            <Button variant="contained" startIcon={<ArrowBack />} onClick={handleRegresarClick} sx={{ bgcolor: '#313236', '&:hover': { bgcolor: '#F3F3FB' } }}>
+              Regresar
+            </Button>
+          </Grid>
+        </Grid>
       </form>
     </Layout>
   );

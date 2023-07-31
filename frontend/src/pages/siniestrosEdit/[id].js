@@ -292,12 +292,12 @@ const SiniestrosEditPage = () => {
 
           <Grid container justifyContent="flex-end" spacing={2} style={{ marginTop: '70px' }}>
             <Grid item>
-            <Button variant="contained" startIcon={<Save />} onClick={handleModificarClick}>
+            <Button variant="contained" startIcon={<Save />} onClick={handleModificarClick} sx={{ bgcolor: '#313236', '&:hover': { bgcolor: '#F3F3FB' } }}>
                 Modificar
               </Button>
             </Grid>
             <Grid item>
-            <Button variant="contained" startIcon={<ArrowBack />} onClick={handleRegresarClick}>
+            <Button variant="contained" startIcon={<ArrowBack />} onClick={handleRegresarClick} sx={{ bgcolor: '#313236', '&:hover': { bgcolor: '#F3F3FB' } }}>
                 Regresar
               </Button>
             </Grid>

@@ -15,14 +15,26 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-// Define los colores personalizados para el tema
+// Define una paleta de colores personalizada
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#000', // Color primario del dashboard
+      main: '#212226', // Negro primario
     },
-    secondary: {
-      main: '#fff', // Color secundario del dashboard
+    background: {
+      default: '#F3F3FB', // Blanco
+    },
+    yellow: {
+      main: '#FEE3A2', // Amarillo
+    },
+    brown: {
+      main: '#564734', // Café
+    },
+    orange: {
+      main: '#FFA570', // Naranjo
+    },
+    green: {
+      main: '#778D45', // Verde
     },
   },
 });
@@ -64,9 +76,9 @@ const SignIn = () => {
           <Avatar sx={{ m: 1, bgcolor: theme.palette.primary.main }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
+          <Typography component="h1" variant="h5" color="textPrimary">
+          Sign in
+        </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
@@ -77,6 +89,8 @@ const SignIn = () => {
               name="name"
               autoComplete="name"
               autoFocus
+              InputLabelProps={{ style: { color: theme.palette.primary.main } }}
+              InputProps={{ style: { color: theme.palette.primary.main } }}
             />
             <TextField
               margin="normal"
@@ -86,22 +100,26 @@ const SignIn = () => {
               label="Correo electrónico"
               name="email"
               autoComplete="email"
+              InputLabelProps={{ style: { color: theme.palette.primary.main } }}
+              InputProps={{ style: { color: theme.palette.primary.main } }}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              label={<Typography color="primary">Remember me</Typography>}
             />
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                {/* Aplicar el color personalizado "yellow" al enlace "Forgot password?" */}
+                <Link href="#" variant="body2" sx={{ color: theme.palette.primary.main }}>
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                {/* Aplicar el color personalizado "yellow" al enlace "Don't have an account? Sign Up" */}
+                <Link href="#" variant="body2" sx={{ color: theme.palette.primary.main }}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
