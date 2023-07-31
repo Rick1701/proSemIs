@@ -158,6 +158,11 @@ const SiniestrosEditPage = () => {
     });
   };
 
+  const handleRegresarClick = async () => {
+    router.push(`/siniestrosShow/${id}`);
+  }
+
+
   return (
     <Layout>
       {loading ? (
@@ -292,11 +297,9 @@ const SiniestrosEditPage = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Link href="/siniestros" passHref>
-                <Button variant="contained" startIcon={<ArrowBack />}>
-                  Regresar
-                </Button>
-              </Link>
+            <Button variant="contained" startIcon={<ArrowBack />} onClick={handleRegresarClick}>
+                Regresar
+              </Button>
             </Grid>
           </Grid>
         </form>
