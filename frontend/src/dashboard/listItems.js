@@ -62,14 +62,14 @@ const MainListItems = () => {
   };
   return (
     <React.Fragment>
-      <ListItemButton href="/home">
+      <ListItemButton href="/home" sx={{ background: '#778D45' }}>
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="Home" />
       </ListItemButton>
       {/* Siniestros button with a nested sub-menu */}
-      <ListItemButton onClick={handleSiniestrosClick}>
+      <ListItemButton onClick={handleSiniestrosClick} sx={{ background: '#778D45' }}>
         <ListItemIcon>
           <LocalFireDepartmentIcon />
         </ListItemIcon>
@@ -80,13 +80,13 @@ const MainListItems = () => {
       {/* Sub-menu for Siniestros */}
       <Collapse in={openSiniestros} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItemButton href="/siniestros" sx={{ pl: 4 }}>
+          <ListItemButton href="/siniestros" sx={{ background: '#778D45' }}>
             <ListItemIcon>
               <LayersIcon />
             </ListItemIcon>
             <ListItemText primary="Listado" />
           </ListItemButton>
-          <ListItemButton href="/siniestrosRegistro" sx={{ pl: 4 }}>
+          <ListItemButton href="/siniestrosRegistro" sx={{ background: '#778D45' }}>
             <ListItemIcon>
               <AssignmentIcon />
             </ListItemIcon>
@@ -96,7 +96,7 @@ const MainListItems = () => {
         </List>
       </Collapse>
 
-      <ListItemButton onClick={handleGestionesClick}>
+      <ListItemButton onClick={handleGestionesClick} sx={{ background: '#778D45' }}>
         <ListItemIcon>
           <BusinessCenterIcon />
         </ListItemIcon>
@@ -108,7 +108,7 @@ const MainListItems = () => {
       <Collapse in={openGestiones} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {/* Opción para Bases */}
-          <ListItemButton onClick={handleBasesClick} sx={{ pl: 4 }}>
+          <ListItemButton onClick={handleBasesClick} sx={{ background: '#778D45' }}>
             <ListItemIcon>
               <LayersIcon />
             </ListItemIcon>
@@ -119,13 +119,13 @@ const MainListItems = () => {
           {/* Sub-menú para Bases */}
           <Collapse in={openBases} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton href="/gestionBases" sx={{ pl: 8 }}>
+              <ListItemButton href="/gestionBases" sx={{ background: '#778D45' }}>
                 <ListItemIcon>
                   <LayersIcon />
                 </ListItemIcon>
                 <ListItemText primary="Listado" />
               </ListItemButton>
-              <ListItemButton href="/baseRegistro" sx={{ pl: 8 }}>
+              <ListItemButton href="/baseRegistro" sx={{ background: '#778D45' }}>
                 <ListItemIcon>
                   <AssignmentIcon />
                 </ListItemIcon>
@@ -135,7 +135,7 @@ const MainListItems = () => {
           </Collapse>
 
           {/* Opción para Incidentes */}
-          <ListItemButton onClick={handleIncidentesClick} sx={{ pl: 4 }}>
+          <ListItemButton onClick={handleIncidentesClick} sx={{ background: '#778D45' }}>
             <ListItemIcon>
               <LayersIcon />
             </ListItemIcon>
@@ -146,13 +146,13 @@ const MainListItems = () => {
           {/* Sub-menú para Incidentes */}
           <Collapse in={openIncidentes} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton href="/gestionIncidentes" sx={{ pl: 8 }}>
+              <ListItemButton href="/gestionIncidentes" sx={{ background: '#778D45' }}>
                 <ListItemIcon>
                   <LayersIcon />
                 </ListItemIcon>
                 <ListItemText primary="Listado" />
               </ListItemButton>
-              <ListItemButton href="/incidentesRegistro" sx={{ pl: 8 }}>
+              <ListItemButton href="/incidentesRegistro" sx={{ background: '#778D45' }}>
                 <ListItemIcon>
                   <AssignmentIcon />
                 </ListItemIcon>
@@ -162,7 +162,7 @@ const MainListItems = () => {
           </Collapse>
 
           {/* Opción para Brigadas */}
-          <ListItemButton onClick={handleBrigadasClick} sx={{ pl: 4 }}>
+          <ListItemButton onClick={handleBrigadasClick} sx={{ background: '#778D45' }}>
             <ListItemIcon>
               <PeopleIcon />
             </ListItemIcon>
@@ -173,13 +173,13 @@ const MainListItems = () => {
           {/* Sub-menú para Brigadas */}
           <Collapse in={openBrigadas} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton href="/gestionBrigada" sx={{ pl: 8 }}>
+              <ListItemButton href="/gestionBrigada" sx={{ background: '#778D45' }}>
                 <ListItemIcon>
                   <LayersIcon />
                 </ListItemIcon>
                 <ListItemText primary="Listado de Brigadas" />
               </ListItemButton>
-              <ListItemButton href="/brigadaRegistro" sx={{ pl: 8 }}>
+              <ListItemButton href="/brigadaRegistro" sx={{ background: '#778D45' }}>
                 <ListItemIcon>
                   <AssignmentIcon />
                 </ListItemIcon>
@@ -189,7 +189,7 @@ const MainListItems = () => {
           </Collapse>
 
           {/* Opción para Brigadistas */}
-          <ListItemButton onClick={handleBrigadistasClick} sx={{ pl: 4 }}>
+          <ListItemButton onClick={handleBrigadistasClick} sx={{ background: '#778D45' }}>
             <ListItemIcon>
               <PersonIcon />
             </ListItemIcon>
@@ -200,13 +200,13 @@ const MainListItems = () => {
           {/* Sub-menú para Brigadistas */}
           <Collapse in={openBrigadistas} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton href="/gestionBrigadista" sx={{ pl: 8 }}>
+              <ListItemButton href="/gestionBrigadista" sx={{ background: '#778D45' }}>
                 <ListItemIcon>
                   <LayersIcon />
                 </ListItemIcon>
                 <ListItemText primary="Listado de Brigadistas" />
               </ListItemButton>
-              <ListItemButton href="/brigadistasRegistro" sx={{ pl: 8 }}>
+              <ListItemButton href="/brigadistasRegistro" sx={{ background: '#778D45' }}>
                 <ListItemIcon>
                   <AssignmentIcon />
                 </ListItemIcon>
@@ -216,7 +216,7 @@ const MainListItems = () => {
           </Collapse>
 
           {/* Opción para Unidades Terrestres */}
-          <ListItemButton onClick={handleUterrestresClick} sx={{ pl: 4 }}>
+          <ListItemButton onClick={handleUterrestresClick} sx={{ background: '#778D45' }}>
             <ListItemIcon>
               <DriveEtaIcon />
             </ListItemIcon>
@@ -227,13 +227,13 @@ const MainListItems = () => {
           {/* Sub-menú para Unidades Terrestres */}
           <Collapse in={openUterrestres} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton href="/UterrestresListado" sx={{ pl: 8 }}>
+              <ListItemButton href="/UterrestresListado" sx={{ background: '#778D45' }}>
                 <ListItemIcon>
                   <LayersIcon />
                 </ListItemIcon>
                 <ListItemText primary="Listado de Unidades Terrestres" />
               </ListItemButton>
-              <ListItemButton href="/uterrestresRegistro" sx={{ pl: 8 }}>
+              <ListItemButton href="/uterrestresRegistro" sx={{ background: '#778D45' }}>
                 <ListItemIcon>
                   <AssignmentIcon />
                 </ListItemIcon>
@@ -243,7 +243,7 @@ const MainListItems = () => {
           </Collapse>
 
           {/* Opción para Unidades Aéreas */}
-          <ListItemButton onClick={handleUaereasClick} sx={{ pl: 4 }}>
+          <ListItemButton onClick={handleUaereasClick} sx={{ background: '#778D45' }}>
             <ListItemIcon>
               <LocalAirportIcon />
             </ListItemIcon>
@@ -254,13 +254,13 @@ const MainListItems = () => {
           {/* Sub-menú para Unidades Aéreas */}
           <Collapse in={openUaereas} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton href="/UaereasListado" sx={{ pl: 8 }}>
+              <ListItemButton href="/UaereasListado" sx={{ background: '#778D45' }}>
                 <ListItemIcon>
                   <LayersIcon />
                 </ListItemIcon>
                 <ListItemText primary="Listado de Unidades Aéreas" />
               </ListItemButton>
-              <ListItemButton href="/uaereasRegistro" sx={{ pl: 8 }}>
+              <ListItemButton href="/uaereasRegistro" sx={{ background: '#778D45' }}>
                 <ListItemIcon>
                   <AssignmentIcon />
                 </ListItemIcon>
@@ -274,7 +274,7 @@ const MainListItems = () => {
 
 
       {/* Siniestros button with a nested sub-menu */}
-      <ListItemButton onClick={handleEstaditicasClick}>
+      <ListItemButton onClick={handleEstaditicasClick} sx={{ background: '#778D45' }}>
         <ListItemIcon>
         <BarChartIcon />
         </ListItemIcon>
@@ -285,13 +285,13 @@ const MainListItems = () => {
       {/* Sub-menu for Estadisticas */}
       <Collapse in={openEstadisticas} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItemButton href="/estadisticas" sx={{ pl: 4 }}>
+          <ListItemButton href="/estadisticas" sx={{ background: '#778D45' }}>
             <ListItemIcon>
             <BarChartIcon />
             </ListItemIcon>
             <ListItemText primary="EstadisticasNumericas" />
           </ListItemButton>
-          <ListItemButton href="/Graficos" sx={{ pl: 4 }}>
+          <ListItemButton href="/Graficos" sx={{ background: '#778D45' }}>
             <ListItemIcon>
             <BarChartIcon />
             </ListItemIcon>

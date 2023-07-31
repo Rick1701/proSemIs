@@ -31,12 +31,14 @@ const SiniestrosTimeLine = ({ hitos = [] }) => {
           items={items}
           mode="VERTICAL_ALTERNATING"
           theme={{
-            primary: '#FF5733',
-            secondary: '#4CAF50',
+            primary: '#313236 ',
+            secondary: '#F3F3FB ',
             cardBgColor: '#FFFFFF',
             cardForeColor: '#000000',
             titleColor: '#000000',
-            titleColorActive: '#FF5733',
+            titleColorActive: '#313236 ',
+            cardTitleColor: '#212226',
+            cardSubtitleColor:'#FFA570',
           }}
         />
       ) : (
