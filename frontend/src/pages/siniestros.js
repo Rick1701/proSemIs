@@ -10,6 +10,7 @@ import { Grid } from '@mui/material'; // Importa el componente Grid
 
 
 const SiniestrosPage = () => {
+
   return (
     <Layout>
       {/* Contenido de la página de siniestros */}
@@ -30,6 +31,13 @@ const SiniestrosPage = () => {
               <Link href={`/siniestrosRegistro`} passHref>
                 <Button variant="contained" startIcon={<Save />} sx={{ bgcolor: '#313236', '&:hover': { bgcolor: '#F3F3FB' } }}>
                   Registrar Nuevo Siniestro
+                </Button>
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="/home" passHref>
+                <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', '&:hover': { bgcolor: '#F3F3FB' } }}>
+                  Regresar
                 </Button>
               </Link>
             </Grid>

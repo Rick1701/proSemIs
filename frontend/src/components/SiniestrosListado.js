@@ -81,7 +81,7 @@ const SiniestrosListado = () => {
       sin_superficie: siniestro.sin_superficie,
       sin_distribucion_fuego: siniestro.sin_distribucion_fuego.join(', '),
       sin_categoria: siniestro.sin_categoria ? siniestro.sin_categoria.cat_nivel : 'N/A',// Utilizamos la propiedad cat_nivel de la categoría
-      sin_incidente: siniestro.sin_incidente.join(', '),
+      sin_incidente: siniestro.sin_incidente.length > 0 ? siniestro.sin_incidente[0].inc_descripcion : 'N/A',      
       sin_bases_operando: siniestro.sin_bases_operando.length > 0 ? siniestro.sin_bases_operando[0].base_descripcion : 'N/A',      
       sin_estado: siniestro.sin_estado,
       sin_estrategia: siniestro.sin_estrategia,
