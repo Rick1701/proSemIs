@@ -43,6 +43,7 @@ const EstadisticasListados = () => {
     { field: 'sin_temperatura', headerName: 'Temperatura', width: 150 },
     { field: 'sin_humedad', headerName: 'Humedad', width: 150 },
     { field: 'sin_latitud', headerName: 'Latitud', width: 150 },   
+    { field: 'sin_superficie', headerName: 'Superficie', width: 150 },
 
     {
       field: 'acciones',
@@ -64,13 +65,13 @@ const EstadisticasListados = () => {
 
   
   const getChartData = (siniestro) => {
-    const { sin_velocidadViento, sin_temperatura, sin_humedad,sin_latitud } = siniestro;
+    const { sin_velocidadViento, sin_temperatura, sin_humedad,sin_latitud ,sin_superficie } = siniestro;
     return [
       { nombreDelDato: 'Velocidad del Viento', UnidadDeMedida: sin_velocidadViento },
       { nombreDelDato: 'Temperatura', UnidadDeMedida: sin_temperatura },
       { nombreDelDato: 'Humedad', UnidadDeMedida: sin_humedad },
       { nombreDelDato: 'Latitud', UnidadDeMedida: sin_latitud },
-
+      { nombreDelDato: 'Superficie', UnidadDeMedida: sin_superficie },
     ];
   };
 
@@ -83,6 +84,7 @@ const EstadisticasListados = () => {
     sin_fechaInicio: new Date(siniestro.sin_fechaInicio).toLocaleDateString(),
     sin_fechaTermino: new Date(siniestro.sin_fechaTermino).toLocaleDateString(),
     sin_latitud: siniestro.sin_latitud,
+    sin_superficie: siniestro.sin_superficie,
   }));
 
 

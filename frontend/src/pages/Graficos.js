@@ -36,6 +36,7 @@ const GraficosPage = () => {
     { field: 'sin_temperatura', headerName: 'Temperatura', width: 150 },
     { field: 'sin_humedad', headerName: 'Humedad', width: 150 },
     { field: 'sin_latitud', headerName: 'Latitud', width: 150 },
+    { field:'sin_superficie', headerName: 'Superficie',width: 150 },
     {
       field: 'acciones',
       headerName: 'Acciones',
@@ -51,13 +52,14 @@ const GraficosPage = () => {
   ];
 
   const getChartData = (siniestro) => {
-    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_latitud, sin_fechaInicio, sin_fechaTermino } = siniestro;
+    const { sin_velocidadViento, sin_temperatura, sin_humedad, sin_latitud,sin_superficie, sin_fechaInicio, sin_fechaTermino } = siniestro;
     return [
       
       { nombreDelDato: 'Velocidad del Viento', UnidadDeMedida: sin_velocidadViento },
       { nombreDelDato: 'Temperatura', UnidadDeMedida: sin_temperatura  },
       { nombreDelDato: 'Humedad', UnidadDeMedida: sin_humedad },
       { nombreDelDato: 'Latitud', UnidadDeMedida: sin_latitud },
+      { nombreDelDato: 'Superficie', UnidadDeMedida: sin_superficie },
     ];
   };
   const colors = ['#ff0000', '#00ff00', '#0000ff', '#ff00ff']; // Colores para cada barra
