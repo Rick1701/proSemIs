@@ -297,6 +297,7 @@ const MainListItems = () => {
             </ListItemIcon>
             <ListItemText primary="Graficos" />
           </ListItemButton>
+          
           {/* Add more sub-menu items as needed */}
         </List>
       </Collapse>

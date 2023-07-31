@@ -11,7 +11,9 @@ const EstadisticasPage = () => {
     <Layout>
       {/* Contenido de la página de estadísticas */}
       <h1>Estadísticas de los Siniestros</h1>
-      <p>Bienvenido a la página de estadísticas</p>
+      <br /> {/* Salto de línea después del título */}
+      <p>Bienvenido a la tabla de estadísticas</p>
+      <br /> {/* Salto de línea después del título */}
       
       
 
