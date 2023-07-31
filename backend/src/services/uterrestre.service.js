@@ -20,7 +20,7 @@ const { handleError } = require("../utils/errorHandler");
  */
 async function getUterrestres() {
   try {
-    return await Uterrestre.find().populate('uterrestre_estado_unidad').populate('uterrestre_base').populate('uterrestre_incidente').exec();
+    return await Uterrestre.find().populate('uterrestre_estado_unidad','est_uni_descripcion').populate('uterrestre_base','base_descripcion').populate('uterrestre_incidente','inc_descripcion').exec();
   } catch (error) {
     handleError(error, "Uterrestre.service -> getUterrestres");
   }
@@ -33,9 +33,9 @@ async function getUterrestres() {
  * @returns {Promise<Uterrestre|null>}
  */
 async function createUterrestre(uterrestre) {
-   try {
+  try {
     const { uterrestre_nombre, uterrestre_base} = uterrestre;
-    const estado_unidad = await Estado_Unidad.findById({ est_uni_descripcion: 'Operativa' });
+    const estado_unidad = await Estado_Unidad.findOne({ est_uni_descripcion: 'Operativa' });
     const base = await Base.findById(uterrestre_base);
     if(!estado_unidad && !base ){
       handleError(error, "uterrestre.service -> createUterrestre");
@@ -110,7 +110,7 @@ async function updateUterrestreEstado(uterrestreId, estado) {
     await _updateEstadoUterrestre(uterrestre, estado);
     return uterrestre;
   } catch (error) {
-    handleError(error, "brigadista.service -> updateBrigadistaEstado");
+    handleError(error, "uterrestre.service -> updateUterrestreEstadoEstado");
   }
 }
 
@@ -118,7 +118,7 @@ async function _updateEstadoUterrestre(uterrestre, estado) {
   try {
     const estadoUterrestre = await Estado_Unidad.findOne({ est_uni_descripcion: estado });
     if (!estadoUterrestre) {
-      handleError(error,"No se encontró el estado del brigadista.");
+      handleError(error,"No se encontró el estado de la unidad .");
     }
 
     uterrestre.uterrestre_estado_unidad = estadoUterrestre._id;

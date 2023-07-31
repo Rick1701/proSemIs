@@ -30,21 +30,25 @@ async function getSiniestros(req, res) {
 async function createSiniestro(req, res) {
   try {
     const nuevoSiniestro = await SiniestroService.createSiniestro(req.body);
-    nuevoSiniestro === null
-      ? respondError(
-          req,
-          res,
-          400,
-          "Error en la validacion de datos",
-          "Bad Request",
-          { message: "Verifique los datos ingresados" },
-        )
-      : respondSuccess(req, res, 201, nuevoSiniestro);
+    if (nuevoSiniestro) {
+      // Si el siniestro se creó exitosamente, respondemos con el siniestro completo
+      res.status(201).json(nuevoSiniestro);
+    } else {
+      respondError(
+        req,
+        res,
+        400,
+        "Error en la validación de datos",
+        "Bad Request",
+        { message: "Verifique los datos ingresados" }
+      );
+    }
   } catch (error) {
     handleError(error, "siniestro.controller -> createSiniestro");
     respondError(req, res, 500, "No se pudo crear el siniestro");
   }
 }
+
 
 /**
  * @name getSiniestroById
@@ -57,16 +61,18 @@ async function getSiniestroById(req, res) {
     const { id } = req.params;
 
     const siniestro = await SiniestroService.getSiniestroById(id);
-    siniestro === null
-      ? respondError(
-          req,
-          res,
-          404,
-          "No se encontro el siniestro solicitado",
-          "Not Found",
-          { message: "Verifique el id ingresado" },
-        )
-      : respondSuccess(req, res, 200, siniestro);
+    if (siniestro === null) {
+      respondError(
+        req,
+        res,
+        404,
+        "No se encontró el siniestro solicitado",
+        "Not Found",
+        { message: "Verifique el ID ingresado" }
+      );
+    } else {
+      res.status(200).json(siniestro);
+    }
   } catch (error) {
     handleError(error, "siniestro.controller -> getSiniestroById");
     respondError(req, res, 500, "No se pudo obtener el siniestro");
@@ -111,7 +117,7 @@ async function updateSiniestro(req, res) {
           "Not Found",
           { message: "Verifique el id ingresado" },
         )
-      : respondSuccess(req, res, 200, siniestro);
+      : res.status(200).json(siniestro);
   } catch (error) {
     handleError(error, "siniestro.controller -> updateSiniestro");
     respondError(req, res, 500, "No se pudo actualizar el siniestro");
