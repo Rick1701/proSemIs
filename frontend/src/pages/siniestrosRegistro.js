@@ -20,7 +20,6 @@ import EventIcon from '@mui/icons-material/Event';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import TabUnselectedIcon from '@mui/icons-material/TabUnselected';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
-import ArrowBack from '@mui/icons-material/ArrowBack';
 
 
 import axios from 'axios';

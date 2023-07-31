@@ -15,7 +15,7 @@ const UaereasRegistroPage = () => {
 
   const [basesOptions, setBasesOptions] = useState([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false); 
-  
+  const [uaereaRegistrada, setUaereaRegistrada] = useState(false);
   useEffect(() => {
     // Obtener las bases
     axios.get('http://localhost:3001/api/base')

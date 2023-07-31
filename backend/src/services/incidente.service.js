@@ -14,10 +14,10 @@ async function getIncidentes() {
   try {
     return await Incidente.find()
       .populate("inc_siniestro", "sin_numeroIncendio")
-      .populate("inc_brigadista", "brig_nombres brig_apellidos brig_rut")
+      .populate("inc_brigadista","brig_rut")
       .populate("inc_estado", "est_inc_descripcion")
-      .populate("inc_uaerea", "uaerea_nombre")
-      .populate("inc_uterrestre", "uterrestre_nombre")
+      .populate("inc_uaerea","uaerea_nombre")
+      .populate("inc_uterrestre","uterrestre_nombre")
       .exec();
   } catch (error) {
     handleError(error, "Incidente.service -> getIncidentes");
@@ -59,7 +59,6 @@ async function createIncidente(
         inc_brigadista: brigadista._id,
         inc_siniestro: inc_siniestro,
       });
-
       // Actualizar el estado del brigadista a 'No Disponible'
       await updateBrigadistaEstado(brigadista, "No Disponible");
 

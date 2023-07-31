@@ -6,8 +6,7 @@ const BrigadaPage = () => {
   return (
     <Layout>
       {/* Contenido de la página de incidente */}
-      <h1>Título de la Brigada</h1>
-      <p>Descripción de la pagina brigada</p>
+      <h1>Listado de Brigada</h1>
 
       {/* Listado de incidentes */}
       <BrigadasListado />

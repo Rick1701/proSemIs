@@ -10,8 +10,7 @@ const IncidentesPage = () => {
   return (
     <Layout>
       {/* Contenido de la página de incidente */}
-      <h1>Título del Incidente</h1>
-      <p>Descripción del Incidente</p>
+      <h1>Listado de Incidente</h1>
 
       {/* Listado de incidentes */}
       <IncidentesListado />
