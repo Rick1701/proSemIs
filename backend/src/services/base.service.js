@@ -24,7 +24,7 @@ const { handleError } = require("../utils/errorHandler");
  */
 async function getBases() {
   try {
-    return await Base.find();
+    return await Base.find().exec();
   } catch (error) {
     handleError(error, "Base.service -> getBases");
   }

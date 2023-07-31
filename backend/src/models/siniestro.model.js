@@ -8,7 +8,7 @@ const siniestroSchema = new mongoose.Schema({
     type: Number,
     required: true,
     unique: true,
-    default: 1, // Valor inicial para el autoincremento
+    default: 0, // Valor inicial para el autoincremento
   },
   sin_velocidadViento: {
     type: String,

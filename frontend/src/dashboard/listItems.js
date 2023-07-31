@@ -227,7 +227,7 @@ const MainListItems = () => {
           {/* Sub-menú para Unidades Terrestres */}
           <Collapse in={openUterrestres} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton href="/UterrestresListado" sx={{ background: '#778D45' }}>
+              <ListItemButton href="/gestionUterrestre" sx={{ pl: 8 }}>
                 <ListItemIcon>
                   <LayersIcon />
                 </ListItemIcon>
@@ -254,7 +254,7 @@ const MainListItems = () => {
           {/* Sub-menú para Unidades Aéreas */}
           <Collapse in={openUaereas} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton href="/UaereasListado" sx={{ background: '#778D45' }}>
+              <ListItemButton href="/gestionUaerea" sx={{ pl: 8 }}>
                 <ListItemIcon>
                   <LayersIcon />
                 </ListItemIcon>

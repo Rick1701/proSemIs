@@ -22,7 +22,6 @@ import TabUnselectedIcon from '@mui/icons-material/TabUnselected';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 
 
-
 import axios from 'axios';
 
 // Función que configura la Typography con estilo estándar

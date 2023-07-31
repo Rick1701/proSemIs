@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 
 const BrigadistaRegistroPage = () => {
   const [formData, setFormData] = useState({
@@ -17,15 +18,36 @@ const BrigadistaRegistroPage = () => {
   });
 
   const sexoOptions = ["Masculino", "Femenino", "Otro"]; // Opciones para el campo "Sexo"
-  const [brigadaOptions, setBrigadaOptions] = useState([]); // Opciones para el campo "Brigada"
+  const [registroExitoso, setRegistroExitoso] = useState(false);
+  const [brigadaOptions, setBrigadaOptions] = useState([]);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false); 
+  const [brigadistaRegistrado, setBrigadistaRegistrado] = useState(false); 
+  useEffect(() => {
+    // Obtener las brigadas
+    axios.get('http://localhost:3001/api/brigada')
+      .then(response => {
+        const brigadas = response.data.data;
+        setBrigadaOptions(brigadas); // Corregir el nombre de la función a setBrigadaOptions
+      })
+      .catch(error => {
+        console.error('Error al obtener las brigadas:', error);
+      });
+  }, []);
 
 
   const registerBrigadista = async (formData) => {
     try {
       const response = await axios.post('http://localhost:3001/api/brigadista', formData);
       console.log('Brigadista registrado:', response.data);
+      setRegistroExitoso(true); // Establecer el estado de registro exitoso en true
+      setBrigadistaRegistrado(true);
+      setShowSuccessMessage(true);
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 2000);
     } catch (error) {
       console.error('Error al registrar el brigadista:', error);
+      setRegistroExitoso(false); // Establecer el estado de registro exitoso en false
     }
   };
 
@@ -53,6 +75,11 @@ const BrigadistaRegistroPage = () => {
   return (
     <Layout>
       <h1>REGISTRO DE BRIGADISTAS</h1>
+      {registroExitoso ? ( // Mostrar el mensaje de registro exitoso si el estado es true
+        <div>
+          <p>Registro exitoso</p>
+        </div>
+      ) : null}
       <form onSubmit={handleSubmit}>
         <div>
           <TextField
@@ -106,21 +133,36 @@ const BrigadistaRegistroPage = () => {
           <Autocomplete
             name="brig_brigada"
             options={brigadaOptions}
-            getOptionLabel={(option) => option.nombre} // Ajustar al nombre de la propiedad que representa el nombre de la base en tu objeto base
+            getOptionLabel={(option) => option.bri_nombre} // Cambiar de option.brig_brigada a option.bri_nombre
             value={formData.brig_brigada}
             onChange={handleBrigadaChange}
             renderInput={(params) => <TextField {...params} label="Brigada" />}
           />
         </div>
-        <Button type="submit">Registrar</Button>
+        <Button type="submit" sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }} >Registrar</Button>
       </form>
+      {showSuccessMessage && (
+        <div
+          style={{
+            background: 'green',
+            color: 'white',
+            padding: '10px',
+            marginTop: '10px',
+            textAlign: 'center',
+            borderRadius: '4px',
+          }}
+        >
+          Brigadista registrado con éxito
+        </div>
+      )}
       {/* Agregar el botón de regresar */}
-      <Link href="/home">
-        <Button>Regresar</Button>
+      <Link href="/home" passHref>
+        <Button variant="contained" startIcon={<ArrowBack />} sx={{ bgcolor: '#313236', color: '#FFFFFF', '&:hover': { bgcolor: '#F3F3FB' } }}>
+          Regresar
+        </Button>
       </Link>
     </Layout>
   );
 };
-
 
 export default BrigadistaRegistroPage;

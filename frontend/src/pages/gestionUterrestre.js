@@ -1,23 +1,21 @@
-
 import React from 'react';
 import Link from 'next/link';
 import Layout from '../components/Layout';
-import IncidentesListado from '../components/IncidentesListado'; 
+import UterrestresListado from '../components/UterrestresListado'; 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
-const IncidentesPage = () => {
+const UterrestresPage = () => { 
   return (
     <Layout>
       {/* Contenido de la página de incidente */}
-      <h1>Listado de Incidente</h1>
+      <h1>Listado de unidades terrestre</h1>
 
       {/* Listado de incidentes */}
-      <IncidentesListado />
+      <UterrestresListado />
+  
     </Layout>
   );
 };
 
-export default IncidentesPage;
-
-
+export default UterrestresPage;

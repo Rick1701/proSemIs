@@ -5,24 +5,14 @@ import UaereasListado from '../components/UaereasListado';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
-const UaereasPage = () => {
+const UaereasPage = () => { 
   return (
     <Layout>
-      {/* Contenido de la página de incidente */}
-      <h1>Título del listado aerea</h1>
-      <p>Descripción del listado</p>
+      {/* Contenido de la página de uaerea */}
+      <h1>Listado de unidades aereas</h1>
 
-      {/* Listado de incidentes */}
+      {/* Listado de uaerea */}
       <UaereasListado />
-        {/* Mostrar los botones directamente en la página */}
-      <Stack spacing={2} direction="row">
-        {/* Agregar redireccionamiento a la página de uaereasListado */}
-        <Link href="/uaereasListado">
-          <Button>Ver Listado</Button>
-        </Link>
-        <Button disabled>Disabled</Button>
-        <Button>Link</Button>
-      </Stack>
     </Layout>
   );
 };

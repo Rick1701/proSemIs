@@ -4,6 +4,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { DataGrid } from '@mui/x-data-grid';
+import Button from '@mui/material/Button';
 
 const BrigadistasListado = () => {
   console.log('Brigadistas se ha montado');
@@ -12,17 +13,29 @@ const BrigadistasListado = () => {
   useEffect(() => {
     axios.get('http://localhost:3001/api/brigadista')
       .then(response => {
-        setBrigadistas(response.data.data); // Modifica esta línea
+        setBrigadistas(response.data.data);
       })
       .catch(error => {
-        console.error('Error al obtener las brigadistas:', error);
+        console.error('Error al obtener los brigadistas:', error);
       });
   }, []);
 
-  console.log('hola', brigadistas); // Verifica si se están recibiendo los datos correctamente
+
+  const handleDelete = (id) => {
+    if (window.confirm('¿Estás seguro de eliminar este brigadista?')) {
+      axios.delete(`http://localhost:3001/api/brigadista/${id}`)
+        .then(response => {
+          setBrigadistas(prevBrigadistas => prevBrigadistas.filter(brigadista => brigadista._id !== id));
+          console.log('Brigadista eliminado:', response.data);
+        })
+        .catch(error => {
+          console.error('Error al eliminar el brigadista:', error);
+        });
+    }
+  };
 
   if (!Array.isArray(brigadistas)) {
-    return <p>No se encontraron los brigadistas.</p>;
+    return <p>No se encontraron brigadistas.</p>;
   }
 
   const columns = [
@@ -34,6 +47,22 @@ const BrigadistasListado = () => {
     { field: 'brig_estado_brigadista', headerName: 'Estado actual', width: 150 },
     { field: 'brig_brigada', headerName: 'Brigada', width: 150 },
     { field: 'brig_incidente', headerName: 'Incidente', width: 150 },
+    {
+      field: 'actions',
+      headerName: 'Acciones',
+      width: 150,
+      renderCell: (params) => (
+        <div>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => handleDelete(params.id)}
+          >
+            Eliminar
+          </Button>
+        </div>
+      ),
+    },
   ];
 
   const rows = brigadistas.map(brigadista => ({
@@ -43,10 +72,9 @@ const BrigadistasListado = () => {
     brig_apellidos: brigadista.brig_apellidos,
     brig_sexo: brigadista.brig_sexo,
     brig_edad: brigadista.brig_edad,
-    brig_estado_brigadista: brigadista.brig_estado_brigadista,
-    brig_brigada: brigadista.brig_brigada,
-    brig_incidente: brigadista.brig_incidente,
-
+    brig_estado_brigadista: brigadista.brig_estado_brigadista ? brigadista.brig_estado_brigadista.estab_descripcion : 'N/A',
+    brig_brigada: brigadista.brig_brigada ? brigadista.brig_brigada.bri_nombre : 'N/A' ,
+    brig_incidente: brigadista.brig_incidente ? brigadista.brig_incidente.inc_descripcion : 'N/A',
   }));
 
   return (
