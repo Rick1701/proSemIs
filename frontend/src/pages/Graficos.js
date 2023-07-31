@@ -96,7 +96,7 @@ const GraficosPage = () => {
       ))}
       <Link href="/home">
                 
-                <Button style={{ backgroundColor: '#313236', color: 'white' }}>Regresar</Button>
+                <Button sx={{bgcolor: '#313236',color: 'white','&:hover': {bgcolor: '#F3F3FB',},}}>Regresar</Button>
       </Link>
     </Layout>
   );
