@@ -6,9 +6,8 @@ const mongoose = require("mongoose");
 const siniestroSchema = new mongoose.Schema({
   sin_numeroIncendio: {
     type: Number,
-    required: true,
+    required: false,
     unique: true,
-    default: 0, // Valor inicial para el autoincremento
   },
   sin_velocidadViento: {
     type: String,
@@ -156,12 +155,14 @@ const siniestroSchema = new mongoose.Schema({
   ],
 });
 
-// Antes de guardar un nuevo documento, se ejecuta esta función para incrementar sin_numeroIncendio
+// Antes de guardar un nuevo siniestro, se ejecuta esta función para incrementar sin_numeroIncendio si no existe
 siniestroSchema.pre("save", async function (next) {
   const doc = this;
   try {
-    const count = await mongoose.model("Siniestro").countDocuments();
-    doc.sin_numeroIncendio = count + 1;
+    if (!doc.sin_numeroIncendio) {
+      const count = await mongoose.model("Siniestro").countDocuments();
+      doc.sin_numeroIncendio = count + 1;
+    }
     next();
   } catch (error) {
     next(error);

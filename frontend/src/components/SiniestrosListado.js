@@ -74,8 +74,8 @@ const SiniestrosListado = () => {
       sin_velocidadViento: siniestro.sin_velocidadViento,
       sin_temperatura: siniestro.sin_temperatura,
       sin_humedad: siniestro.sin_humedad,
-      sin_fechaInicio: new Date(siniestro.sin_fechaInicio).toLocaleDateString(), // Formatea la fecha de inicio
-      sin_fechaTermino: new Date(siniestro.sin_fechaTermino).toLocaleDateString(), // Formatea la fecha de termino
+      sin_fechaInicio: new Date(siniestro.sin_fechaInicio).toLocaleDateString() , // Formatea la fecha de inicio
+      sin_fechaTermino: siniestro.sin_fechaTermino ? new Date(siniestro.sin_fechaTermino).toLocaleDateString() : 'EN CURSO',
       sin_latitud: siniestro.sin_latitud,
       sin_longitud: siniestro.sin_longitud,
       sin_superficie: siniestro.sin_superficie,
