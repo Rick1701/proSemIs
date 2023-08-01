@@ -13,6 +13,12 @@ const { setupDB } = require("./config/configDB.js");
 // Importa el handler de errores
 const { handleFatalError, handleError } = require("./utils/errorHandler.js");
 const { createRoles, createUsers } = require("./config/initialSetup");
+//const siniestroRoutes = require('./routes/siniestro.routes');
+//app.use('/api/siniestro', siniestroRoutes);
+
+
+
+
 
 /**
  * @name setupServer
@@ -26,17 +32,10 @@ async function setupServer() {
     const { PORT, HOST } = configEnv();
     // Crea una instancia de la aplicacion
     const server = express();
-
-    // Configura las opciones de CORS
-    const corsOptions = {
-      origin: "http://localhost:3000",
-      optionsSuccessStatus: 200, // Algunas versiones de cors necesitan esto para funcionar correctamente
-    };
-    
     // Agrega el middleware para el manejo de datos en formato JSON
     server.use(express.json());
-    // Agregamos los cors con las opciones configuradas
-    server.use(cors(corsOptions));
+    // Agregamos los cors
+    server.use(cors());
     // Agregamos morgan para ver las peticiones que se hacen al servidor
     server.use(morgan("dev"));
     // Agrega el middleware para el manejo de datos en formato URL
