@@ -10,7 +10,7 @@ const IncidentesListado = () => {
   const [incidentes, setIncidentes] = useState([]);
   const [brigadistas, setBrigadistas] = useState([]);
   useEffect(() => {
-    axios.get('http://localhost:3001/api/incidente')
+    axios.get('http://146.83.198.35:1047/api/incidente')
       .then(response => {
         setIncidentes(response.data.data);
       })
@@ -19,7 +19,7 @@ const IncidentesListado = () => {
       });
   }, []);
   useEffect(() => {
-    axios.get('http://localhost:3001/api/brigadista')
+    axios.get('http://146.83.198.35:1047/api/brigadista')
       .then(response => {
         setBrigadistas(response.data.data);
         console.log("Daniiiiiii",response.data.data);

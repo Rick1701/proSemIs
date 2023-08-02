@@ -25,7 +25,7 @@ const BrigadistaRegistroPage = () => {
   const [brigadistaRegistrado, setBrigadistaRegistrado] = useState(false); 
   useEffect(() => {
     // Obtener las brigadas
-    axios.get('http://localhost:3001/api/brigada')
+    axios.get('http://146.83.198.35:1047/api/brigada')
       .then(response => {
         const brigadas = response.data.data;
         setBrigadaOptions(brigadas); // Corregir el nombre de la función a setBrigadaOptions
@@ -38,7 +38,7 @@ const BrigadistaRegistroPage = () => {
 
   const registerBrigadista = async (formData) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/brigadista', formData);
+      const response = await axios.post('http://146.83.198.35:1047/api/brigadista', formData);
       console.log('Brigadista registrado:', response.data);
       setRegistroExitoso(true); // Establecer el estado de registro exitoso en true
       setBrigadistaRegistrado(true);

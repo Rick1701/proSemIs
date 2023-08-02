@@ -29,7 +29,7 @@ const BrigadaRegistroPage = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false); 
   useEffect(() => {
     // Obtener las bases
-    axios.get('http://localhost:3001/api/base')
+    axios.get('http://146.83.198.35:1047/api/base')
       .then(response => {
         const bases = response.data.data;
         setBasesOptions(bases);
@@ -41,7 +41,7 @@ const BrigadaRegistroPage = () => {
 
   const registerBrigada = async (formData) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/brigada', formData); 
+      const response = await axios.post('http://146.83.198.35:1047/api/brigada', formData); 
       console.log('Brigada registrada:', response.data);
       setBrigadaRegistrada(true);
       setShowSuccessMessage(true);

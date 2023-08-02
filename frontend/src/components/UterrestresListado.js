@@ -11,7 +11,7 @@ const UterrestresListado = () => {
   const [uterrestres, setUterrestres] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/uterrestre')
+    axios.get('http://146.83.198.35:1047/api/uterrestre')
       .then(response => {
         setUterrestres(response.data.data);
       })
@@ -22,7 +22,7 @@ const UterrestresListado = () => {
 
   const handleDelete = (id) => {
     if (window.confirm('¿Estás seguro de eliminar esta unidad terrestre?')) {
-      axios.delete(`http://localhost:3001/api/uterrestre/${id}`)
+      axios.delete(`http://146.83.198.35:1047/api/uterrestre/${id}`)
         .then(response => {
           setUterrestres(prevUterrestres => prevUterrestres.filter(uterrestre => uterrestre._id !== id));
           console.log('Unidad terrestre eliminada:', response.data);

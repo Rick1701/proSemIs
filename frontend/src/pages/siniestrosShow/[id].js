@@ -76,7 +76,7 @@ const SiniestrosShowPage = () => {
     const fetchData = async () => {
       try {
         if (id) {
-          const response = await axios.get(`http://localhost:3001/api/siniestro/${id}`);
+          const response = await axios.get(`http://146.83.198.35:1047/api/siniestro/${id}`);
           setSiniestro(response.data);
           setHitos(response.data.hitos); // Actualiza el estado de 'hitos' con los hitos reales
           console.log(response.data.hitos)
@@ -94,7 +94,7 @@ const SiniestrosShowPage = () => {
   const handleDelete = async () => {
     try {
       // Hacer la solicitud DELETE para eliminar el siniestro por ID
-      await axios.delete(`http://localhost:3001/api/siniestro/${id}`);
+      await axios.delete(`http://146.83.198.35:1047/api/siniestro/${id}`);
       // Redireccionar a la página de lista de siniestros después de eliminar
       router.push('/siniestros');
     } catch (error) {
@@ -105,7 +105,7 @@ const SiniestrosShowPage = () => {
   const handleApagarSiniestro = async () => {
     try {
       // Hacer la solicitud PUT para cambiar el estado del siniestro a "EXTINCIÓN"
-      await axios.put(`http://localhost:3001/api/siniestro/${id}`, {
+      await axios.put(`http://146.83.198.35:1047/api/siniestro/${id}`, {
         sin_fechaTermino: new Date(), // Obtener la fecha actual y guardarla en sin_fechaTermino
       });
       window.location.reload();
@@ -120,7 +120,7 @@ const SiniestrosShowPage = () => {
         <div>Cargando...</div>
       ) : (
         <form>
-          <h1>Detalles del Siniestro N° '{siniestro.sin_numeroIncendio}'</h1>
+          <h1>Detalles del Siniestro N° '{siniestro.sin_numeroIncendio}' - Categoría: '{siniestro.sin_categoria.cat_nivel}'</h1>
           <Grid container spacing={2} style={{ marginTop: '40px' }}>
             <Grid item xs={12} sm={3}>
               <FieldTitle title="Velocidad del Viento:" icon={<AirIcon fontSize="small" style={{ marginRight: '4px' }} />} />

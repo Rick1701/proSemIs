@@ -49,7 +49,7 @@ const SignIn = () => {
     const email = data.get('email');
 
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/signin', { name, email });
+      const response = await axios.post('http://146.83.198.35:1047/api/auth/signin', { name, email });
       console.log(response.data);
 
       router.push('/home');

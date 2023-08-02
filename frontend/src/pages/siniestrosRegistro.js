@@ -57,7 +57,7 @@ const SiniestrosRegistroPage = () => {
   // Función para registrar el siniestro en el backend
   const registerSiniestro = async (formData) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/siniestro', formData);
+      const response = await axios.post('http://146.83.198.35:1047/api/siniestro', formData);
       //console.log('Siniestro registrado:', response.data._id);
   
       // Luego, obtienes el ID del siniestro registrado desde la respuesta
@@ -67,7 +67,7 @@ const SiniestrosRegistroPage = () => {
       // Realizas la segunda solicitud GET para obtener la estrategia del siniestro
       if (_id) {
         console.log('Realizando solicitud GET para obtener la estrategia del siniestro...');
-        const estrategiaResponse = await axios.get(`http://localhost:3001/api/siniestro/estrategia/${_id}`);
+        const estrategiaResponse = await axios.get(`http://146.83.198.35:1047/api/siniestro/estrategia/${_id}`);
         console.log('Estrategia del siniestro:', estrategiaResponse.data);
       }
       // Puedes mostrar una notificación de éxito o redirigir al usuario a la página de inicio

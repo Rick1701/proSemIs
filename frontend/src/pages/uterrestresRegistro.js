@@ -20,7 +20,7 @@ const UterrestreRegistroPage = () => {
   const [uterrestreRegistrada, setUterrestreRegistrada] = useState(false); 
   useEffect(() => {
     // Obtener las bases
-    axios.get('http://localhost:3001/api/base')
+    axios.get('http://146.83.198.35:1047/api/base')
       .then(response => {
         const bases = response.data.data;
         setBasesOptions(bases);
@@ -31,7 +31,7 @@ const UterrestreRegistroPage = () => {
   }, []);
   const registerUterrestre = async (formData) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/uterrestre', formData); 
+      const response = await axios.post('http://146.83.198.35:1047/api/uterrestre', formData); 
       console.log('Unidad terrestre registrada:', response.data);
       setUterrestreRegistrada(true);
       setShowSuccessMessage(true);

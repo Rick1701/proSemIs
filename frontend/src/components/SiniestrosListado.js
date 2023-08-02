@@ -11,7 +11,7 @@ const SiniestrosListado = () => {
 
   useEffect(() => {
     // Obtener los siniestros
-    axios.get('http://localhost:3001/api/siniestro')
+    axios.get('http://146.83.198.35:1047/api/siniestro')
       .then(response => {
         setSiniestros(response.data.data);
       })

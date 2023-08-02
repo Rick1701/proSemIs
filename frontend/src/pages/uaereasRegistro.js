@@ -19,7 +19,7 @@ const UaereasRegistroPage = () => {
   const [uaereaRegistrada, setUaereaRegistrada] = useState(false);
   useEffect(() => {
     // Obtener las bases
-    axios.get('http://localhost:3001/api/base')
+    axios.get('http://146.83.198.35:1047/api/base')
       .then(response => {
         const bases = response.data.data;
         setBasesOptions(bases);
@@ -31,7 +31,7 @@ const UaereasRegistroPage = () => {
 
   const registerUaerea = async (formData) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/uaerea', formData);
+      const response = await axios.post('http://146.83.198.35:1047/api/uaerea', formData);
       console.log('Unidad aérea registrada:', response.data);
       setUaereaRegistrada(true); 
       setShowSuccessMessage(true); 

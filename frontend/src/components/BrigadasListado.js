@@ -11,7 +11,7 @@ const BrigadasListado = () => {
   const [brigadas, setBrigadas] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/brigada')
+    axios.get('http://146.83.198.35:1047/api/brigada')
       .then(response => {
         setBrigadas(response.data.data);
       })
@@ -22,7 +22,7 @@ const BrigadasListado = () => {
 
   const handleDelete = (id) => {
     if (window.confirm('¿Estás seguro de eliminar esta brigada?')) {
-      axios.delete(`http://localhost:3001/api/brigada/${id}`)
+      axios.delete(`http://146.83.198.35:1047/api/brigada/${id}`)
         .then(response => {
           setBrigadas(prevBrigadas => prevBrigadas.filter(brigada => brigada._id !== id));
           console.log('Brigada eliminada:', response.data);

@@ -58,7 +58,7 @@ const SiniestrosEditPage = () => {
     const fetchData = async () => {
       try {
         if (id) {
-          const response = await axios.get(`http://localhost:3001/api/siniestro/${id}`);
+          const response = await axios.get(`http://146.83.198.35:1047/api/siniestro/${id}`);
           setSiniestro(response.data);
           setSiniestroInicial(response.data); // Configurar siniestroInicial con los datos iniciales del siniestro
           setLoading(false);
@@ -134,7 +134,7 @@ const SiniestrosEditPage = () => {
       // Repetir este proceso para cada campo que quieras actualizar
   
       // Realizar la llamada a la API para actualizar el siniestro con los campos modificados
-      await axios.put(`http://localhost:3001/api/siniestro/${id}`, camposModificados);
+      await axios.put(`http://146.83.198.35:1047/api/siniestro/${id}`, camposModificados);
   
       // Si todo va bien, redirigir a la página de detalles del siniestro
       router.push(`/siniestrosShow/${id}`);
