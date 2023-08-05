@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Grid from '@mui/material/Grid';
 import ArrowBack from '@mui/icons-material/ArrowBack';
+import axios from 'axios';
 
 const BaseRegistroPage = () => {
   const [formData, setFormData] = useState({
