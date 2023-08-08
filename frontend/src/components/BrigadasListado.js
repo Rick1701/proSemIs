@@ -7,7 +7,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button'; 
 
 const BrigadasListado = () => {
-  console.log('GestionarBrigadas se ha montado');
   const [brigadas, setBrigadas] = useState([]);
 
   useEffect(() => {
@@ -33,13 +32,10 @@ const BrigadasListado = () => {
     }
   };
 
-  console.log('hola', brigadas); 
   const columns = [
     { field: 'bri_nombre', headerName: 'Nombre de la brigada', width: 150 },
     { field: 'bri_especialidad', headerName: 'Especialidad', width: 150 },
     { field: 'bri_brigadista', headerName: 'Brigadistas', width: 150 },
-    { field: 'bri_base', headerName: 'Base', width: 150 },
-    { field: 'bri_estado', headerName: 'Estado', width: 150 },
     {
       field: 'actions',
       headerName: 'Acciones',
@@ -62,8 +58,6 @@ const BrigadasListado = () => {
     id: brigada._id,
     bri_nombre: brigada.bri_nombre,
     bri_especialidad: brigada.bri_especialidad,
-    bri_bri: brigada.bri_base,
-    bri_estado: brigada.bri_estado,
     bri_brigadista: brigada.bri_brigadista.length,
   }));
 

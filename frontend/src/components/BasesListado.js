@@ -13,7 +13,7 @@ const BasesListado = ({ bases, setEditingBaseId, onDelete }) => {
     { field: 'base_incendios_asistidos', headerName: 'Incendios asistidos', width: 150 },
     { field: 'base_incendio_actual', headerName: 'Combate actual', width: 120 },
     { field: 'base_uterrestre', headerName: 'Unidades terrestres', width: 150 },
-    { field: 'base_uaerea', headerName: 'Unidades aereas', width: 120 },
+    { field: 'base_uaerea', headerName: 'Unidades aéreas', width: 120 },
     { field: 'base_brigada', headerName: 'Brigadas', width: 100 },
     { field: 'base_estado', headerName: 'Estado de la base', width: 150 },
     {
@@ -22,23 +22,24 @@ const BasesListado = ({ bases, setEditingBaseId, onDelete }) => {
       width: 150,
       renderCell: (params) => (
         <div>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => {
-            if (window.confirm('¿Estás seguro de eliminar esta base?')) {
-              onDelete(params.id);
-            }
-          }}
-        >
-          Eliminar
-        </Button>
-      </div>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              if (window.confirm('¿Estás seguro de eliminar esta base?')) {
+                onDelete(params.id);
+              }
+            }}
+          >
+            Eliminar
+          </Button>
+        </div>
       ),
     },
   ];
 
-  const rows = bases.map((base) => ({
+  // Verificar si bases está definido antes de mapear sobre él
+  const rows = bases ? bases.map((base) => ({
     id: base._id,
     base_descripcion: base.base_descripcion,
     base_latitud: base.base_latitud,
@@ -48,7 +49,7 @@ const BasesListado = ({ bases, setEditingBaseId, onDelete }) => {
     base_uaerea: base.base_uaerea.length,
     base_brigada: base.base_brigada.length,
     base_estado: base.base_estado,
-  }));
+  })) : [];
 
   return (
     <div style={{ height: 400, width: '100%' }}>

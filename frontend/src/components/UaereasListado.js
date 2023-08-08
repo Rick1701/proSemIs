@@ -13,10 +13,11 @@ const UaereasListado = () => {
   useEffect(() => {
     axios.get('http://146.83.198.35:1047/api/uaerea')
       .then(response => {
+        console.log('Datos de unidades aéreas recibidos:', response.data.data);
         setUaereas(response.data.data);
       })
       .catch(error => {
-        console.error('Error al obtener las unidades aereas:', error);
+        console.error('Error al obtener las unidades aéreas:', error);
       });
   }, []);
 
