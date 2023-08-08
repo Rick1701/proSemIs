@@ -20,7 +20,7 @@ const GestionBasesPage = () => {
 
   const cargarBases = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/base');
+      const response = await axios.get('http://146.83.198.35:1047/api/base');
       setBases(response.data.data);
     } catch (error) {
       console.error('Error al cargar las bases:', error);
@@ -47,10 +47,10 @@ const GestionBasesPage = () => {
     try {
       if (editingBaseId) {
         // Si hay un editingBaseId, significa que se está editando una base existente
-        await axios.put(`http://localhost:3001/api/base/${editingBaseId}`, formData);
+        await axios.put(`http://146.83.198.35:1047/api/base/${editingBaseId}`, formData);
       } else {
         // Si no hay editingBaseId, significa que se está creando una nueva base
-        await axios.post('http://localhost:3001/api/base', formData);
+        await axios.post('http://146.83.198.35:1047/api/base', formData);
       }
       setEditingBaseId(null);
       setFormData({
@@ -76,7 +76,7 @@ const GestionBasesPage = () => {
 
   const handleDeleteBase = async (baseId) => {
     try {
-      await axios.delete(`http://localhost:3001/api/base/${baseId}`);
+      await axios.delete(`http://146.83.198.35:1047/api/base/${baseId}`);
       cargarBases(); // Actualizar la lista de bases después de eliminar una base
     } catch (error) {
       console.error('Error al eliminar la base:', error);

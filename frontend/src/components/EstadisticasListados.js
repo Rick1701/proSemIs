@@ -15,7 +15,7 @@ const EstadisticasListados = () => {
 
   useEffect(() => {
     // Obtener los siniestros
-    axios.get('http://localhost:3001/api/siniestro')
+    axios.get('http://146.83.198.35:1047/api/siniestro')
       .then(response => {
         // Ordenar los siniestros cronológicamente por el campo sin_fechaInicio
     const sortedSiniestros = response.data.data.sort((a, b) => new Date(b.sin_fechaInicio) - new Date(a.sin_fechaInicio));

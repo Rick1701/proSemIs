@@ -6,7 +6,7 @@ const GraficoSiniestros = () => {
 
   // Hacer la solicitud HTTP para obtener los datos de los siniestros desde el backend
   useEffect(() => {
-    fetch('http://localhost:3001/api/siniestro')
+    fetch('http://146.83.198.35:1047/api/siniestro')
       .then((response) => response.json())
       .then((data) => setDataFromApi(data.data))
       .catch((error) => console.error(error));

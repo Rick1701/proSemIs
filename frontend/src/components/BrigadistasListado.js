@@ -11,7 +11,7 @@ const BrigadistasListado = () => {
   const [brigadistas, setBrigadistas] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/brigadista')
+    axios.get('http://146.83.198.35:1047/api/brigadista')
       .then(response => {
         setBrigadistas(response.data.data);
       })
@@ -23,7 +23,7 @@ const BrigadistasListado = () => {
 
   const handleDelete = (id) => {
     if (window.confirm('¿Estás seguro de eliminar este brigadista?')) {
-      axios.delete(`http://localhost:3001/api/brigadista/${id}`)
+      axios.delete(`http://146.83.198.35:1047/api/brigadista/${id}`)
         .then(response => {
           setBrigadistas(prevBrigadistas => prevBrigadistas.filter(brigadista => brigadista._id !== id));
           console.log('Brigadista eliminado:', response.data);

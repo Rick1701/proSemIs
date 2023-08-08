@@ -1,7 +1,7 @@
 "use strict";
 
 const { respondSuccess, respondError } = require("../utils/resHandler");
-const Estado_UnidadService = require("../services/Estado_Unidad.service");
+const Estado_UnidadService = require("../services/estado_unidad.service");
 const { handleError } = require("../utils/errorHandler");
 
 /**

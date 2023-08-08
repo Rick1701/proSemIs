@@ -20,7 +20,7 @@ const BaseRegistroPage = () => {
 
   const registerBase = async (formData) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/base', formData);
+      const response = await axios.post('http://146.83.198.35:1047/api/base', formData);
       console.log('Base registrada:', response.data);
       setBaseRegistrada(true);
       setShowSuccessMessage(true);

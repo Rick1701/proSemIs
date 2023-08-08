@@ -25,7 +25,7 @@ const IncidenteRegistroPage = () => {
   const [incidenteRegistrada, setIncidenteRegistrado] = useState(false);
   useEffect(() => {
     // Obtener los brigadistas
-    axios.get('http://localhost:3001/api/brigadista')
+    axios.get('http://146.83.198.35:1047/api/brigadista')
       .then(response => {
         const brigadistas = response.data.data;
         setBrigadistasOptions(brigadistas);
@@ -35,7 +35,7 @@ const IncidenteRegistroPage = () => {
       });
 
     // Obtener las unidades aéreas
-    axios.get('http://localhost:3001/api/uaerea')
+    axios.get('http://146.83.198.35:1047/api/uaerea')
       .then(response => {
         const uaereas = response.data.data;
         setUaereasOptions(uaereas);
@@ -45,7 +45,7 @@ const IncidenteRegistroPage = () => {
       });
 
     // Obtener las unidades terrestres
-    axios.get('http://localhost:3001/api/uterrestre')
+    axios.get('http://146.83.198.35:1047/api/uterrestre')
       .then(response => {
         const uterrestres = response.data.data;
         setUterrestresOptions(uterrestres);
@@ -55,7 +55,7 @@ const IncidenteRegistroPage = () => {
       });
 
     // Obtener los siniestros
-    axios.get('http://localhost:3001/api/siniestro')
+    axios.get('http://146.83.198.35:1047/api/siniestro')
       .then(response => {
         const siniestros = response.data.data;
         setSiniestrosOptions(siniestros);
@@ -67,7 +67,7 @@ const IncidenteRegistroPage = () => {
 
   const registerIncidente = async (formData) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/incidente', formData);
+      const response = await axios.post('http://146.83.198.35:1047/api/incidente', formData);
       console.log('incidente registrado:', response.data);
       setIncidenteRegistrado(true); 
       setShowSuccessMessage(true);

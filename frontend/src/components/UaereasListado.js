@@ -11,7 +11,7 @@ const UaereasListado = () => {
   const [uaereas, setUaereas] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/uaerea')
+    axios.get('http://146.83.198.35:1047/api/uaerea')
       .then(response => {
         setUaereas(response.data.data);
       })
@@ -22,7 +22,7 @@ const UaereasListado = () => {
 
   const handleDelete = (id) => {
     if (window.confirm('¿Estás seguro de eliminar esta unidad aérea?')) {
-      axios.delete(`http://localhost:3001/api/uaerea/${id}`)
+      axios.delete(`http://146.83.198.35:1047/api/uaerea/${id}`)
         .then(response => {
           setUaereas(prevUaereas => prevUaereas.filter(uaerea => uaerea._id !== id));
           console.log('Unidad aérea eliminada:', response.data);

@@ -32,7 +32,7 @@ const SignIn = () => {
 
 
     try {
-        const response = await axios.post('http://localhost:3001/api/auth/signin', { name, email });
+        const response = await axios.post('http://146.83.198.35:1047/api/auth/signin', { name, email });
         console.log(response.data); // Puedes mostrar la respuesta del backend en la consola
 
       // Aquí puedes realizar acciones adicionales después de un inicio de sesión exitoso
