@@ -72,30 +72,21 @@ const GraficosPage = () => {
 
       
       {siniestros.map(siniestro => (
-        
-        <div key={siniestro._id}>
-
-          <h2>Siniestro N° : {siniestro.sin_numeroIncendio}  - Fecha: {siniestro.sin_fechaInicio}</h2>
-          <BarChart width={800} height={500} data={getChartData(siniestro)}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="nombreDelDato" />
-            <YAxis>
-              {/*Se agrega el eje Y*/}
-            </YAxis>
-            <Tooltip />
-            <Legend />
-            
-            <Bar dataKey="UnidadDeMedida" fill="#8884d8" />
-
-            
-          </BarChart>
-          
-          <br /> {/* Salto de línea después de cada siniestro */}
-          <br /> {/* Salto de línea después de cada siniestro */}
-          <br /> {/* Salto de línea después de cada siniestro */}
-        </div>
-        
-      ))}
+          <div key={siniestro._id}>
+            <h2>Siniestro N° : {siniestro.sin_numeroIncendio} - Fecha: {new Date(siniestro.sin_fechaInicio).toLocaleDateString()}</h2>
+            <BarChart width={800} height={500} data={getChartData(siniestro)}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="nombreDelDato" />
+              <YAxis>
+                {/* Se agrega el eje Y */}
+              </YAxis>
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="UnidadDeMedida" fill="#8884d8" />
+            </BarChart>
+            <br /> {/* Salto de línea después de cada siniestro */}
+          </div>
+        ))}
       <Link href="/home">
                 
                 <Button sx={{bgcolor: '#313236',color: 'white','&:hover': {bgcolor: '#F3F3FB',},}}>Regresar</Button>
